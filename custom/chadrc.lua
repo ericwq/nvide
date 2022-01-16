@@ -12,7 +12,7 @@ M.options = {
 
 M.plugins = {
 	status = {
-		dashboard = false,
+		dashboard = true,
 		colorizer = true,
 	},
 	options = {
