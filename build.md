@@ -30,3 +30,6 @@
 " loing to the containter
 % docker exec -u 0 -it nvide ash
 % docker exec -u ide -it nvide ash
+
+" attach / mirror the container
+% docker attach nvide
