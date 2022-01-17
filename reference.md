@@ -13,6 +13,14 @@ docker run -it -h neovim --env TZ=Asia/Shanghai  --name neovim \
 alpine:edge
 ```
 
+## c++ language server
+
+- apk add bear
+- https://github.com/rizsotto/Bear
+- git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+- https://github.com/MaskRay/ccls/wiki/Build
+- bear -- cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/path/to/clang+llvm-xxx
+
 ## After Installation
 
 ```
