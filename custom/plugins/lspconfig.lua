@@ -11,7 +11,22 @@ M.setup_lsp = function(attach, capabilities)
 	local lspconfig = require "lspconfig"
 
 	-- c/c++ language server
-	lspconfig.clangd.setup {}
+	lspconfig.clangd.setup {
+		on_attach = attach,
+		capabilities = capabilities,
+		root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
+		cmd = {
+			"clangd",
+			"--background-index",
+			"--suggest-missing-includes",
+		},
+		filetypes = {
+			"c",
+			"cpp",
+			"objc",
+			"objcpp",
+		},
+	}
 
 	-- go language server
 	-- cmd = {"gopls", "-remote", "auto", "-logfile", "/tmp/gopls.log"},
