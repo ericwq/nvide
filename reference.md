@@ -20,6 +20,7 @@ alpine:edge
 - git clone --depth=1 --recursive https://github.com/MaskRay/ccls
 - https://github.com/MaskRay/ccls/wiki/Build
 - bear -- cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/path/to/clang+llvm-xxx
+- apk add autoconf automake
 
 ## After Installation
 
