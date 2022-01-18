@@ -35,7 +35,7 @@ RUN apk add tmux colordiff curl tzdata htop go protoc --update
 RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev --update
 
 # required by c
-RUN apk add autoconf automake --update
+RUN apk add autoconf automake bear --update
 
 # https://github.com/fsouza/prettierd
 #
