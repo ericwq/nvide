@@ -51,10 +51,10 @@ local sources = {
 	-- b.completion.spell,
 
 	-- c/c++
-	b.formatting.clang_format,
-	b.diagnostics.cppcheck.with({
-		diagnostics_format = "(#{s}) #{m}",
-	}),
+	-- b.formatting.clang_format,
+	-- b.diagnostics.cppcheck.with({
+	-- 	diagnostics_format = "(#{s}) #{m}",
+	-- }),
 
 	--[[
 --
