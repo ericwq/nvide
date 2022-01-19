@@ -26,7 +26,7 @@ customPlugins.add(function(use)
 	-- https://github.com/simrat39/symbols-outline.nvim
 	use {
 		'simrat39/symbols-outline.nvim',
-		disable = true,
+		-- disable = true,
 		after = "nvim-lspconfig",
 		config = function()
 			require("custom.plugins.symbols-outline")
