@@ -15,6 +15,47 @@ alpine:edge
 
 ## c++ language server
 
+cmake, autoconf, automake and bear is a general tools for c/c++ Development.
+
+### ccls needs more dependency to build the source.
+
+[ccls build](https://github.com/MaskRay/ccls/wiki/Build) suggest the following command for alpine. Which means ccls project needs more packages to build from the source. It's not an idea sample project. Doing this will increase the docker image size.
+
+```sh
+% apk add alpine-sdk cmake make clang clang-static clang-dev llvm-dev llvm-static \
+	&& git clone --depth=1 --recursive https://github.com/MaskRay/ccls \
+	&& cd ccls \
+	&& cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release \
+	&& cmake --build Release --target install
+```
+
+After perform the following command, according to the above suggestion.
+
+```
+% apk add clang-static llvm-dev llvm-static
+```
+
+The cmake command still complains some LIB is missing. Now add the missing packages.
+
+```
+% apk add zlib-dev libxslt-dev
+```
+
+The cmake command complains the following mysterious problem instead of the previous missing LIB problem.
+
+```
+% cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
+-- Using local RapidJSON
+fatal: No names found, cannot describe anything.
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/ide/proj/ccls/Release
+
+% ln -s Release/compile_commands.json .
+```
+
+Ignor the above the fatal error.
+
 - apk add bear
 - https://github.com/rizsotto/Bear
 - git clone --depth=1 --recursive https://github.com/MaskRay/ccls
