@@ -18,7 +18,7 @@ M.setup_lsp = function(attach, capabilities)
 		cmd = {
 			"clangd",
 			"--background-index",
-			"--suggest-missing-includes",
+			"--clang-tidy",
 		},
 		filetypes = {
 			"c",
