@@ -41,4 +41,5 @@ Run the following command to build the docker image. Note [NvChad](https://githu
 Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++, go and `lua` language server are ready.
 
 - See [grpc-go project in nvide](reference.md#grpc-go-project-in-nvide) for example.
-- See [c/c++ project in nvide](reference.md#c/c++-project-in-nvide) for example
+- See [c/c++ project in nvide](reference.md#ccls-project-in-nvide) for example.
+- See [lua project in nvide](referencemd#lua-project-in-nvide) for example.

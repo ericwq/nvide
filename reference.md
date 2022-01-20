@@ -67,6 +67,17 @@ fatal: No names found, cannot describe anything.
 -- Build files have been written to: /home/ide/proj/ccls/Release
 
 % ln -s Release/compile_commands.json .
+% vi src/main.cc
+```
+
+## lua project in nvide
+
+`nvide` uses `lua` to setup the `neovim` plugins. In `~/.config/nvim/` directory, `touch .git` command sets the root directory for `lua` language server. Now enjoy the `lua` language server.
+
+```
+% cd ~/.config/nvim/
+% touch .git
+% vi init.lua
 ```
 
 ## After Installation
