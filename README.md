@@ -10,13 +10,35 @@ ooooo      ooo oooooo     oooo ooooo oooooooooo.   oooooooooooo
 o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 ```
 
-nvide is a C/C++, Go, Lua Integrated Development Environment. It inherits the version number from [ericwq/golangIDE](https://github.com/ericwq/golangIDE). It also tries to combine [ericwq/golangIDE](https://github.com/ericwq/golangIDE) with [ericwq/gccIDE](https://github.com/ericwq/gccIDE) into one: nvide.
+`nvide` is a C/C++, Go, Lua Integrated Development Environment. It inherits the version number from [ericwq/golangIDE](https://github.com/ericwq/golangIDE). It also tries to combine [ericwq/golangIDE](https://github.com/ericwq/golangIDE) with [ericwq/gccIDE](https://github.com/ericwq/gccIDE) into one: `nvide`.
 
-- [NvChad](https://github.com/NvChad/NvChad) directory : if it doesn't exist. run `git clone https://github.com/NvChad/NvChad.git` to get it.
-- `custom` directory : contains custom part for [NvChad](https://github.com/NvChad/NvChad).
-- `conf` directory : contains part of the configuration file.
+## Files description
+
+- `custom` directory : contains custom configuration for [NvChad](https://github.com/NvChad/NvChad).
+- `conf` directory : contains part of the configuration.
 - `build.md` : contains the docker commands to build and run the image.
 - `nvim.dockerfile` : the docker file.
-- `reference.md` : the references (most of) about how to setup nvide.
+- `reference.md` : the references (most of) about how to setup `nvide`.
 
-Please refer the `build.md` to create the nvide docker image. Currently, only go and lua language server is ready. I am working on c/c++ language server.
+## Requirement
+
+- docker desktop for mac / windows
+- git
+
+## Build image
+
+Run the following command to build the docker image. Note [NvChad](https://github.com/NvChad/NvChad) directory is necessary: if it doesn't exist. Run `git clone https://github.com/NvChad/NvChad.git` to get it.
+
+```
+% git clone https://github.com/ericwq/nvide.git
+% cd nvide
+% git clone https://github.com/NvChad/NvChad.git
+% docker build -t nvide:0.7.0 -f nvim.dockerfile .
+```
+
+## Sample project
+
+Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++, go and `lua` language server are ready.
+
+- See [grpc-go project in nvide](reference.md#grpc-go-project-in-nvide) for example.
+- See [c/c++ project in nvide](reference.md#c/c++-project-in-nvide) for example

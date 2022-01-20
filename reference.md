@@ -13,13 +13,30 @@ docker run -it -h neovim --env TZ=Asia/Shanghai  --name neovim \
 alpine:edge
 ```
 
-## c++ language server
+## go language server
 
-cmake, autoconf, automake and bear is a general tools for c/c++ Development.
+### grpc-go project in nvide
 
-### ccls needs more dependency to build the source.
+Using `grpc-go` porject to verify the go language server setup.
 
-[ccls build](https://github.com/MaskRay/ccls/wiki/Build) suggest the following command for alpine. Which means ccls project needs more packages to build from the source. It's not an idea sample project. Doing this will increase the docker image size.
+```
+% git clone https://github.com/grpc/grpc-go.git
+% cd grpc-go
+% go mod tidy
+% vi clientconn.go
+```
+
+- `git` command clones the `grpc-go` project.
+- `go mod tidy` add missing and remove unused modules.
+- `vi` command will start the gopls language server. Now, you can navigate code, format code, diagnose code, etc.
+
+## c/c++ language server
+
+`cmake`, `autoconf`, `automake` and `bear` are general tools for c/c++ Development. So it's build-in packages for `nvide`.
+
+### ccls project in nvide
+
+[ccls build](https://github.com/MaskRay/ccls/wiki/Build) suggest the following commands for alpine. Which means `ccls` project needs more packages to build from the source.
 
 ```sh
 % apk add alpine-sdk cmake make clang clang-static clang-dev llvm-dev llvm-static \
@@ -29,21 +46,19 @@ cmake, autoconf, automake and bear is a general tools for c/c++ Development.
 	&& cmake --build Release --target install
 ```
 
-After perform the following command, according to the above suggestion.
+With `nvide` in hands, you still need to install the following packages to compile the project. Otherwise, the compiler will complains some library is missing. Note, you need to install the following package with the root privilege.
 
-```
-% apk add clang-static llvm-dev llvm-static
-```
-
-The cmake command still complains some LIB is missing. Now add the missing packages.
-
-```
-% apk add zlib-dev libxslt-dev
+```sh
+# apk add clang-static llvm-dev llvm-static zlib-dev libxslt-dev
 ```
 
-The cmake command complains the following mysterious problem instead of the previous missing LIB problem.
+Now, you can execute the following command to create the `compile_commands.json` file.
 
-```
+- Note the `-DCMAKE_EXPORT_COMPILE_COMMANDS=YES` option is used.
+- You can ignore the fatal error reported by cmake.
+- Also note the `compile_commands.json` file is located in `.Release` directory. The link command set the root directory for `clangd`.
+
+```sh
 % cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
 -- Using local RapidJSON
 fatal: No names found, cannot describe anything.
@@ -53,15 +68,6 @@ fatal: No names found, cannot describe anything.
 
 % ln -s Release/compile_commands.json .
 ```
-
-Ignor the above the fatal error.
-
-- apk add bear
-- https://github.com/rizsotto/Bear
-- git clone --depth=1 --recursive https://github.com/MaskRay/ccls
-- https://github.com/MaskRay/ccls/wiki/Build
-- bear -- cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/path/to/clang+llvm-xxx
-- apk add autoconf automake
 
 ## After Installation
 
