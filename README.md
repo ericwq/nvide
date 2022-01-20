@@ -22,7 +22,7 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 
 ## Requirement
 
-- docker desktop for mac / windows
+- [docker desktop](https://www.docker.com/products/docker-desktop) for mac / windows
 - git
 
 ## Build image
