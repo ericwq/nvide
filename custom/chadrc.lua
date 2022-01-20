@@ -29,7 +29,7 @@ M.plugins = {
 
 -- changing theme and UI
 M.ui = {
-	theme = "onedark",
+	theme = "chadracula",
 	italic_comments = true,
 	transparency = true,
 }
