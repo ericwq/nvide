@@ -43,3 +43,8 @@ Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++
 - See [grpc-go project in nvide](reference.md#grpc-go-project-in-nvide) for example.
 - See [c/c++ project in nvide](reference.md#ccls-project-in-nvide) for example.
 - See [lua project in nvide](referencemd#lua-project-in-nvide) for example.
+
+## Unresolved problem
+
+- It's not intuitive to operate the [reference or implementation quickfix window](reference.md#reference-or-implementation-quickfix-window).
+- It's lack of something like [preservim/tagbar](https://github.com/preservim/tagbar) or [simrat39/symbols-outline.nvim](https://github.com/simrat39/symbols-outline.nvim).

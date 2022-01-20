@@ -1,6 +1,6 @@
 # Neovim 0.6 setup
 
-Try to find the better solution for neovim IDE (golang, c, c++, java, lua, html, css, vim script, makrdown, javascript)
+Try to find the better solution for neovim IDE (golang, c, c++, java, lua, html, css, vim script, markdown, javascript)
 
 ## Base image
 
@@ -17,7 +17,7 @@ alpine:edge
 
 ### grpc-go project in nvide
 
-Using `grpc-go` porject to verify the go language server setup.
+Using `grpc-go` project to verify the go language server setup.
 
 ```
 % git clone https://github.com/grpc/grpc-go.git
@@ -55,7 +55,7 @@ With `nvide` in hands, you still need to install the following packages to compi
 Now, you can execute the following command to create the `compile_commands.json` file.
 
 - Note the `-DCMAKE_EXPORT_COMPILE_COMMANDS=YES` option is used.
-- You can ignore the fatal error reported by cmake.
+- You can ignore the fatal error reported by `cmake`.
 - Also note the `compile_commands.json` file is located in `.Release` directory. The link command set the root directory for `clangd`.
 
 ```sh
@@ -82,7 +82,9 @@ fatal: No names found, cannot describe anything.
 
 ## After Installation
 
-`lua vim.lsp.buf.references()` and `lua vim.lsp.buf.implementation()` use (quickfix)[https://neovim.io/doc/user/quickfix.html#quickfix] window to show the list. The following is the command to operate the `quickfix` window. Refer to (How do you use vim's quickfix feature?)[https://stackoverflow.com/questions/1747091/how-do-you-use-vims-quickfix-feature/55117681] for detail.
+### reference or implementation quickfix window
+
+`lua vim.lsp.buf.references()` and `lua vim.lsp.buf.implementation()` use [quickfix](https://neovim.io/doc/user/quickfix.html#quickfix) window to show the list. The following is the command to operate the `quickfix` window. Refer to [How do you use vim's quickfix feature?](https://stackoverflow.com/questions/1747091/how-do-you-use-vims-quickfix-feature/55117681) for detail.
 
 ```
 :copen " Open the quickfix window
@@ -93,6 +95,8 @@ fatal: No names found, cannot describe anything.
 :cnf   " Go to the first error in the next file
 :.cc   " Go to error under cursor (if cursor is in quickfix window)
 ```
+
+### reference links
 
 - [Why is GO111MODULE everywhere, and everything about Go Modules](https://maelvls.dev/go111module-everywhere/#go111module-with-go-117)
 - [Understanding go.mod and go.sum](https://faun.pub/understanding-go-mod-and-go-sum-5fd7ec9bcc34)
