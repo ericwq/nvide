@@ -82,10 +82,16 @@ fatal: No names found, cannot describe anything.
 
 ## After Installation
 
+`lua vim.lsp.buf.references()` and `lua vim.lsp.buf.implementation()` use (quickfix)[https://neovim.io/doc/user/quickfix.html#quickfix] window to show the list. The following is the command to operate the `quickfix` window. Refer to (How do you use vim's quickfix feature?)[https://stackoverflow.com/questions/1747091/how-do-you-use-vims-quickfix-feature/55117681] for detail.
+
 ```
-% go list ./...
-% go mod tidy
-% check ~/.cache/nvim/lsp.log for any error.
+:copen " Open the quickfix window
+:ccl   " Close it
+:cw    " Open it if there are "errors", close it otherwise (some people prefer this)
+:cn    " Go to the next error in the window
+:cp    " Go to the previous error in the window
+:cnf   " Go to the first error in the next file
+:.cc   " Go to error under cursor (if cursor is in quickfix window)
 ```
 
 - [Why is GO111MODULE everywhere, and everything about Go Modules](https://maelvls.dev/go111module-everywhere/#go111module-with-go-117)
