@@ -46,5 +46,6 @@ Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++
 
 ## Unresolved problem
 
+- For `clangd`, cross-file navigation may result the single file mode.
 - It's not intuitive to operate the [reference or implementation quickfix window](reference.md#reference-or-implementation-quickfix-window).
 - It's lack of something like [preservim/tagbar](https://github.com/preservim/tagbar) or [simrat39/symbols-outline.nvim](https://github.com/simrat39/symbols-outline.nvim).
