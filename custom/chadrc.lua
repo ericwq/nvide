@@ -2,7 +2,7 @@
 -- lua/custom/chadrc.lua
 local M = {}
 
-local pluginConfs = require "custom.plugins.configs"
+local plugin_conf = require "custom.plugins.configs"
 
 -- make sure you maintain the structure of `core/default_config.lua` here,
 
@@ -23,11 +23,11 @@ M.plugins = {
 		},
 	},
 	default_plugin_config_replace = {
-    nvim_treesitter = pluginConfigs.treesitter,
-    nvim_tree = pluginConfigs.nvimtree,
-		--nvim_treesitter = "custom.plugins.treesitter",
-		dashboard = "custom.plugins.dashboard",
-		--nvim_tree = "custom.plugins.nvimtree",
+		nvim_treesitter = plugin_conf.treesitter,
+		nvim_tree = plugin_conf.nvimtree,
+		-- nvim_treesitter = "custom.plugins.treesitter",
+		--dashboard = "custom.plugins.dashboard",
+		-- nvim_tree = "custom.plugins.nvimtree",
 	},
 }
 

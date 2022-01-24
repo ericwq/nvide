@@ -22,6 +22,28 @@ customPlugins.add(function(use)
 		event = "VimEnter",
 	}
 
+	-- null-ls
+	use {
+		"jose-elias-alvarez/null-ls.nvim",
+		after = "nvim-lspconfig",
+		requires = {
+			"nvim-lua/plenary.nvim",
+		},
+		config = function()
+			require("custom.plugins.null-ls")
+		end,
+	}
+
+	-- treesitter context
+	use {
+		'romgrk/nvim-treesitter-context',
+		after = "nvim-treesitter",
+		config = function()
+			require("custom.plugins.treesitter-context").setup()
+		end,
+	}
+
+--[[
 	-- symbols-outline
 	-- https://github.com/simrat39/symbols-outline.nvim
 	use {
@@ -46,27 +68,6 @@ customPlugins.add(function(use)
 		end,
 	}
 
-	-- null-ls
-	use {
-		"jose-elias-alvarez/null-ls.nvim",
-		after = "nvim-lspconfig",
-		requires = {
-			"nvim-lua/plenary.nvim",
-		},
-		config = function()
-			require("custom.plugins.null-ls")
-		end,
-	}
-
-	-- treesitter context
-	use {
-		'romgrk/nvim-treesitter-context',
-		after = "nvim-treesitter",
-		config = function()
-			require("custom.plugins.treesitter-context").setup()
-		end,
-	}
-
 	-- which-key
 	use {
 		"folke/which-key.nvim",
@@ -80,6 +81,7 @@ customPlugins.add(function(use)
 			}
 		end,
 	}
+--]]
 
 end)
 
@@ -88,4 +90,4 @@ end)
 -- https://nvchad.github.io/config/walkthrough
 
 -- try to call the customized provider
-pcall(require, "custom.plugins.provider")
+--pcall(require, "custom.plugins.provider")
