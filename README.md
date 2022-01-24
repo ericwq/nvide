@@ -10,12 +10,12 @@ ooooo      ooo oooooo     oooo ooooo oooooooooo.   oooooooooooo
 o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 ```
 
-`nvide` is a C/C++, Go, Lua Integrated Development Environment. It inherits the version number from [ericwq/golangIDE](https://github.com/ericwq/golangIDE). It also tries to combine [ericwq/golangIDE](https://github.com/ericwq/golangIDE) with [ericwq/gccIDE](https://github.com/ericwq/gccIDE) into one: `nvide`.
+`nvide` is a C/C++, Go, Lua Integrated Development Environment. It inherits the version number from [ericwq/golangIDE](https://github.com/ericwq/golangIDE). It also tries to combine [ericwq/golangIDE](https://github.com/ericwq/golangIDE) with [ericwq/gccIDE](https://github.com/ericwq/gccIDE) into one: `nvide`. `nvide` is based on [NvChad](https://github.com/NvChad/NvChad), with additional packages and custom configuration.
 
 ## Files description
 
-- `custom` directory : contains custom configuration for [NvChad](https://github.com/NvChad/NvChad).
-- `conf` directory : contains part of the configuration.
+- `custom` directory : contains additional packages and custom configuration for `NvChad`.
+- `conf` directory : contains part of the `neovim` configuration, mainly clipboard related.
 - `build.md` : contains the docker commands to build and run the image.
 - `nvim.dockerfile` : the docker file.
 - `reference.md` : the references (most of) about how to setup `nvide`.
@@ -27,12 +27,11 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 
 ## Build image
 
-Run the following command to build the docker image. Note [NvChad](https://github.com/NvChad/NvChad) directory is necessary: if it doesn't exist. Run `git clone https://github.com/NvChad/NvChad.git` to get it.
+Run the following command to build the docker image. 
 
 ```
 % git clone https://github.com/ericwq/nvide.git
 % cd nvide
-% git clone https://github.com/NvChad/NvChad.git
 % docker build -t nvide:0.7.0 -f nvim.dockerfile .
 ```
 

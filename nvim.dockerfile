@@ -1,9 +1,3 @@
-#------------------------------ NOTICE ------------------------------
-# please perform the following command before you build the image.
-# run the following command in the dockerfile directory.
-#
-# git clone https://github.com/NvChad/NvChad.git
-#
 FROM alpine:edge
 LABEL maintainer="ericwq057@qq.com"
 
@@ -34,7 +28,7 @@ RUN apk add tmux colordiff curl tzdata htop go protoc --update
 #
 RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev --update
 
-# required by c
+# c family language build tools
 RUN apk add autoconf automake bear --update
 
 # https://github.com/fsouza/prettierd
@@ -86,7 +80,7 @@ RUN cd /tmp &&\
 # luarocks path --help
 
 # Prepare for the nvim
-RUN mkdir -p $HOME/.config/nvim/lua
+# RUN mkdir -p $HOME/.config/nvim/lua
 
 # Install null-ls source
 # https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.mkdir
@@ -129,18 +123,6 @@ RUN git clone https://github.com/sumneko/lua-language-server && \
 ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 WORKDIR $HOME
 
-# Set the environment 
-#
-COPY --chown=ide:develop ./conf/profile		$HOME/.profile
-
-# The clipboatd support for vim and tmux
-# https://sunaku.github.io/tmux-yank-osc52.html
-#
-COPY --chown=ide:develop ./conf/tmux.conf 	$HOME/.tmux.conf
-COPY --chown=ide:develop ./conf/vimrc 		$HOME/.config/nvim/vimrc
-COPY --chown=ide:develop ./conf/yank 		$HOME/.local/bin/yank
-RUN chmod +x $HOME/.local/bin/yank
-
 # Install packer.vim
 # PackerSync command will install packer.vim automaticlly, while the
 # installation  will stop to wait for user <Enter> input.
@@ -151,15 +133,28 @@ RUN chmod +x $HOME/.local/bin/yank
 # https://github.com/wbthomason/packer.nvim
 #
 RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-	~/.local/share/nvim/site/pack/packer/opt/packer.nvim
+	$HOME/.local/share/nvim/site/pack/packer/opt/packer.nvim
 
+#------------------------------ NOTICE ------------------------------
 # The neovim configuration
 # based on https://github.com/NvChad/NvChad
 #
-COPY --chown=ide:develop ./NvChad/init.lua	$HOME/.config/nvim/
-COPY --chown=ide:develop ./NvChad/lua		$HOME/.config/nvim/lua
-COPY --chown=ide:develop ./custom			$HOME/.config/nvim/lua/custom
+#COPY --chown=ide:develop ./NvChad/init.lua	$HOME/.config/nvim/
+#COPY --chown=ide:develop ./NvChad/lua		$HOME/.config/nvim/lua
+RUN git clone --depth 1 https://github.com/NvChad/NvChad $HOME/.config/nvim
+COPY --chown=ide:develop ./custom		$HOME/.config/nvim/lua/custom
 
+# Set the environment
+#
+COPY --chown=ide:develop ./conf/profile		$HOME/.profile
+
+# The clipboatd support for vim and tmux
+# https://sunaku.github.io/tmux-yank-osc52.html
+#
+COPY --chown=ide:develop ./conf/tmux.conf 	$HOME/.tmux.conf
+COPY --chown=ide:develop ./conf/vimrc 		$HOME/.config/nvim/vimrc
+COPY --chown=ide:develop ./conf/yank 		$HOME/.local/bin/yank
+RUN chmod +x $HOME/.local/bin/yank
 
 # Install the packer plugins
 # https://github.com/wbthomason/packer.nvim/issues/502
@@ -172,6 +167,5 @@ RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 # https://github.com/wbthomason/packer.nvim/issues/237
 #
 RUN nvim --headless -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown' +qall
-
 
 CMD ["/bin/ash"]
