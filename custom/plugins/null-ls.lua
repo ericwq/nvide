@@ -68,21 +68,26 @@ local sources = {
 --]]
 }
 
-require("null-ls").setup({
-	debug = true,
-	sources = sources,
-	log = {
-		enable = true,
-		level = "info",
-		use_console = false,
-	},
-	-- diagnostics_format = "(#{s}) #{m}",
+local M = {}
 
-	-- format on save
-	on_attach = function(client)
-		if client.resolved_capabilities.document_formatting then
-			vim.cmd "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()"
-		end
-	end,
-})
+M.setup = function()
+	null_ls.setup {
+		debug = true,
+		sources = sources,
+		log = {
+			enable = true,
+			level = "info",
+			use_console = false,
+		},
+		-- diagnostics_format = "(#{s}) #{m}",
 
+		-- format on save
+		on_attach = function(client)
+			if client.resolved_capabilities.document_formatting then
+				vim.cmd "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()"
+			end
+		end,
+	}
+end
+
+return M

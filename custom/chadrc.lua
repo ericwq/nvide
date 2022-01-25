@@ -26,7 +26,7 @@ M.plugins = {
 		nvim_treesitter = plugin_conf.treesitter,
 		nvim_tree = plugin_conf.nvimtree,
 		-- nvim_treesitter = "custom.plugins.treesitter",
-		--dashboard = "custom.plugins.dashboard",
+		-- dashboard = "custom.plugins.dashboard",
 		-- nvim_tree = "custom.plugins.nvimtree",
 	},
 }
