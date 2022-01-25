@@ -1,16 +1,17 @@
 local customPlugins = require "core.customPlugins"
 
 customPlugins.add(function(use)
-	-- use { "elkowar/yuck.vim", ft = "yuck", disable = 1 }
-
 	-- A fast and lua alternative to filetype.vim
 	-- https://github.com/nathom/filetype.nvim
 	-- use ':echo &filetype' to detect the corrrect file type
 	-- use `:set filetype=langname` to set file type.
-	use {
-		'nathom/filetype.nvim',
-		event = "VimEnter",
-	}
+	use "nathom/filetype.nvim"
+
+	-- use {
+	-- 	"elkowar/yuck.vim",
+	-- 	ft = "yuck",
+	-- 	disable = 1,
+	-- }
 
 	-- treesitter context
 	use {
@@ -21,6 +22,17 @@ customPlugins.add(function(use)
 		end,
 	}
 
+	-- use {
+	-- 	"windwp/nvim-ts-autotag",
+	-- 	ft = {
+	-- 		"html",
+	-- 		"javascriptreact",
+	-- 	},
+	-- 	config = function()
+	-- 		require("nvim-ts-autotag").setup()
+	-- 	end,
+	-- }
+
 	use {
 		"jose-elias-alvarez/null-ls.nvim",
 		after = "nvim-lspconfig",
@@ -28,47 +40,41 @@ customPlugins.add(function(use)
 			require("custom.plugins.null-ls").setup()
 		end,
 	}
-	--[[
-	use {
-		"windwp/nvim-ts-autotag",
-		ft = {
-			"html",
-			"javascriptreact",
-		},
-		config = function()
-			require("nvim-ts-autotag").setup()
-		end,
-	}
 
-   use {
-      "nvim-telescope/telescope-media-files.nvim",
-      after = "telescope.nvim",
-      config = function()
-         require("telescope").setup {
-            extensions = {
-               media_files = {
-                  filetypes = { "png", "webp", "jpg", "jpeg" },
-                  find_cmd = "rg", -- find command (defaults to `fd`)
-               },
-            },
-         }
+	-- use {
+	-- 	"nvim-telescope/telescope-media-files.nvim",
+	-- 	after = "telescope.nvim",
+	-- 	config = function()
+	-- 		require("telescope").setup {
+	-- 			extensions = {
+	-- 				media_files = {
+	-- 					filetypes = {
+	-- 						"png",
+	-- 						"webp",
+	-- 						"jpg",
+	-- 						"jpeg",
+	-- 					},
+	-- 					find_cmd = "rg", -- find command (defaults to `fd`)
+	-- 				},
+	-- 			},
+	-- 		}
+	--
+	-- 		require("telescope").load_extension "media_files"
+	-- 	end,
+	-- }
+	--
+	-- use {
+	-- 	"Pocco81/TrueZen.nvim",
+	-- 	cmd = {
+	-- 		"TZAtaraxis",
+	-- 		"TZMinimalist",
+	-- 		"TZFocus",
+	-- 	},
+	-- 	config = function()
+	-- 		require "custom.plugins.truezen"
+	-- 	end,
+	-- }
 
-         require("telescope").load_extension "media_files"
-      end,
-   }
-
-   use {
-      "Pocco81/TrueZen.nvim",
-      cmd = {
-         "TZAtaraxis",
-         "TZMinimalist",
-         "TZFocus",
-      },
-      config = function()
-         require "custom.plugins.truezen"
-      end,
-   }
---]]
 	use {
 		"neovim/nvim-lspconfig",
 		module = "lspconfig",
