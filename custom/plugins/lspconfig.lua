@@ -1,17 +1,4 @@
---[[
---https://github-wiki-see.page/m/jose-elias-alvarez/null-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts
-   -- typescript
-
- lspconfig.tsserver.setup {
-      on_attach = function(client, bufnr)
-         client.resolved_capabilities.document_formatting = false
-         vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
-      end,
-   }
-
--- the above tsserver config will remvoe the tsserver's inbuilt formatting
--- since I use null-ls with denofmt for formatting ts/js stuff.
--- ]] require("plugins.configs.others").lsp_handlers()
+require("plugins.configs.others").lsp_handlers()
 
 local function attach(_, bufnr)
 	local function buf_set_option(...)
@@ -26,6 +13,19 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 --[[
+--https://github-wiki-see.page/m/jose-elias-alvarez/null-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts
+   -- typescript
+
+ lspconfig.tsserver.setup {
+      on_attach = function(client, bufnr)
+         client.resolved_capabilities.document_formatting = false
+         vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
+      end,
+   }
+
+-- the above tsserver config will remvoe the tsserver's inbuilt formatting
+-- since I use null-ls with denofmt for formatting ts/js stuff.
+
 -- lspservers with default config
 local servers = { "html", "cssls", "bashls", "clangd" }
 
@@ -63,6 +63,9 @@ lspconfig.clangd.setup {
 	on_attach = attach,
 	capabilities = capabilities,
 	root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
+	flags = {
+		debounce_text_changes = 150,
+	},
 	cmd = {
 		"clangd",
 		"--background-index",
@@ -84,6 +87,9 @@ lspconfig.gopls.setup {
 		"serve",
 		"-rpc.trace",
 		"-logfile=auto",
+	},
+	flags = {
+		debounce_text_changes = 150,
 	},
 	on_attach = attach,
 	-- on_attach = on_attach_vim,
@@ -122,6 +128,9 @@ table.insert(runtime_path, "lua/?/init.lua")
 lspconfig.sumneko_lua.setup {
 	on_attach = attach,
 	capabilities = capabilities,
+	flags = {
+		debounce_text_changes = 150,
+	},
 	root_dir = lspconfig.util.root_pattern('.git'),
 	-- function(client, bufnr)
 	--     client.resolved_capabilities.document_formatting = false
