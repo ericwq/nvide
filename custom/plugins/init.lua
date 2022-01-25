@@ -16,6 +16,44 @@ customPlugins.add(function(use)
 		end,
 	}
 
+	-- which-key
+	use {
+		"folke/which-key.nvim",
+		disable = false,
+		event = "VimEnter",
+		config = function()
+			require("which-key").setup {
+				-- your configuration comes here
+				-- or leave it empty to use the default settings
+				-- refer to the configuration section below
+			}
+		end,
+	}
+
+	-- symbols-outline
+	-- https://github.com/simrat39/symbols-outline.nvim
+	use {
+		'simrat39/symbols-outline.nvim',
+		disable = true,
+		after = "nvim-lspconfig",
+		config = function()
+			require("custom.plugins.symbols-outline")
+		end,
+	}
+
+	-- tagviewer
+	use {
+		'liuchengxu/vista.vim',
+		disable = true,
+		event = "BufRead",
+		-- run before this plugin is loaded.
+		-- setup =
+		-- run after this plugin is loaded.
+		config = function()
+			require("custom.plugins.vista")
+		end,
+	}
+
 	-- use {
 	-- 	"windwp/nvim-ts-autotag",
 	-- 	ft = {
