@@ -19,7 +19,7 @@ customPlugins.add(function(use)
 	-- which-key
 	use {
 		"folke/which-key.nvim",
-		disable = false,
+		disable = true,
 		event = "VimEnter",
 		config = function()
 			require("which-key").setup {
