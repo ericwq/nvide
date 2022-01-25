@@ -7,12 +7,6 @@ customPlugins.add(function(use)
 	-- use `:set filetype=langname` to set file type.
 	use "nathom/filetype.nvim"
 
-	-- use {
-	-- 	"elkowar/yuck.vim",
-	-- 	ft = "yuck",
-	-- 	disable = 1,
-	-- }
-
 	-- treesitter context
 	use {
 		'romgrk/nvim-treesitter-context',
@@ -60,18 +54,6 @@ customPlugins.add(function(use)
 	-- 		}
 	--
 	-- 		require("telescope").load_extension "media_files"
-	-- 	end,
-	-- }
-	--
-	-- use {
-	-- 	"Pocco81/TrueZen.nvim",
-	-- 	cmd = {
-	-- 		"TZAtaraxis",
-	-- 		"TZMinimalist",
-	-- 		"TZFocus",
-	-- 	},
-	-- 	config = function()
-	-- 		require "custom.plugins.truezen"
 	-- 	end,
 	-- }
 
