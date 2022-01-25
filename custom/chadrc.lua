@@ -23,11 +23,11 @@ M.plugins = {
 		},
 	},
 	default_plugin_config_replace = {
+		-- right side table value means replace part of the config
 		nvim_treesitter = plugin_conf.treesitter,
 		nvim_tree = plugin_conf.nvimtree,
-		-- nvim_treesitter = "custom.plugins.treesitter",
-		-- dashboard = "custom.plugins.dashboard",
-		-- nvim_tree = "custom.plugins.nvimtree",
+		-- right side string value means replace the entire config
+		dashboard = "custom.plugins.dashboard",
 	},
 }
 
