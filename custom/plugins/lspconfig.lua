@@ -12,42 +12,6 @@ end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
---[[
---https://github-wiki-see.page/m/jose-elias-alvarez/null-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts
-   -- typescript
-
- lspconfig.tsserver.setup {
-      on_attach = function(client, bufnr)
-         client.resolved_capabilities.document_formatting = false
-         vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
-      end,
-   }
-
--- the above tsserver config will remvoe the tsserver's inbuilt formatting
--- since I use null-ls with denofmt for formatting ts/js stuff.
-
--- lspservers with default config
-local servers = { "html", "cssls", "bashls", "clangd" }
-
-for _, lsp in ipairs(servers) do
-   lspconfig[lsp].setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      flags = {
-         debounce_text_changes = 150,
-      },
-   }
-end
-
--- disable tsserver formatter
-lspconfig.tsserver.setup {
-   on_attach = function(client, bufnr)
-      client.resolved_capabilities.document_formatting = false
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
-   end,
-}
---]]
-
 -----------------------------------------------------------
 -- Neovim LSP configuration file
 -----------------------------------------------------------
@@ -160,6 +124,8 @@ lspconfig.sumneko_lua.setup {
 					[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
 				},
 			},
+			maxPreload = 100000,
+			preloadFileSize = 10000,
 			-- Do not send telemetry data containing a randomized but unique identifier
 			telemetry = {
 				enable = false,
@@ -167,33 +133,3 @@ lspconfig.sumneko_lua.setup {
 		},
 	},
 }
-
--- lua lsp!
---[[
-local sumneko_root_path = "/home/sid/test/sumneko_lua"
-local sumneko_binary = sumneko_root_path .. "/bin/lua-language-server"
-
-lspconfig.sumneko_lua.setup {
-   cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
-   on_attach = on_attach,
-   capabilities = capabilities,
-   flags = {
-      debounce_text_changes = 500,
-   },
-   settings = {
-      Lua = {
-         diagnostics = {
-            globals = { "vim" },
-         },
-         workspace = {
-            library = {
-               [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-               [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-            },
-            maxPreload = 100000,
-            preloadFileSize = 10000,
-         },
-      },
-   },
-}
---]]
