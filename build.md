@@ -1,4 +1,4 @@
-## build it
+## Build the image
 
 ```sh
 % docker build -t nvide:0.7.0 -f nvim.dockerfile .
@@ -6,13 +6,13 @@
 % docker build --no-cache --progress plain -t nvide:0.7.0 -f nvim.dockerfile .
 ```
 
-## dryrun the container
+## Dryrun the container
 
 ```sh
 % docker run --rm -ti nvide:0.7.0
 ```
 
-## Share images on Docker Hub
+## Publish images to [docker](hub.docker.com)
 
 ### 1. Tag the image
 
@@ -28,7 +28,7 @@
 % docker push ericwq057/nvide:0.7.0
 ```
 
-## start the container
+## Start the container
 
 ```sh
 % docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
@@ -42,14 +42,14 @@
         nvide:0.7.0
 ```
 
-## loing to the containter
+## Login to the containter
 
 ```sh
 % docker exec -u 0 -it nvide ash
 % docker exec -u ide -it nvide ash
 ```
 
-## attach / mirror the container
+## Attach to the container
 
 ```
 % docker attach nvide
