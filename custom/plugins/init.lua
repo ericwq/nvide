@@ -17,9 +17,9 @@ customPlugins.add(function(use)
 	}
 
 	-- which-key
+	-- https://github.com/folke/which-key.nvim
 	use {
 		"folke/which-key.nvim",
-		disable = true,
 		event = "VimEnter",
 		config = function()
 			require("which-key").setup {
