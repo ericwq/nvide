@@ -17,7 +17,7 @@ alpine:edge
 
 ### grpc-go project in nvide
 
-Using `grpc-go` project to verify the go language server setup.
+Thanks to go module, It's easy to start with `grpc-go` project. Please enjoy the go language server: gopls.
 
 ```
 % git clone https://github.com/grpc/grpc-go.git
@@ -54,29 +54,31 @@ With `nvide` in hands, you still need to install the following packages to compi
 
 Now, you can execute the following command to create the `compile_commands.json` file.
 
-- Note the `-DCMAKE_EXPORT_COMPILE_COMMANDS=YES` option is used.
-- You can ignore the fatal error reported by `cmake`.
-- Also note the `compile_commands.json` file is located in `.Release` directory. The link command set the root directory for `clangd`.
-
 ```sh
+% git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+% cd ccls
 % cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
 -- Using local RapidJSON
 fatal: No names found, cannot describe anything.
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/ide/proj/ccls/Release
-
 % ln -s Release/compile_commands.json .
 % vi src/main.cc
 ```
 
-## lua project in nvide
+- Note the `-DCMAKE_EXPORT_COMPILE_COMMANDS=YES` option is used.
+- You can ignore the fatal error reported by `cmake`.
+- Also note the `compile_commands.json` file is located in `.Release` directory. The link command set the root directory for `clangd`.
 
-`nvide` uses `lua` to setup the `neovim` plugins. In `~/.config/nvim/` directory, `touch .git` command sets the root directory for `lua` language server. Now enjoy the `lua` language server.
+## lua language server
 
-```
+### lua project in nvide
+
+`nvide` uses `lua` to setup the `neovim` plugins. In `~/.config/nvim/` directory, there is a complete `lua` project. Now enjoy the `lua` language server.
+
+```sh
 % cd ~/.config/nvim/
-% touch .git
 % vi init.lua
 ```
 
