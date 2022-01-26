@@ -34,10 +34,15 @@ customPlugins.add(function(use)
 	-- https://github.com/simrat39/symbols-outline.nvim
 	use {
 		'simrat39/symbols-outline.nvim',
-		disable = true,
 		after = "nvim-lspconfig",
-		config = function()
-			require("custom.plugins.symbols-outline")
+		setup = function()
+			vim.g.symbols_outline = {
+				relative_width = true,
+				show_guides = false,
+				width = 50,
+				auto_close = true,
+				auto_preview = false,
+			}
 		end,
 	}
 
