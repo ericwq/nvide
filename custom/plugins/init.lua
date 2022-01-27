@@ -47,28 +47,29 @@ customPlugins.add(function(use)
 	}
 
 	-- tagviewer
-	use {
-		'liuchengxu/vista.vim',
-		disable = true,
-		event = "BufRead",
-		-- run before this plugin is loaded.
-		-- setup =
-		-- run after this plugin is loaded.
-		config = function()
-			require("custom.plugins.vista")
-		end,
-	}
-
 	-- use {
-	-- 	"windwp/nvim-ts-autotag",
-	-- 	ft = {
-	-- 		"html",
-	-- 		"javascriptreact",
-	-- 	},
+	-- 	'liuchengxu/vista.vim',
+	-- 	disable = true,
+	-- 	event = "BufRead",
+	-- 	-- run before this plugin is loaded.
+	-- 	-- setup =
+	-- 	-- run after this plugin is loaded.
 	-- 	config = function()
-	-- 		require("nvim-ts-autotag").setup()
+	-- 		require("custom.plugins.vista")
 	-- 	end,
 	-- }
+
+	-- refer to https://github.com/siduck/dotfiles/blob/master/nvchad/custom/plugins/init.lua
+	use {
+		"windwp/nvim-ts-autotag",
+		ft = {
+			"html",
+			"javascriptreact",
+		},
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
+	}
 
 	use {
 		"jose-elias-alvarez/null-ls.nvim",
@@ -97,6 +98,18 @@ customPlugins.add(function(use)
 	-- 		}
 	--
 	-- 		require("telescope").load_extension "media_files"
+	-- 	end,
+	-- }
+	--
+	-- use {
+	-- 	"Pocco81/TrueZen.nvim",
+	-- 	cmd = {
+	-- 		"TZAtaraxis",
+	-- 		"TZMinimalist",
+	-- 		"TZFocus",
+	-- 	},
+	-- 	config = function()
+	-- 		require "custom.plugins.truezen"
 	-- 	end,
 	-- }
 end)
