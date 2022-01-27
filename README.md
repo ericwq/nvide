@@ -20,6 +20,13 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 - `nvim.dockerfile` : the docker file.
 - `reference.md` : the references (most of) about how to setup `nvide`.
 
+## Additional packages
+
+- romgrk/nvim-treesitter-context
+- folke/which-key.nvim
+- jose-elias-alvarez/null-ls.nvim
+- simrat39/symbols-outline.nvim
+
 ## Requirement
 
 - [docker desktop](https://www.docker.com/products/docker-desktop) for mac / windows
@@ -47,4 +54,3 @@ Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++
 
 - For `clangd`, cross-file navigation may result the single file mode.
 - It's not intuitive to operate the [reference or implementation quickfix window](reference.md#reference-or-implementation-quickfix-window).
-- It's lack of something like [preservim/tagbar](https://github.com/preservim/tagbar) or [simrat39/symbols-outline.nvim](https://github.com/simrat39/symbols-outline.nvim).
