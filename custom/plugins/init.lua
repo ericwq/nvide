@@ -42,6 +42,7 @@ customPlugins.add(function(use)
 				width = 50,
 				auto_close = true,
 				auto_preview = false,
+				show_symbol_details = false,
 			}
 		end,
 	}
