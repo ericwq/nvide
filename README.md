@@ -22,19 +22,38 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 
 ## Additional packages
 
-- romgrk/nvim-treesitter-context
-- folke/which-key.nvim
-- jose-elias-alvarez/null-ls.nvim
-- simrat39/symbols-outline.nvim
+- `nathom/filetype.nvim`
+- `romgrk/nvim-treesitter-context`
+- `folke/which-key.nvim`
+- `simrat39/symbols-outline.nvim`
+- `windwp/nvim-ts-autotag`
+- `jose-elias-alvarez/null-ls.nvim`
 
-## Requirement
+## Require
 
 - [docker desktop](https://www.docker.com/products/docker-desktop) for mac / windows
 - git
 
+## In-stock image
+
+The easy way to use `nvide` is to use the in-stock image. See [here](https://hub.docker.com/repository/docker/ericwq057/nvide).
+
+- The first `exec` command login the docker container as normal user.
+- The second `exec` command login the docker container as root user.
+
+```
+% docker pull ericwq057/nvide:0.7.0
+% docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
+        --mount source=proj-vol,target=/home/ide/proj \
+        --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+        ericwq057/nvide:0.7.0
+% docker exec -u ide -it nvide ash
+% docker exec -u root -it nvide ash
+```
+
 ## Build image
 
-Run the following command to build the docker image. 
+Run the following command to build the docker image by yourself.
 
 ```
 % git clone https://github.com/ericwq/nvide.git
