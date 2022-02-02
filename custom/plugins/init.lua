@@ -1,24 +1,16 @@
-local customPlugins = require "core.customPlugins"
-
-customPlugins.add(function(use)
-	-- A fast and lua alternative to filetype.vim
-	-- https://github.com/nathom/filetype.nvim
-	-- use ':echo &filetype' to detect the corrrect file type
-	-- use `:set filetype=langname` to set file type.
-	use "nathom/filetype.nvim"
-
+return {
 	-- treesitter context
-	use {
+	{
 		'romgrk/nvim-treesitter-context',
 		after = "nvim-treesitter",
 		config = function()
 			require("custom.plugins.treesitter-context").setup()
 		end,
-	}
+	},
 
 	-- which-key
 	-- https://github.com/folke/which-key.nvim
-	use {
+	{
 		"folke/which-key.nvim",
 		event = "VimEnter",
 		config = function()
@@ -28,11 +20,11 @@ customPlugins.add(function(use)
 				-- refer to the configuration section below
 			}
 		end,
-	}
+	},
 
 	-- symbols-outline
 	-- https://github.com/simrat39/symbols-outline.nvim
-	use {
+	{
 		'simrat39/symbols-outline.nvim',
 		after = "nvim-lspconfig",
 		setup = function()
@@ -45,7 +37,7 @@ customPlugins.add(function(use)
 				show_symbol_details = false,
 			}
 		end,
-	}
+	},
 
 	-- tagviewer
 	-- use {
@@ -61,7 +53,7 @@ customPlugins.add(function(use)
 	-- }
 
 	-- refer to https://github.com/siduck/dotfiles/blob/master/nvchad/custom/plugins/init.lua
-	use {
+	{
 		"windwp/nvim-ts-autotag",
 		ft = {
 			"html",
@@ -70,15 +62,15 @@ customPlugins.add(function(use)
 		config = function()
 			require("nvim-ts-autotag").setup()
 		end,
-	}
+	},
 
-	use {
+	{
 		"jose-elias-alvarez/null-ls.nvim",
 		after = "nvim-lspconfig",
 		config = function()
 			require("custom.plugins.null-ls").setup()
 		end,
-	}
+	},
 
 	-- use {
 	-- 	"nvim-telescope/telescope-media-files.nvim",
@@ -113,4 +105,4 @@ customPlugins.add(function(use)
 	-- 		require "custom.plugins.truezen"
 	-- 	end,
 	-- }
-end)
+}

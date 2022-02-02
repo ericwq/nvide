@@ -3,6 +3,7 @@
 local M = {}
 
 local plugin_conf = require "custom.plugins.configs"
+local userPlugins = require "custom.plugins"
 
 -- make sure you maintain the structure of `core/default_config.lua` here,
 
@@ -29,6 +30,7 @@ M.plugins = {
 		-- right side string value means replace the entire config
 		dashboard = "custom.plugins.dashboard",
 	},
+	install = userPlugins,
 }
 
 -- changing theme and UI

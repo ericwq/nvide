@@ -156,6 +156,9 @@ COPY --chown=ide:develop ./conf/vimrc 		$HOME/.config/nvim/vimrc
 COPY --chown=ide:develop ./conf/yank 		$HOME/.local/bin/yank
 RUN chmod +x $HOME/.local/bin/yank
 
+# Init shadafile
+RUN nvim --headless -u NONE -c 'echo "init shadafile"' -c qall
+
 # Install the packer plugins
 # https://github.com/wbthomason/packer.nvim/issues/502
 #

@@ -15,9 +15,8 @@ vim.g.python3_host_prog = '/usr/bin/python3'
 -- Stop sourcing filetype.vim
 -- https://nvchad.github.io/Extras
 -- https://github.com/nathom/filetype.nvim
-vim.g.did_load_filetypes = 1
+--vim.g.did_load_filetypes = 1
 
-require "custom.plugins"
 require "custom.mappings"
 
 -- 500 is suggest by WhichKey.nvim
