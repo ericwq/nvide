@@ -58,7 +58,7 @@ Run the following command to build the docker image by yourself.
 ```
 % git clone https://github.com/ericwq/nvide.git
 % cd nvide
-% docker build -t nvide:0.7.0 -f nvim.dockerfile .
+% docker build -t nvide:0.7.1 -f nvim.dockerfile .
 ```
 
 ## Sample project
