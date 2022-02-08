@@ -46,13 +46,13 @@ Thanks to go module, It's easy to start with `grpc-go` project. Please enjoy the
 	&& cmake --build Release --target install
 ```
 
-With `nvide` in hands, you still need to install the following packages to compile the project. Otherwise, the compiler will complains some library is missing. Note, you need to install the following package with the root privilege.
+With `nvide` in hands, you still need to install the following packages to compile the project. Otherwise, the compiler will complains some library is missing. Note, you need to install the following package with the root privilege for `nvide`.
 
 ```sh
 # apk add clang-static llvm-dev llvm-static zlib-dev libxslt-dev
 ```
 
-Now, you can execute the following command to create the `compile_commands.json` file.
+Next, the key point is to generate the `compile_commands.json` file for `ccls` project. You can use the following command to create the `compile_commands.json` file.
 
 ```sh
 % git clone --depth=1 --recursive https://github.com/MaskRay/ccls
@@ -75,7 +75,7 @@ fatal: No names found, cannot describe anything.
 
 ### lua project in nvide
 
-`nvide` uses `lua` to setup the `neovim` plugins. In `~/.config/nvim/` directory, there is a complete `lua` project. Now enjoy the `lua` language server.
+`nvide` uses `lua` script to setup the `neovim` plugins. In `~/.config/nvim/` directory, there is a complete `lua` project (which contains a .git directory). Use the following command to enjoy the `lua` language server.
 
 ```sh
 % cd ~/.config/nvim/
