@@ -22,7 +22,6 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 
 ## Additional packages
 
-- `nathom/filetype.nvim`
 - `romgrk/nvim-treesitter-context`
 - `folke/which-key.nvim`
 - `simrat39/symbols-outline.nvim`
