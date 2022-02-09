@@ -8,12 +8,12 @@ LABEL maintainer="ericwq057@qq.com"
 # telscope depends on ripgrep, fzf, fd
 # vista depends on ctags
 #
-#RUN apk add git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags alpine-sdk --update
+RUN apk add git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags alpine-sdk --update
 
 # additional pacakges
 # mainly go, tmux, htop, protoc
 # 
-#RUN apk add tmux colordiff curl tzdata htop go protoc --update
+RUN apk add tmux colordiff curl tzdata htop go protoc --update
 
 # language server packages
 # https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
@@ -26,7 +26,7 @@ LABEL maintainer="ericwq057@qq.com"
 # lua-language-server depends on ninja, bash
 # luarocks depends on readline-dev, lua5.3-dev, cmake, unzip
 #
-#RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev --update
+RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev --update
 
 # Arguement for Password and ssh public key
 ARG ROOT_PWD=nvide_root
@@ -35,8 +35,7 @@ ARG SSH_PUB_KEY
 
 # c family language build tools
 # and SSH related packages and configuration
-#RUN apk add autoconf automake bear openssh --update
-RUN apk add openssh --update 
+RUN apk add autoconf automake bear openssh --update
 	RUN sed -i s/#PermitRootLogin.*/PermitRootLogin\ no/ /etc/ssh/sshd_config 
 	RUN sed -ie 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
 	RUN echo "root:${ROOT_PWD}" | chpasswd
@@ -47,11 +46,9 @@ RUN apk add openssh --update
 #RUN ssh-keygen -t rsa -b 4096 -f  /etc/ssh/ssh_host_key
 	RUN rm -rf /var/cache/apk/*
 
-EXPOSE 22
-
 # https://github.com/fsouza/prettierd
 #
-#RUN npm install -g @fsouza/prettierd neovim
+RUN npm install -g @fsouza/prettierd neovim
 
 ENV HOME=/home/ide
 ENV GOPATH /go
@@ -91,15 +88,15 @@ RUN mkdir -p $HOME/.ssh \
 # 3. luaformatter
 # 4. efm-langserver
 #
-#ENV LUA_ROCKS=luarocks-3.8.0
-#RUN cd /tmp &&\
-#    wget https://luarocks.org/releases/$LUA_ROCKS.tar.gz && \
-#    tar zxpf $LUA_ROCKS.tar.gz && \
-#    cd $LUA_ROCKS  && \
-#    ./configure --lua-version=5.3 --prefix=$HOME/.local && \
-#    make && \
-#    make install && \
-#    rm -rf /tmp/$LUA_ROCKS
+ENV LUA_ROCKS=luarocks-3.8.0
+RUN cd /tmp &&\
+    wget https://luarocks.org/releases/$LUA_ROCKS.tar.gz && \
+    tar zxpf $LUA_ROCKS.tar.gz && \
+    cd $LUA_ROCKS  && \
+    ./configure --lua-version=5.3 --prefix=$HOME/.local && \
+    make && \
+    make install && \
+    rm -rf /tmp/$LUA_ROCKS
 # use the following command to check luarocks is ready for use
 # luarocks path --help
 
@@ -111,39 +108,39 @@ RUN mkdir -p $HOME/.ssh \
 # https://github.com/mpeterv/luacheck
 # https://github.com/Koihik/LuaFormatter
 #
-#RUN  luarocks install --server=https://luarocks.org/dev luaformatter && \
-#     luarocks install luacheck
+RUN  luarocks install --server=https://luarocks.org/dev luaformatter && \
+     luarocks install luacheck
 
 # Install go language server and
 # Install null-ls source: goimports, golangci-lint
 # https://golangci-lint.run/usage/install/
 #
-#RUN go install golang.org/x/tools/gopls@latest && \
-#    go install golang.org/x/tools/cmd/goimports@latest && \
-#    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
-#    go install github.com/jstemmer/gotags@latest && \
-#    go install github.com/mattn/efm-langserver@latest && \
-#    go install mvdan.cc/gofumpt@latest && \
-#    go clean -cache -modcache -testcache && \
-#    rm -rf $GOPATH/src/*
+RUN go install golang.org/x/tools/gopls@latest && \
+    go install golang.org/x/tools/cmd/goimports@latest && \
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
+    go install github.com/jstemmer/gotags@latest && \
+    go install github.com/mattn/efm-langserver@latest && \
+    go install mvdan.cc/gofumpt@latest && \
+    go clean -cache -modcache -testcache && \
+    rm -rf $GOPATH/src/*
 
 # https://github.com/amperser/proselint
 #
-#RUN pip3 install proselint pynvim
+RUN pip3 install proselint pynvim
 
 # Install lua-language-server
 # https://github.com/sumneko/lua-language-server/wiki/Build-and-Run
 # the lua-language-server is installed in $HOME/.local
 #
-#WORKDIR $HOME/.local
-#RUN git clone https://github.com/sumneko/lua-language-server && \
-#    cd lua-language-server && \
-#    git submodule update --init --recursive && \
-#    cd 3rd/luamake && \
-#    ./compile/install.sh && \
-#    cd ../.. && \
-#    ./3rd/luamake/luamake rebuild
-#
+WORKDIR $HOME/.local
+RUN git clone https://github.com/sumneko/lua-language-server && \
+    cd lua-language-server && \
+    git submodule update --init --recursive && \
+    cd 3rd/luamake && \
+    ./compile/install.sh && \
+    cd ../.. && \
+    ./3rd/luamake/luamake rebuild
+
 ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 WORKDIR $HOME
 
@@ -156,8 +153,8 @@ WORKDIR $HOME
 # because NvChad install packer in 'opt' directory
 # https://github.com/wbthomason/packer.nvim
 #
-#RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-#	$HOME/.local/share/nvim/site/pack/packer/opt/packer.nvim
+RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+	$HOME/.local/share/nvim/site/pack/packer/opt/packer.nvim
 
 #------------------------------ NOTICE ------------------------------
 # The neovim configuration
@@ -165,12 +162,12 @@ WORKDIR $HOME
 #
 #COPY --chown=ide:develop ./NvChad/init.lua	$HOME/.config/nvim/
 #COPY --chown=ide:develop ./NvChad/lua		$HOME/.config/nvim/lua
-#RUN git clone --depth 1 https://github.com/NvChad/NvChad $HOME/.config/nvim
-#COPY --chown=ide:develop ./custom		$HOME/.config/nvim/lua/custom
+RUN git clone --depth 1 https://github.com/NvChad/NvChad $HOME/.config/nvim
+COPY --chown=ide:develop ./custom		$HOME/.config/nvim/lua/custom
 
 # Set the environment
 #
-#COPY --chown=ide:develop ./conf/profile		$HOME/.profile
+COPY --chown=ide:develop ./conf/profile		$HOME/.profile
 
 # The clipboatd support for vim and tmux
 # https://sunaku.github.io/tmux-yank-osc52.html
@@ -187,13 +184,14 @@ RUN chmod +x $HOME/.local/bin/yank
 # https://github.com/wbthomason/packer.nvim/issues/502
 #
 # NvChad version
-#RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 # Install treesitter language parsers
 # See :h packages
 # https://github.com/wbthomason/packer.nvim/issues/237
 #
-#RUN nvim --headless -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown' +qall
+RUN nvim --headless -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown' +qall
 
-#CMD ["/bin/ash"]
+USER root
+EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
