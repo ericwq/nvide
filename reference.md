@@ -110,6 +110,7 @@ fatal: No names found, cannot describe anything.
 
 ## ssh in container
 
+- [How to Add SSH Public Key to Server](https://linuxhandbook.com/add-ssh-public-key-to-server/)
 - [How to SSH into a Docker Container](https://linuxhandbook.com/ssh-into-container/)
 - [Running SSH in an Alpine Docker Container](https://dev.to/yakovlev_alexey/running-ssh-in-an-alpine-docker-container-3lop)
 - [alpine-ssh](https://hub.docker.com/r/gotechnies/alpine-ssh)
