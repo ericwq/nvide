@@ -100,6 +100,7 @@ fatal: No names found, cannot describe anything.
 
 ### reference links
 
+- [Add, Delete And Grant Sudo Privileges To Users In Alpine Linux](https://ostechnix.com/add-delete-and-grant-sudo-privileges-to-users-in-alpine-linux/)
 - [The TTY demystified](http://www.linusakesson.net/programming/tty/)
 - [nvim-lua/kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)
 - [Why is GO111MODULE everywhere, and everything about Go Modules](https://maelvls.dev/go111module-everywhere/#go111module-with-go-117)
