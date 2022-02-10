@@ -17,7 +17,8 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 - `custom` directory : contains additional packages and custom configuration for `NvChad`.
 - `conf` directory : contains part of the `neovim` configuration, mainly clipboard related.
 - `build.md` : contains the docker commands to build and run the image.
-- `nvim.dockerfile` : the docker file.
+- `nvim.dockerfile` : the normal docker file.
+- `sshd-nvim.dockerfile`: the SSH docker file.
 - `reference.md` : the references (most of) about how to setup `nvide`.
 
 ## Additional packages
@@ -72,10 +73,10 @@ Run the following commands to build the SSH image by yourself.
 ```
 
 - `ROOT_PWD` is the root password.
-- `USER_PWD` is the `ide` password.
-- `SSH_PUB_KEY` is the public key from the client(SSH) side. Make sure your `~/.ssh/id_rsa.pub` file exist.
+- `USER_PWD` is the `ide` user password.
+- `SSH_PUB_KEY` is the public key from the client(SSH) side.
 
-Please NOTE: the SSH image only accept the public key login, user/passwd is not supported. Use the following command to start the SSH container.
+Make sure your `~/.ssh/id_rsa.pub` file exist in your SSH client side. If it doesn't, use `% ssh_keygen` command to generate it in your SSH client side. Please NOTE: the SSH image only accept the public key login, user/password is not supported. Use the following command to start the SSH container.
 
 ```sh
 % docker run -d -p 22:22 -h nvide-ssh --env TZ=Asia/Shanghai --name nvide-ssh \
