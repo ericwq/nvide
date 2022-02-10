@@ -41,6 +41,7 @@ ENV GOPATH /go
 # proselint is installed in $HOME/.local/bin
 # luarocks is also installed in $HOME/.local/
 #
+ENV OLDPATH=$PATH
 ENV PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 
 # The source script
@@ -171,4 +172,5 @@ RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 #
 RUN nvim --headless -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown' +qall
 
+ENV PATH=$OLDPATH
 CMD ["/bin/ash"]

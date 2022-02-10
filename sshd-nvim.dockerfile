@@ -56,6 +56,7 @@ ENV GOPATH /go
 # proselint is installed in $HOME/.local/bin
 # luarocks is also installed in $HOME/.local/
 #
+ENV OLDPATH=$PATH
 ENV PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 
 # The source script
@@ -194,4 +195,6 @@ RUN nvim --headless -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml
 
 USER root
 EXPOSE 22
+
+ENV PATH=$OLDPATH
 CMD ["/usr/sbin/sshd", "-D"]

@@ -1,3 +1,5 @@
-export PATH=$PATH
+export GOPATH=/go
+export PATH=$PATH:$GOPATH/bin:$HOME/.local/bin:$HOME/.local/lua-language-server/bin
+export LUA_ROCKS=luarocks-3.8.0
 export PS1='\u@\h:\w $ '
 alias vi=nvim

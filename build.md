@@ -9,7 +9,10 @@
 ## Build the SSH image
 
 ```sh
-% docker build --build-arg ROOT_PWD=passowrd --build-arg USER_PWD=password --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --progress plain -t nvide:0.7.3 -f sshd-nvim.dockerfile .
+% docker build --build-arg ROOT_PWD=passowrd \
+	--build-arg USER_PWD=password \
+	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
+	--progress plain -t nvide:0.7.3 -f sshd-nvim.dockerfile .
 ```
 
 ## Dryrun the container
@@ -50,7 +53,7 @@
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
         nvide:0.7.2
 
-% docker run -d -p 22:22 -h nvide --env TZ=Asia/Shanghai --name nvide \
+% docker run -d -p 22:22 -h nvide-ssh --env TZ=Asia/Shanghai --name nvide-ssh \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
         nvide:0.7.3
