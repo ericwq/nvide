@@ -104,5 +104,6 @@ Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++
 
 ## Unresolved problem
 
+- `su - ` command doesn't work in SSH container.
 - For `clangd`, cross-file navigation may result the single file mode.
 - It's not intuitive to operate the [reference or implementation quickfix window](reference.md#reference-or-implementation-quickfix-window).
