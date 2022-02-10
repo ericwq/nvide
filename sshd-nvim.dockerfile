@@ -26,7 +26,7 @@ RUN apk add tmux colordiff curl tzdata htop go protoc --update
 # lua-language-server depends on ninja, bash
 # luarocks depends on readline-dev, lua5.3-dev, cmake, unzip
 #
-RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev --update
+RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear --update
 
 # Arguement for Password and ssh public key
 ARG ROOT_PWD=nvide_root
@@ -35,16 +35,13 @@ ARG SSH_PUB_KEY
 
 # c family language build tools
 # and SSH related packages and configuration
-RUN apk add autoconf automake bear openssh --update
-	RUN sed -i s/#PermitRootLogin.*/PermitRootLogin\ no/ /etc/ssh/sshd_config 
-	RUN sed -ie 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
-	RUN echo "root:${ROOT_PWD}" | chpasswd
-#	RUN mkdir -p /root/.ssh
-#	RUN chmod 0700 /root/.ssh
-#	RUN echo "$SSH_PUB_KEY" > /root/.ssh/authorized_keys
-	RUN ssh-keygen -A
-#RUN ssh-keygen -t rsa -b 4096 -f  /etc/ssh/ssh_host_key
-	RUN rm -rf /var/cache/apk/*
+RUN apk add openssh sudo --update \
+	&& sed -i s/#PermitRootLogin.*/PermitRootLogin\ no/ /etc/ssh/sshd_config \
+	&& sed -ie 's/#Port 22/Port 22/g' /etc/ssh/sshd_config \
+	&& echo "root:${ROOT_PWD}" | chpasswd \
+	&& echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel \
+	&& ssh-keygen -A \
+	&& rm -rf /var/cache/apk/*
 
 # https://github.com/fsouza/prettierd
 #
@@ -72,6 +69,7 @@ ENV ENV=$HOME/.profile
 #
 RUN addgroup develop && adduser -D -h $HOME -s /bin/ash -G develop ide \
 	&& mkdir -p $GOPATH && chown -R ide:develop $GOPATH \
+	&& adduser ide wheel \
 	&& echo "ide:${USER_PWD}" | chpasswd
 
 USER ide:develop
@@ -195,6 +193,12 @@ RUN nvim --headless -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml
 
 USER root
 EXPOSE 22
+
+# enable root login, for debug dockerfile purpose.
+RUN sed -i s/PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
+	&& mkdir -p /root/.ssh \
+	&& chmod 0700 /root/.ssh \
+	&& echo "$SSH_PUB_KEY" > /root/.ssh/authorized_keys
 
 ENV PATH=$OLDPATH
 CMD ["/usr/sbin/sshd", "-D"]
