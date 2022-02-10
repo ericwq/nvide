@@ -33,14 +33,14 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 - [docker desktop](https://www.docker.com/products/docker-desktop) for mac / windows
 - git
 
-## In-stock image
+## Run In-stock image
 
 The easy way to use `nvide` is to use the in-stock image. See [here](https://hub.docker.com/repository/docker/ericwq057/nvide).
 
 - The first `exec` command login the docker container as normal user.
 - The second `exec` command login the docker container as root user.
 
-```
+```sh
 % docker pull ericwq057/nvide:0.7.2
 % docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
@@ -54,10 +54,43 @@ The easy way to use `nvide` is to use the in-stock image. See [here](https://hub
 
 Run the following command to build the docker image by yourself.
 
-```
+```sh
 % git clone https://github.com/ericwq/nvide.git
 % cd nvide
 % docker build -t nvide:0.7.2 -f nvim.dockerfile .
+```
+
+## Build and run the SSH image
+
+Run the following commands to build the SSH image by yourself.
+
+```sh
+% docker build --build-arg ROOT_PWD=passowrd \
+        --build-arg USER_PWD=password \
+        --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
+        --progress plain -t nvide:0.7.3 -f sshd-nvim.dockerfile .
+```
+
+- `ROOT_PWD` is the root password.
+- `USER_PWD` is the `ide` password.
+- `SSH_PUB_KEY` is the public key from the client(SSH) side. Make sure your `~/.ssh/id_rsa.pub` file exist.
+
+Please NOTE: the SSH image only accept the public key login, user/passwd is not supported. Use the following command to start the SSH container.
+
+```sh
+% docker run -d -p 22:22 -h nvide-ssh --env TZ=Asia/Shanghai --name nvide-ssh \
+        --mount source=proj-vol,target=/home/ide/proj \
+        --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+        nvide:0.7.3
+% docker container ls
+CONTAINER ID   IMAGE         COMMAND               CREATED             STATUS             PORTS                NAMES
+26d96e76eee1   nvide:0.7.3   "/usr/sbin/sshd -D"   About an hour ago   Up About an hour   0.0.0.0:22->22/tcp   nvide-ssh
+```
+
+The SSH container listens on the port 22. Use the following command to login into the SSH container.
+
+```sh
+% ssh ide@localhost
 ```
 
 ## Sample project
