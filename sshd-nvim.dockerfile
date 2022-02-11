@@ -45,6 +45,10 @@ RUN mkdir -p /root/.ssh \
 	&& echo "ide:${USER_PWD}" | chpasswd \
 	&& echo "$SSH_PUB_KEY" > /root/.ssh/authorized_keys
 
+# change the ssh hello message
+#
+COPY ./conf/motd 		/etc/motd
+
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
