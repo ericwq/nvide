@@ -100,6 +100,7 @@ fatal: No names found, cannot describe anything.
 
 ### reference links
 
+- [High performant 2D renderer in a terminal](https://blog.ghaiklor.com/2020/07/27/high-performant-2d-renderer-in-a-terminal/)
 - [Add, Delete And Grant Sudo Privileges To Users In Alpine Linux](https://ostechnix.com/add-delete-and-grant-sudo-privileges-to-users-in-alpine-linux/)
 - [The TTY demystified](http://www.linusakesson.net/programming/tty/)
 - [nvim-lua/kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)
