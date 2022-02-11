@@ -67,9 +67,9 @@ Run the following commands to build the SSH image by yourself.
 
 ```sh
 % docker build --build-arg ROOT_PWD=passowrd \
-        --build-arg USER_PWD=password \
-        --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-        --progress plain -t nvide:0.7.3 -f sshd-nvim.dockerfile .
+	--build-arg USER_PWD=password \
+	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
+	--progress plain -t nvide:0.8.0 -f sshd-nvim.dockerfile .
 ```
 
 - `ROOT_PWD` is the root password.
@@ -82,7 +82,7 @@ Make sure your `~/.ssh/id_rsa.pub` file exist in your SSH client side. If it doe
 % docker run -d -p 22:22 -h nvide-ssh --env TZ=Asia/Shanghai --name nvide-ssh \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        nvide:0.7.3
+        nvide:0.8.0
 % docker container ls
 CONTAINER ID   IMAGE         COMMAND               CREATED             STATUS             PORTS                NAMES
 26d96e76eee1   nvide:0.7.3   "/usr/sbin/sshd -D"   About an hour ago   Up About an hour   0.0.0.0:22->22/tcp   nvide-ssh
