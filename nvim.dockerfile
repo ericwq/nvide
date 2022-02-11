@@ -25,11 +25,9 @@ RUN apk add tmux colordiff curl tzdata htop go protoc --update
 # clangd depends on clang-dev
 # lua-language-server depends on ninja, bash
 # luarocks depends on readline-dev, lua5.3-dev, cmake, unzip
+# c family language build tools: autoconf, automake,bear
 #
-RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev --update
-
-# c family language build tools
-RUN apk add autoconf automake bear --update
+RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear --update
 
 # https://github.com/fsouza/prettierd
 #
@@ -41,6 +39,7 @@ ENV GOPATH /go
 # proselint is installed in $HOME/.local/bin
 # luarocks is also installed in $HOME/.local/
 #
+# save PATH in OLDPATH, depends on HOME/.profile for environment setup
 ENV OLDPATH=$PATH
 ENV PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 
