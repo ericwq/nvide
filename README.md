@@ -100,6 +100,8 @@ The key's randomart image is:
 |   o+++  + B +   |
 |    =O=+o o +    |
 +----[SHA256]-----+
+$ ls ~/.ssh/
+authorized_keys  id_rsa           id_rsa.pub
 ```
 
 Please NOTE: the SSH image accepts both the password and public key login, user/password is supported if the public key is invalid/missing. Use the following command to start the SSH container.
