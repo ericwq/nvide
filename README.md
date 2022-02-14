@@ -63,7 +63,7 @@ Run the following command to build the docker image by yourself.
 
 ## Build and run the SSH image
 
-Run the following commands to build the SSH image by yourself.
+Run the following commands to build the SSH image by yourself. Please note that ssh image is based on `ericwq057/nvide:0.7.2`. You need the latest base image to build the ssh image.
 
 ```sh
 % docker build --build-arg ROOT_PWD=passowrd \
