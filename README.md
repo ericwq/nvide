@@ -63,7 +63,7 @@ Run the following command to build the docker image by yourself.
 
 ## Build and run the SSH image
 
-Run the following commands to build the SSH image by yourself. Please note that ssh image is based on `ericwq057/nvide:0.7.2`. You need the latest base image to build the ssh image.
+Run the following commands to build the SSH image by yourself. Please note that SSH image is based on `ericwq057/nvide:0.7.2`. You need the latest base image to build the SSH image.
 
 ```sh
 % docker build --build-arg ROOT_PWD=passowrd \
@@ -76,7 +76,33 @@ Run the following commands to build the SSH image by yourself. Please note that 
 - `USER_PWD` is the `ide` user password.
 - `SSH_PUB_KEY` is the public key from the client(SSH) side.
 
-Make sure your `~/.ssh/id_rsa.pub` file exist in your SSH client side. If it doesn't, use `% ssh_keygen` command to generate it in your SSH client side. Please NOTE: the SSH image only accept the public key login, user/password is not supported. Use the following command to start the SSH container.
+Make sure your `~/.ssh/id_rsa.pub` file exist in your SSH client side. If it doesn't, use `% ssh_keygen` command to generate it in your SSH client side.
+
+```sh
+$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/ide/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/ide/.ssh/id_rsa
+Your public key has been saved in /home/ide/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:0WcUbGRYR6qpLVl+W8qwNIvq0vrgGexTev4SczZhdVg ide@nvide-ssh
+The key's randomart image is:
++---[RSA 3072]----+
+|           BEoo  |
+|         .+o+o   |
+|        ...o+    |
+|        o. =     |
+|       .S.+      |
+|   .  + +*       |
+|    ++ =+.* . .  |
+|   o+++  + B +   |
+|    =O=+o o +    |
++----[SHA256]-----+
+```
+
+Please NOTE: the SSH image accepts both the password and public key login, user/password is supported if the public key is invalid/missing. Use the following command to start the SSH container.
 
 ```sh
 % docker run -d -p 22:22 -h nvide-ssh --env TZ=Asia/Shanghai --name nvide-ssh \
