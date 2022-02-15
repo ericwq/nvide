@@ -100,6 +100,10 @@ fatal: No names found, cannot describe anything.
 
 ### reference links
 
+- [How Zutty works: Rendering a terminal with an OpenGL Compute Shader](https://tomscii.sig7.se/2020/11/How-Zutty-works)
+- [A totally biased comparison of Zutty (to some better-known X terminal emulators)](https://tomscii.sig7.se/2020/12/A-totally-biased-comparison-of-Zutty)
+- [A look at terminal emulators, part 1](https://lwn.net/Articles/749992/)
+- [A look at terminal emulators, part 2](https://lwn.net/Articles/751763/)
 - [High performant 2D renderer in a terminal](https://blog.ghaiklor.com/2020/07/27/high-performant-2d-renderer-in-a-terminal/)
 - [Add, Delete And Grant Sudo Privileges To Users In Alpine Linux](https://ostechnix.com/add-delete-and-grant-sudo-privileges-to-users-in-alpine-linux/)
 - [The TTY demystified](http://www.linusakesson.net/programming/tty/)
