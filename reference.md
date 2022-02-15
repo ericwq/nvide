@@ -100,6 +100,7 @@ fatal: No names found, cannot describe anything.
 
 ### reference links
 
+- [How does a Linux terminal work?](https://unix.stackexchange.com/questions/79334/how-does-a-linux-terminal-work)
 - [Typing with pleasure](https://pavelfatin.com/typing-with-pleasure/)
 - [How Zutty works: Rendering a terminal with an OpenGL Compute Shader](https://tomscii.sig7.se/2020/11/How-Zutty-works)
 - [A totally biased comparison of Zutty (to some better-known X terminal emulators)](https://tomscii.sig7.se/2020/12/A-totally-biased-comparison-of-Zutty)
