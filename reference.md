@@ -105,13 +105,17 @@ How the terminal works? Who is responsible for terminal rendering? Does GPU-rend
 - [Linux terminals, tty, pty and shell](https://dev.to/napicella/linux-terminals-tty-pty-and-shell-192e)
 - [Linux terminals, tty, pty and shell - part 2](https://dev.to/napicella/linux-terminals-tty-pty-and-shell-part-2-2cb2)
 - [How does a Linux terminal work?](https://unix.stackexchange.com/questions/79334/how-does-a-linux-terminal-work)
-- [Typing with pleasure](https://pavelfatin.com/typing-with-pleasure/)
 - [How Zutty works: Rendering a terminal with an OpenGL Compute Shader](https://tomscii.sig7.se/2020/11/How-Zutty-works)
 - [A totally biased comparison of Zutty (to some better-known X terminal emulators)](https://tomscii.sig7.se/2020/12/A-totally-biased-comparison-of-Zutty)
 - [A look at terminal emulators, part 1](https://lwn.net/Articles/749992/)
 - [A look at terminal emulators, part 2](https://lwn.net/Articles/751763/)
 - [High performant 2D renderer in a terminal](https://blog.ghaiklor.com/2020/07/27/high-performant-2d-renderer-in-a-terminal/)
 - [The TTY demystified](http://www.linusakesson.net/programming/tty/)
+
+### typing
+
+- [Typing with pleasure](https://pavelfatin.com/typing-with-pleasure/)
+- [Measured: Typing latency of Zutty (compared to others)](https://tomscii.sig7.se/2021/01/Typing-latency-of-Zutty)
 
 ### reference links
 
