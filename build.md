@@ -57,6 +57,11 @@
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
         nvide:0.8.0
+
+% docker run -d -p 22:22 -p 60001:60001/udp -h nvide-ssh --env TZ=Asia/Shanghai --name nvide-ssh \
+        --mount source=proj-vol,target=/home/ide/proj \
+        --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+        nvide:0.8.0
 ```
 
 ## Login to the containter

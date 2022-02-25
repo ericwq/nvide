@@ -27,7 +27,7 @@ USER root
 # set sudo user ide privilige
 # generarte SSH server key pairs
 #
-RUN apk add openssh sudo --update \
+RUN apk add openssh sudo mosh-server --update \
 	&& sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
 	&& sed -ie 's/#Port 22/Port 22/g' /etc/ssh/sshd_config \
 	&& echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel \
@@ -50,5 +50,6 @@ RUN mkdir -p /root/.ssh \
 COPY ./conf/motd 		/etc/motd
 
 EXPOSE 22
+EXPOSE 60001/udp
 
 CMD ["/usr/sbin/sshd", "-D"]

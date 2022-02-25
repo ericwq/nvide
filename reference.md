@@ -119,6 +119,7 @@ How the terminal works? Who is responsible for terminal rendering? Does GPU-rend
 
 ### reference links
 
+- [Getting Started with Mosh (Mobile Shell)](https://bitlaunch.io/blog/getting-started-with-mosh/)
 - [example language server](https://github.com/ChrisAmelia/dotfiles/blob/master/nvim/lua/lsp.lua#L108-L120)
 - [nvim-lua/kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)
 - [Add, Delete And Grant Sudo Privileges To Users In Alpine Linux](https://ostechnix.com/add-delete-and-grant-sudo-privileges-to-users-in-alpine-linux/)
