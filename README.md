@@ -5,7 +5,7 @@ ooooo      ooo oooooo     oooo ooooo oooooooooo.   oooooooooooo
 `888b.     `8'  `888.     .8'  `888' `888'   `Y8b  `888'     `8
  8 `88b.    8    `888.   .8'    888   888      888  888
  8   `88b.  8     `888. .8'     888   888      888  888oooo8
- 8     `88b.8      `888.8'      888   888      888  888    "
+ 8     `88b.8      `888.8'      888   888      888  888    '
  8       `888       `888'       888   888     d88'  888       o
 o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 ```
@@ -18,7 +18,7 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 - `conf` directory : contains part of the `neovim` configuration, mainly clipboard related.
 - `build.md` : contains the docker commands to build and run the image.
 - `nvim.dockerfile` : the normal docker file.
-- `sshd-nvim.dockerfile`: the SSH docker file.
+- `sshd-nvim.dockerfile`: the SSH/mosh docker file.
 - `reference.md` : the references (most of) about how to setup `nvide`.
 
 ## Additional packages
@@ -42,11 +42,11 @@ The easy way to use `nvide` is to use the in-stock image. See [here](https://hub
 - The second `exec` command login the docker container as root user.
 
 ```sh
-% docker pull ericwq057/nvide:0.7.2
+% docker pull ericwq057/nvide:0.7.3
 % docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        ericwq057/nvide:0.7.2
+        ericwq057/nvide:0.7.3
 % docker exec -u ide -it nvide ash
 % docker exec -u root -it nvide ash
 ```
@@ -58,12 +58,12 @@ Run the following command to build the docker image by yourself.
 ```sh
 % git clone https://github.com/ericwq/nvide.git
 % cd nvide
-% docker build -t nvide:0.7.2 -f nvim.dockerfile .
+% docker build -t nvide:0.7.3 -f nvim.dockerfile .
 ```
 
-## Build and run the SSH image
+## Build and run the SSH/mosh image
 
-Run the following commands to build the SSH image by yourself. Please note that SSH image is based on `ericwq057/nvide:0.7.2`. You need the latest base image to build the SSH image.
+Run the following commands to build the SSH/mosh image by yourself. Please note that SSH/mosh image is based on `ericwq057/nvide:0.7.3`. You need the latest base image to build the SSH/mosh image.
 
 ```sh
 % docker build --build-arg ROOT_PWD=passowrd \
@@ -104,7 +104,7 @@ $ ls ~/.ssh/
 authorized_keys  id_rsa           id_rsa.pub
 ```
 
-Please NOTE: the SSH image accepts both the password and public key login, user/password is supported if the public key is invalid/missing. Use the following command to start the SSH container.
+Please NOTE: the SSH/mosh image accepts both the password and public key login, user/password is supported if the public key is invalid/missing. Use the following command to start the SSH/mosh container.
 
 ```sh
 % docker run -d -p 22:22 -h nvide-ssh --env TZ=Asia/Shanghai --name nvide-ssh \
@@ -116,10 +116,18 @@ CONTAINER ID   IMAGE         COMMAND               CREATED             STATUS   
 26d96e76eee1   nvide:0.7.3   "/usr/sbin/sshd -D"   About an hour ago   Up About an hour   0.0.0.0:22->22/tcp   nvide-ssh
 ```
 
-The SSH container listens on the port 22. Use the following command to login into the SSH container.
+The SSH/mosh container listens on the port 22. Use the following command to login to the SSH/mosh container.
 
 ```sh
 % ssh ide@localhost
+% ssh root@localhost
+```
+
+Or you can login to the SSH/mosh container.
+
+```sh
+$ mosh ide@localhost
+$ mosh root@localhost
 ```
 
 ## Sample project
@@ -132,6 +140,6 @@ Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++
 
 ## Unresolved problem
 
-- `su - ` command doesn't work in SSH container.
+- `neovim` text UI doesn't work for `mosh` connection, while it works for `ssh` connection.
 - For `clangd`, cross-file navigation may result the single file mode.
 - It's not intuitive to operate the [reference or implementation quickfix window](reference.md#reference-or-implementation-quickfix-window).
