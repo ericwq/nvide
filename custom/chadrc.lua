@@ -15,7 +15,7 @@ M.options = {
 
 M.plugins = {
 	status = {
-		dashboard = true,
+		alpha = true,
 		colorizer = true,
 	},
 	options = {
@@ -28,7 +28,7 @@ M.plugins = {
 		nvim_treesitter = plugin_conf.treesitter,
 		nvim_tree = plugin_conf.nvimtree,
 		-- right side string value means replace the entire config
-		dashboard = "custom.plugins.dashboard",
+		alpha = "custom.plugins.alpha",
 	},
 	install = userPlugins,
 }
