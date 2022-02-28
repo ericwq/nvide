@@ -31,7 +31,7 @@ return {
 			vim.g.symbols_outline = {
 				relative_width = true,
 				show_guides = false,
-				width = 50,
+				width = 20,
 				auto_close = true,
 				auto_preview = false,
 				show_symbol_details = false,
