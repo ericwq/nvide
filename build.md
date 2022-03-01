@@ -67,6 +67,9 @@
 ## Login to the containter
 
 ```sh
+% rm ~/.ssh/known_hosts ~/.ssh/known_hosts.old
+% ssh ide@localhost
+% ssh root@localhost
 % docker exec -u 0 -it nvide ash
 % docker exec -u ide -it nvide ash
 ```
