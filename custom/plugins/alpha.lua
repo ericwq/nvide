@@ -90,7 +90,7 @@ local footer = {
 	val = nvide_msg,
 	opts = {
 		position = "center",
-		hl = "hl_group",
+		hl = "AlphaHeader",
 	},
 }
 
