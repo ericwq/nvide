@@ -140,7 +140,6 @@ Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++
 
 ## Unresolved problem
 
-- `cmp` is lazy load. It's not active on first usage. see [unable to use tab completions #836](https://github.com/NvChad/NvChad/issues/836)
 - `neovim` text color doesn't work for `mosh` connection, while it works for `ssh` connection. see [Any chance we could get a new release? #1115](https://github.com/mobile-shell/mosh/issues/1115)
 - For `clangd`, cross-file navigation may result the single file mode.
 - It's not intuitive to operate the [reference or implementation quickfix window](reference.md#reference-or-implementation-quickfix-window).
