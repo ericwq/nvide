@@ -42,6 +42,11 @@ M.nvimtree = {
 	view = {
 		hide_root_folder = false,
 	},
+	actions = {
+		open_file = {
+			quit_on_open = true,
+		},
+	},
 }
 
 return M
