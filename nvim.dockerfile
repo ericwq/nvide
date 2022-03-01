@@ -13,7 +13,7 @@ RUN apk add git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags al
 # additional pacakges
 # mainly go, tmux, htop, protoc
 # 
-RUN apk add tmux colordiff curl tzdata htop go protoc --update
+RUN apk add tmux colordiff curl tzdata htop go protoc cloc --update
 
 # language server packages
 # https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
