@@ -1,5 +1,4 @@
 nvide:0.8.0
 
-C/C++ and Golang Integrated Development Environment.
-Powered by neovim, sumneko_lua, gopls and clangd.
-
+Lua, C/C++ and Golang Integrated Development Environment.",
+Powered by neovim, sumneko_lua, gopls and clangd.",
