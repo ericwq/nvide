@@ -140,6 +140,7 @@ Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++
 
 ## Unresolved problem
 
+- `cmp` is lazy load. Try to load it after `lsp` is ready.
 - `neovim` text UI doesn't work for `mosh` connection, while it works for `ssh` connection.
 - For `clangd`, cross-file navigation may result the single file mode.
 - It's not intuitive to operate the [reference or implementation quickfix window](reference.md#reference-or-implementation-quickfix-window).
