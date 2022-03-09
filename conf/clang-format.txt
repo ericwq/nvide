@@ -1,0 +1,14 @@
+﻿---
+BasedOnStyle: Chromium
+ConstructorInitializerIndentWidth: '4'
+ContinuationIndentWidth: '4'
+IndentCaseLabels: 'true'
+IndentWidth: '4'
+IndentWrappedFunctionNames: 'true'
+NamespaceIndentation: All
+ObjCBlockIndentWidth: '4'
+Standard: Cpp11
+TabWidth: '4'
+UseTab: ForContinuationAndIndentation
+
+...
