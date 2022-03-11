@@ -95,10 +95,10 @@ RUN  luarocks install --server=https://luarocks.org/dev luaformatter && \
 # https://golangci-lint.run/usage/install/
 #
 RUN go install golang.org/x/tools/gopls@latest && \
-    go install golang.org/x/tools/cmd/goimports@latest && \
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
-    go install github.com/jstemmer/gotags@latest && \
-    go install github.com/mattn/efm-langserver@latest && \
+#    go install golang.org/x/tools/cmd/goimports@latest && \
+#    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
+#    go install github.com/jstemmer/gotags@latest && \
+#    go install github.com/mattn/efm-langserver@latest && \
     go install mvdan.cc/gofumpt@latest && \
     go clean -cache -modcache -testcache && \
     rm -rf $GOPATH/src/*
