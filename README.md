@@ -29,10 +29,40 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 - `windwp/nvim-ts-autotag`
 - `jose-elias-alvarez/null-ls.nvim`
 
-## Require
+## Client requirement
 
 - [docker desktop](https://www.docker.com/products/docker-desktop) for mac / windows
 - git
+- brew
+- Use `xcode-select –install` to install Command Line Tools. (For mac user)
+
+### Intstall terminal emulator
+
+Install one or all of the terminal emulators.
+
+```sh
+brew install --cask alacritty
+brew install --cask kitty
+brew install --cask iterm2
+```
+
+Copy the config file from the `$GIT_CLONE_NVIDE` to your local `$HOME`. `$GIT_CLONE_NVIDE` is where you clone the `nvide`.
+
+```sh
+cp $GIT_NVIDE/conf/alacritty.yml $HOME/.config/alacritty.yml
+cp $GIT_NVIDE/conf/kitty.conf    $HOME/.config/kitty.conf
+
+```
+
+### Install fonts
+
+Install one or all of the fonts, It's required by `nvide`.
+
+```
+% brew tap homebrew/cask-fonts
+% brew install --cask font-hack-nerd-font
+% brew install --cask font-cousine-nerd-font
+```
 
 ## Run In-stock image
 
