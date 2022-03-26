@@ -38,7 +38,7 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 
 ### Intstall terminal emulator
 
-Install one or all of the terminal emulators.
+Install one or all of the terminal emulators. Please note the item2 mouse support is not as good as kitty and alacritty.
 
 ```sh
 brew install --cask alacritty
