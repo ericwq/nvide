@@ -14,7 +14,12 @@ M.setup_lsp = function(attach, capabilities)
 
 	-- c/c++ language server
 	lspconfig.clangd.setup {
-		on_attach = attach,
+		-- on_attach = attach,
+		on_attach = function(client, _)
+			attach(client)
+			client.resolved_capabilities.document_formatting = true
+			client.resolved_capabilities.document_range_formatting = true
+		end,
 		capabilities = capabilities,
 		root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
 		flags = {
@@ -45,7 +50,11 @@ M.setup_lsp = function(attach, capabilities)
 		flags = {
 			debounce_text_changes = 150,
 		},
-		on_attach = attach,
+		on_attach = function(client, _)
+			attach(client)
+			client.resolved_capabilities.document_formatting = true
+			client.resolved_capabilities.document_range_formatting = true
+		end,
 		-- on_attach = on_attach_vim,
 		capabilities = capabilities,
 		settings = {

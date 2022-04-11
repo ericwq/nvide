@@ -51,11 +51,11 @@ local sources = {
 	-- b.completion.spell,
 
 	-- c/c++
-	b.formatting.clang_format.with({
-		args = {
-			"-style=file",
-		},
-	}),
+	-- b.formatting.clang_format.with({
+	-- 	args = {
+	-- 		"-style=file",
+	-- 	},
+	-- }),
 	-- b.diagnostics.cppcheck.with({
 	-- 	diagnostics_format = "(#{s}) #{m}",
 	-- }),
