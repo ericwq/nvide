@@ -64,6 +64,14 @@ Install one or all of the fonts, It's required by `nvide`.
 % brew install --cask font-cousine-nerd-font
 ```
 
+### TERM environment variable
+
+If you encounter this problem [filling up buffer with nvim commands](https://github.com/NvChad/NvChad/issues/926), please change the TERM to `alacritty` or `kitty` instead of the default value: `xterm-256color`
+
+```sh
+$ export TERM=alacritty
+```
+
 ## Run In-stock image
 
 The easy way to use `nvide` is to use the in-stock image. See [here](https://hub.docker.com/repository/docker/ericwq057/nvide).
