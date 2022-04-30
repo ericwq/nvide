@@ -12,14 +12,14 @@
 % docker build --build-arg ROOT_PWD=passowrd \
 	--build-arg USER_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-	--progress plain -t nvide:0.8.0 -f sshd-nvim.dockerfile .
+	--progress plain -t nvide:0.8.1 -f sshd-nvim.dockerfile .
 ```
 
 ## Dryrun the container
 
 ```sh
 % docker run --rm -ti nvide:0.7.4
-% docker run -ti --rm -u ide -p 22:22 nvide:0.8.0
+% docker run -ti --rm -u ide -p 22:22 nvide:0.8.1
 ```
 
 ## Publish images to [docker](hub.docker.com)
@@ -56,12 +56,12 @@
 % docker run -d -p 22:22 -h nvide-ssh --env TZ=Asia/Shanghai --name nvide-ssh \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        nvide:0.8.0
+        nvide:0.8.1
 
 % docker run -d -p 22:22 -p 60001:60001/udp -h nvide-ssh --env TZ=Asia/Shanghai --name nvide-ssh \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        nvide:0.8.0
+        nvide:0.8.1
 ```
 
 ## Login to the containter
