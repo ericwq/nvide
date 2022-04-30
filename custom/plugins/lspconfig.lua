@@ -15,8 +15,8 @@ M.setup_lsp = function(attach, capabilities)
 	-- c/c++ language server
 	lspconfig.clangd.setup {
 		-- on_attach = attach,
-		on_attach = function(client, _)
-			attach(client)
+		on_attach = function(client, bufnr)
+			attach(client, bufnr)
 			client.resolved_capabilities.document_formatting = true
 			client.resolved_capabilities.document_range_formatting = true
 		end,
@@ -50,8 +50,8 @@ M.setup_lsp = function(attach, capabilities)
 		flags = {
 			debounce_text_changes = 150,
 		},
-		on_attach = function(client, _)
-			attach(client)
+		on_attach = function(client, bufnr)
+			attach(client, bufnr)
 			client.resolved_capabilities.document_formatting = true
 			client.resolved_capabilities.document_range_formatting = true
 		end,
