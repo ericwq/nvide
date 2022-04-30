@@ -16,21 +16,14 @@ M.options = {
 }
 
 M.plugins = {
-	-- status = {
-	-- 	alpha = true,
-	-- 	colorizer = true,
-	-- },
 	options = {
 		lspconfig = {
 			setup_lspconf = "custom.plugins.lspconfig",
 		},
 	},
 	override = {
-		-- right side table value means replace part of the config
 		["nvim-treesitter/nvim-treesitter"] = plugin_conf.treesitter,
 		["kyazdani42/nvim-tree.lua"] = plugin_conf.nvimtree,
-		-- right side string value means replace the entire config
-		-- alpha = "custom.plugins.alpha",
 	},
 
 	-- add, modify, remove plugins
@@ -40,7 +33,7 @@ M.plugins = {
 -- changing theme and UI
 M.ui = {
 	theme = "chadracula",
-	italic_comments = true,
+	hl_override = "custom.highlights",
 	transparency = true,
 }
 
