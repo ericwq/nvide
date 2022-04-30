@@ -139,8 +139,6 @@ RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
 # The neovim configuration
 # based on https://github.com/NvChad/NvChad
 #
-#COPY --chown=ide:develop ./NvChad/init.lua	$HOME/.config/nvim/
-#COPY --chown=ide:develop ./NvChad/lua		$HOME/.config/nvim/lua
 RUN git clone --depth 1 https://github.com/NvChad/NvChad $HOME/.config/nvim
 COPY --chown=ide:develop ./custom		$HOME/.config/nvim/lua/custom
 
@@ -156,8 +154,12 @@ COPY --chown=ide:develop ./conf/vimrc 		$HOME/.config/nvim/vimrc
 COPY --chown=ide:develop ./conf/yank 		$HOME/.local/bin/yank
 RUN chmod +x $HOME/.local/bin/yank
 
-# Prepare the .clang-format
-COPY --chown=ide:develop ./conf/clang-format.txt $HOME/.config/nvim/.clang-format
+# Put the .clang-format in home directory 2022/04/30
+COPY --chown=ide:develop ./conf/clang-format.txt $HOME/.clang-format
+
+# Add xterm-kitty link for alpine linux 2022/04/30
+RUN mkdir -p $HOME/.terminfo/x
+RUN ln -s /etc/terminfo/k/kitty $HOME/.terminfo/x/xterm-kitty
 
 # Init shadafile
 # RUN nvim --headless -u NONE -c 'echo "init shadafile"' -c qall
