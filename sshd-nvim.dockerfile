@@ -1,4 +1,4 @@
-FROM ericwq057/nvide:0.7.3
+FROM ericwq057/nvide:0.7.4
 LABEL maintainer="ericwq057@qq.com"
 
 # Arguement for passwords and ssh public key
@@ -27,7 +27,7 @@ USER root
 # set sudo user ide privilige
 # generarte SSH server key pairs
 #
-RUN apk add openssh sudo mosh-server --update \
+RUN apk add openssh sudo mosh-server mandoc man-pages ncurses-doc ncurses --update \
 	&& sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
 	&& sed -ie 's/#Port 22/Port 22/g' /etc/ssh/sshd_config \
 	&& echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel \
