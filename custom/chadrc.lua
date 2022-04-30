@@ -8,29 +8,33 @@ local userPlugins = require "custom.plugins"
 -- make sure you maintain the structure of `core/default_config.lua` here,
 
 M.options = {
-	expandtab = false,
-	tabstop = 4,
-	shiftwidth = 4,
+	user = function()
+		vim.opt.expandtab = false
+		vim.opt.tabstop = 4
+		vim.opt.shiftwidth = 4
+	end,
 }
 
 M.plugins = {
-	status = {
-		alpha = true,
-		colorizer = true,
-	},
+	-- status = {
+	-- 	alpha = true,
+	-- 	colorizer = true,
+	-- },
 	options = {
 		lspconfig = {
 			setup_lspconf = "custom.plugins.lspconfig",
 		},
 	},
-	default_plugin_config_replace = {
+	override = {
 		-- right side table value means replace part of the config
-		nvim_treesitter = plugin_conf.treesitter,
-		nvim_tree = plugin_conf.nvimtree,
+		["nvim-treesitter/nvim-treesitter"] = plugin_conf.treesitter,
+		["kyazdani42/nvim-tree.lua"] = plugin_conf.nvimtree,
 		-- right side string value means replace the entire config
-		alpha = "custom.plugins.alpha",
+		-- alpha = "custom.plugins.alpha",
 	},
-	install = userPlugins,
+
+	-- add, modify, remove plugins
+	user = userPlugins,
 }
 
 -- changing theme and UI

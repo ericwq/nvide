@@ -1,7 +1,14 @@
 return {
+	-- replace the alpha-nvim
+	["goolord/alpha-nvim"] = {
+		disable = false,
+		config = function()
+			require "custom.plugins.alpha"
+		end,
+	},
+
 	-- treesitter context
-	{
-		'romgrk/nvim-treesitter-context',
+	['romgrk/nvim-treesitter-context'] = {
 		after = "nvim-treesitter",
 		config = function()
 			require("custom.plugins.treesitter-context").setup()
@@ -10,8 +17,7 @@ return {
 
 	-- which-key
 	-- https://github.com/folke/which-key.nvim
-	{
-		"folke/which-key.nvim",
+	["folke/which-key.nvim"] = {
 		event = "VimEnter",
 		config = function()
 			require("which-key").setup {
@@ -24,8 +30,7 @@ return {
 
 	-- symbols-outline
 	-- https://github.com/simrat39/symbols-outline.nvim
-	{
-		'simrat39/symbols-outline.nvim',
+	['simrat39/symbols-outline.nvim'] = {
 		after = "nvim-lspconfig",
 		setup = function()
 			vim.g.symbols_outline = {
@@ -53,8 +58,7 @@ return {
 	-- }
 
 	-- refer to https://github.com/siduck/dotfiles/blob/master/nvchad/custom/plugins/init.lua
-	{
-		"windwp/nvim-ts-autotag",
+	["windwp/nvim-ts-autotag"] = {
 		ft = {
 			"html",
 			"javascriptreact",
@@ -64,8 +68,7 @@ return {
 		end,
 	},
 
-	{
-		"jose-elias-alvarez/null-ls.nvim",
+	["jose-elias-alvarez/null-ls.nvim"] = {
 		after = "nvim-lspconfig",
 		config = function()
 			require("custom.plugins.null-ls").setup()
