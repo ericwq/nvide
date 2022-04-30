@@ -43,14 +43,16 @@ Install one or all of the terminal emulators. Please note the item2 mouse suppor
 ```sh
 brew install --cask alacritty
 brew install --cask kitty
+brew install --cask wezterm
 brew install --cask iterm2
 ```
 
 Copy the config file from the `$GIT_CLONE_NVIDE` to your local `$HOME`. `$GIT_CLONE_NVIDE` is where you clone the `nvide`.
 
 ```sh
-cp $GIT_NVIDE/conf/alacritty.yml $HOME/.config/alacritty.yml
-cp $GIT_NVIDE/conf/kitty.conf    $HOME/.config/kitty.conf
+cp $GIT_NVIDE/conf/emulator/alacritty.yml $HOME/.config/alacritty/alacritty.yml
+cp $GIT_NVIDE/conf/emulator/kitty.conf    $HOME/.config/kitty/kitty.conf
+cp $GIT_NVIDE/conf/emulator/wezterm.lua	  $HOME/.config/wezterm/wezterm.lua
 
 ```
 
