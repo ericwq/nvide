@@ -33,7 +33,11 @@ M.plugins = {
 -- changing theme and UI
 M.ui = {
 	theme = "chadracula",
-	hl_override = "custom.highlights",
+	hl_override = {
+		Comment = {
+			italic = true,
+		},
+	},
 	transparency = true,
 }
 
