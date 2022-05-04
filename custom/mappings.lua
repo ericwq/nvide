@@ -4,6 +4,7 @@ local map = require("core.utils").map
 map("n", "<leader>fs", ":Telescope grep_string<CR>")
 map("n", "<leader>ft", ":Telescope treesitter<CR>")
 map("n", "<leader>j", ":SymbolsOutline<CR>")
+map("n", "<leader>b", ":ccl<CR>")
 
 -- telescope
 -- map("n", "<leader>fp", ":Telescope media_files <CR>")
