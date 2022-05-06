@@ -84,54 +84,54 @@ M.setup_lsp = function(attach, capabilities)
 	}
 
 	-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
-	local runtime_path = vim.split(package.path, ';')
-	table.insert(runtime_path, "lua/?.lua")
-	table.insert(runtime_path, "lua/?/init.lua")
-
-	lspconfig.sumneko_lua.setup {
-		on_attach = attach,
-		capabilities = capabilities,
-		flags = {
-			debounce_text_changes = 150,
-		},
-		root_dir = lspconfig.util.root_pattern('.git'),
-		-- function(client, bufnr)
-		--     client.resolved_capabilities.document_formatting = false
-		--     vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
-		-- end,
-		settings = {
-			Lua = {
-				runtime = {
-					-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-					version = 'LuaJIT',
-					-- Setup your lua path
-					path = runtime_path,
-				},
-				diagnostics = {
-					-- Get the language server to recognize the `vim` global
-					globals = {
-						'vim',
-						'use',
-					},
-				},
-				workspace = {
-					-- Make the server aware of Neovim runtime files
-					-- library = vim.api.nvim_get_runtime_file("", true),
-					-- refer to https://github.com/ChrisAmelia/dotfiles/blob/master/nvim/lua/lsp.lua#L108-L120
-					library = {
-						[vim.fn.expand('$VIMRUNTIME/lua')] = true,
-						[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-					},
-					maxPreload = 100000,
-					preloadFileSize = 10000,
-				},
-				-- Do not send telemetry data containing a randomized but unique identifier
-				telemetry = {
-					enable = false,
-				},
-			},
-		},
-	}
+	-- local runtime_path = vim.split(package.path, ';')
+	-- table.insert(runtime_path, "lua/?.lua")
+	-- table.insert(runtime_path, "lua/?/init.lua")
+	--
+	-- lspconfig.sumneko_lua.setup {
+	-- 	on_attach = attach,
+	-- 	capabilities = capabilities,
+	-- 	flags = {
+	-- 		debounce_text_changes = 150,
+	-- 	},
+	-- 	root_dir = lspconfig.util.root_pattern('.git'),
+	-- 	-- function(client, bufnr)
+	-- 	--     client.resolved_capabilities.document_formatting = false
+	-- 	--     vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
+	-- 	-- end,
+	-- 	settings = {
+	-- 		Lua = {
+	-- 			runtime = {
+	-- 				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+	-- 				version = 'LuaJIT',
+	-- 				-- Setup your lua path
+	-- 				path = runtime_path,
+	-- 			},
+	-- 			diagnostics = {
+	-- 				-- Get the language server to recognize the `vim` global
+	-- 				globals = {
+	-- 					'vim',
+	-- 					'use',
+	-- 				},
+	-- 			},
+	-- 			workspace = {
+	-- 				-- Make the server aware of Neovim runtime files
+	-- 				-- library = vim.api.nvim_get_runtime_file("", true),
+	-- 				-- refer to https://github.com/ChrisAmelia/dotfiles/blob/master/nvim/lua/lsp.lua#L108-L120
+	-- 				library = {
+	-- 					[vim.fn.expand('$VIMRUNTIME/lua')] = true,
+	-- 					[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+	-- 				},
+	-- 				maxPreload = 100000,
+	-- 				preloadFileSize = 10000,
+	-- 			},
+	-- 			-- Do not send telemetry data containing a randomized but unique identifier
+	-- 			telemetry = {
+	-- 				enable = false,
+	-- 			},
+	-- 		},
+	-- 	},
+	-- }
 
 end
 
