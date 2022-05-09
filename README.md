@@ -178,6 +178,7 @@ Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++
 - See [ccls project in nvide](reference.md#ccls-project-in-nvide) for example.
 - See [st project in nvide](https://github.com/ericwq/examples/blob/main/tty/ref.md#st) for example.
 - See [mosh project in nvide](https://github.com/ericwq/examples/blob/main/tty/ref.md#mosh) for example.
+- See [zutty project in nvide](https://github.com/ericwq/examples/blob/main/tty/ref.md#zutty) for example.
 - See [lua project in nvide](reference.md#lua-project-in-nvide) for example.
 
 ## Unresolved problem
