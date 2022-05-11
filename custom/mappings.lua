@@ -1,4 +1,4 @@
-local map = require("core.utils").map
+local map = nvchad.map
 
 -- map('n', '<C-m>', ':Vista!!<CR>', opt) -- open/close
 map("n", "<leader>fs", ":Telescope grep_string<CR>")
