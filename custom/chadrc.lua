@@ -42,4 +42,6 @@ M.ui = {
 	transparency = true,
 }
 
+M.mappings = require "custom.mappings"
+
 return M

@@ -15,19 +15,6 @@ return {
 		end,
 	},
 
-	-- which-key
-	-- https://github.com/folke/which-key.nvim
-	["folke/which-key.nvim"] = {
-		event = "VimEnter",
-		config = function()
-			require("which-key").setup {
-				-- your configuration comes here
-				-- or leave it empty to use the default settings
-				-- refer to the configuration section below
-			}
-		end,
-	},
-
 	-- symbols-outline
 	-- https://github.com/simrat39/symbols-outline.nvim
 	['simrat39/symbols-outline.nvim'] = {

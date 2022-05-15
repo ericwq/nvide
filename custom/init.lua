@@ -1,5 +1,3 @@
--- filetype.nvim stuff
--- vim.g.did_load_filetypes = 1
 -- source a vimscript file for clipboard support
 vim.cmd('source ~/.config/nvim/vimrc')
 
@@ -15,10 +13,4 @@ vim.g.python3_host_prog = '/usr/bin/python3'
 -- Stop sourcing filetype.vim
 -- https://nvchad.github.io/Extras
 -- https://github.com/nathom/filetype.nvim
---vim.g.did_load_filetypes = 1
-
-require "custom.mappings"
-
--- 500 is suggest by WhichKey.nvim
--- https://github.com/folke/which-key.nvim
--- vim.o.timeoutlen = 300
+-- vim.g.did_load_filetypes = 1

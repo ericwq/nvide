@@ -1,16 +1,34 @@
-local map = nvchad.map
+local M = {}
 
--- map('n', '<C-m>', ':Vista!!<CR>', opt) -- open/close
-map("n", "<leader>fs", ":Telescope grep_string<CR>")
-map("n", "<leader>ft", ":Telescope treesitter<CR>")
-map("n", "<leader>j", "<cmd> :SymbolsOutline<CR>")
-map("n", "<leader>b", "<cmd> :ccl<CR>")
+M.telescope = {
+	n = {
+		["<leader>fs"] = {
+			":Telescope grep_string<CR>",
+			"   grep string",
+		},
+		["<leader>ft"] = {
+			":Telescope treesitter<CR>",
+			"   search symbol",
+		},
+	},
+}
 
--- telescope
--- map("n", "<leader>fp", ":Telescope media_files <CR>")
--- map("n", "<leader>te", ":Telescope <CR>")
+M.symbols_outline = {
+	n = {
+		["<leader>j"] = {
+			"<cmd> :SymbolsOutline<CR>",
+			"   List the symbols outline",
+		},
+	},
+}
 
--- truezen
--- map("n", "<leader>ta", ":TZAtaraxis <CR>")
--- map("n", "<leader>tm", ":TZMinimalist <CR>")
--- map("n", "<leader>tf", ":TZFocus <CR>")
+M.lspconfig = {
+	n = {
+		["<leader>b"] = {
+			"<cmd> :ccl<CR>",
+			"   Close quick fix window",
+		},
+	},
+}
+
+return M
