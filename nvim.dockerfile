@@ -133,7 +133,7 @@ WORKDIR $HOME
 # https://github.com/wbthomason/packer.nvim
 #
 RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-	$HOME/.local/share/nvim/site/pack/packer/opt/packer.nvim
+	$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 #------------------------------ NOTICE ------------------------------
 # The neovim configuration
