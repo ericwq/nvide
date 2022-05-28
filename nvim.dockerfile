@@ -140,6 +140,8 @@ RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
 # based on https://github.com/NvChad/NvChad
 #
 RUN git clone --depth 1 https://github.com/NvChad/NvChad $HOME/.config/nvim
+# Add file type to solve the dockerfile filetype problem. 2022/05/29
+COPY --chown=ide:develop ./conf/filetype.lua	$HOME/.config/nvim/
 COPY --chown=ide:develop ./custom		$HOME/.config/nvim/lua/custom
 
 # Set the environment
