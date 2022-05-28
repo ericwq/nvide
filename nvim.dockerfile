@@ -31,7 +31,7 @@ RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev l
 
 # https://github.com/fsouza/prettierd
 #
-RUN npm install -g @fsouza/prettierd neovim
+RUN npm install -g @fsouza/prettierd neovim dockerfile-language-server-nodejs
 
 ENV HOME=/home/ide
 ENV GOPATH /go

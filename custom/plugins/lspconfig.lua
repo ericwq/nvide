@@ -38,6 +38,20 @@ M.setup_lsp = function(attach, capabilities)
 		},
 	}
 
+	lspconfig.dockerls.setup {
+		on_attach = function(client, bufnr)
+			attach(client, bufnr)
+			client.resolved_capabilities.document_formatting = true
+			client.resolved_capabilities.document_range_formatting = true
+		end,
+		-- on_attach = on_attach_vim,
+		capabilities = capabilities,
+		filetypes = {
+			"dockerfile",
+			"Dockerfile",
+		},
+	};
+
 	-- go language server
 	-- cmd = {"gopls", "-remote", "auto", "-logfile", "/tmp/gopls.log"},
 	lspconfig.gopls.setup {
