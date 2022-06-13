@@ -19,6 +19,7 @@ font:
     style: Italic
 
   size: 16.0
-
+env:
+  TERM: alacritty
 window:
-  opacity: 0.75
+  opacity: 0.85
