@@ -39,7 +39,7 @@ M.ui = {
 	theme = "chadracula",
 	hl_override = {
 		Comment = {
-			fg = "#444444",
+			fg = "#808080",
 			italic = true,
 		},
 	},
