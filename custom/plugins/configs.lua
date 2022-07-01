@@ -52,4 +52,8 @@ M.lspinstaller = {
 	automatic_installation = false,
 }
 
+M.blankline = {
+	show_current_context = true,
+	show_current_context_start = false,
+}
 return M

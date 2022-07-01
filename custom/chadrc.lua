@@ -28,6 +28,7 @@ M.plugins = {
 		["nvim-treesitter/nvim-treesitter"] = plugin_conf.treesitter,
 		["kyazdani42/nvim-tree.lua"] = plugin_conf.nvimtree,
 		["williamboman/nvim-lsp-installer"] = plugin_conf.lspinstaller,
+		["lukas-reineke/indent-blankline.nvim"] = plugin_conf.blankline,
 	},
 
 	-- add, modify, remove plugins
