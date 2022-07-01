@@ -53,7 +53,7 @@ M.lspinstaller = {
 }
 
 M.blankline = {
-	show_current_context = true,
+	show_current_context = false,
 	show_current_context_start = false,
 }
 return M
