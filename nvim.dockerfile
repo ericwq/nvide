@@ -112,9 +112,9 @@ RUN pip3 install proselint pynvim
 # the lua-language-server is installed in $HOME/.local
 #
 WORKDIR $HOME/.local
-RUN git clone https://github.com/sumneko/lua-language-server && \
+RUN git clone --depth=1 https://github.com/sumneko/lua-language-server && \
     cd lua-language-server && \
-    git submodule update --init --recursive && \
+    git submodule update --depth 1 --init --recursive  && \
     cd 3rd/luamake && \
     ./compile/install.sh && \
     cd ../.. && \
