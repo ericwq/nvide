@@ -58,8 +58,8 @@ M.setup_lsp = function(attach, capabilities)
 		cmd = {
 			"gopls",
 			"serve",
-			"-rpc.trace",
-			"-logfile=auto",
+			-- "-rpc.trace",
+			-- "-logfile=auto",
 		},
 		flags = {
 			debounce_text_changes = 150,
@@ -78,19 +78,19 @@ M.setup_lsp = function(attach, capabilities)
 				-- than requiring user action. This option will eventually be removed.
 				allowImplicitNetworkAccess = true,
 				-- experimentalWorkspaceModule = true,
-				analyses = {
-					unusedparams = true,
-				},
-				staticcheck = true,
+				-- analyses = {
+				-- 	unusedparams = true,
+				-- },
+				-- staticcheck = true,
 				linksInHover = false,
-				codelenses = {
-					generate = true,
-					gc_details = true,
-					regenerate_cgo = true,
-					tidy = true,
-					upgrade_depdendency = true,
-					vendor = true,
-				},
+				-- codelenses = {
+				-- 	generate = true,
+				-- 	gc_details = true,
+				-- 	regenerate_cgo = true,
+				-- 	tidy = true,
+				-- 	upgrade_depdendency = true,
+				-- 	vendor = true,
+				-- },
 				usePlaceholders = true,
 				gofumpt = true,
 			},
