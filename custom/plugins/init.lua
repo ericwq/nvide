@@ -31,19 +31,6 @@ return {
 		end,
 	},
 
-	-- tagviewer
-	-- use {
-	-- 	'liuchengxu/vista.vim',
-	-- 	disable = true,
-	-- 	event = "BufRead",
-	-- 	-- run before this plugin is loaded.
-	-- 	-- setup =
-	-- 	-- run after this plugin is loaded.
-	-- 	config = function()
-	-- 		require("custom.plugins.vista")
-	-- 	end,
-	-- }
-
 	-- refer to https://github.com/siduck/dotfiles/blob/master/nvchad/custom/plugins/init.lua
 	["windwp/nvim-ts-autotag"] = {
 		ft = {
@@ -52,6 +39,17 @@ return {
 		},
 		config = function()
 			require("nvim-ts-autotag").setup()
+		end,
+	},
+
+	["neovim/nvim-lspconfig"] = {
+		opt = true,
+		setup = function()
+			require("core.lazy_load").on_file_open "nvim-lspconfig"
+		end,
+		config = function()
+			require "plugins.configs.lspconfig"
+			require "custom.plugins.lspconfig"
 		end,
 	},
 
