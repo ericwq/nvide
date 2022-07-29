@@ -14,3 +14,7 @@ vim.g.python3_host_prog = '/usr/bin/python3'
 -- https://nvchad.github.io/Extras
 -- https://github.com/nathom/filetype.nvim
 -- vim.g.did_load_filetypes = 1
+
+vim.opt.expandtab = false
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
