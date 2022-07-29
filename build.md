@@ -6,6 +6,12 @@
 % docker build --no-cache --progress plain -t nvide:0.7.4 -f nvim.dockerfile .
 ```
 
+## create docker volume
+```sh
+% docker volume create proj-vol
+```
+please change the ownership of mount directory.
+
 ## Build the SSH image
 
 ```sh
