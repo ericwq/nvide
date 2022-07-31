@@ -16,7 +16,7 @@ M.plugins = {
 	override = {
 		["nvim-treesitter/nvim-treesitter"] = pluginConfs.treesitter,
 		["kyazdani42/nvim-tree.lua"] = pluginConfs.nvimtree,
-		["williamboman/nvim-lsp-installer"] = pluginConfs.lspinstaller,
+		-- ["williamboman/nvim-lsp-installer"] = pluginConfs.lspinstaller,
 		["lukas-reineke/indent-blankline.nvim"] = pluginConfs.blankline,
 	},
 	status = {

@@ -48,9 +48,9 @@ M.nvimtree = {
 	},
 }
 
-M.lspinstaller = {
-	automatic_installation = false,
-}
+-- M.lspinstaller = {
+-- 	automatic_installation = false,
+-- }
 
 M.blankline = {
 	show_current_context = false,
