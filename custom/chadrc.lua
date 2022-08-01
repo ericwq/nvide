@@ -1,8 +1,6 @@
 -- This is the chadrc file , its supposed to be placed in /lua/custom dir
 -- lua/custom/chadrc.lua
 -- remove this if you dont use custom.init.lua at all
-require "custom"
-
 local M = {}
 
 local pluginConfs = require "custom.plugins.configs"
