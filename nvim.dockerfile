@@ -8,7 +8,7 @@ LABEL maintainer="ericwq057@qq.com"
 # telscope depends on ripgrep, fzf, fd
 # vista depends on ctags
 #
-RUN apk add git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags alpine-sdk --update
+RUN apk add --no-cache ca-certificates git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags alpine-sdk --update
 
 # additional pacakges
 # mainly go, tmux, htop, protoc
@@ -69,13 +69,13 @@ WORKDIR $HOME
 #
 ENV LUA_ROCKS=luarocks-3.8.0
 RUN cd /tmp &&\
-    wget https://luarocks.org/releases/$LUA_ROCKS.tar.gz && \
-    tar zxpf $LUA_ROCKS.tar.gz && \
-    cd $LUA_ROCKS  && \
-    ./configure --lua-version=5.3 --prefix=$HOME/.local && \
-    make && \
-    make install && \
-    rm -rf /tmp/$LUA_ROCKS
+	wget https://luarocks.org/releases/$LUA_ROCKS.tar.gz && \
+	tar zxpf $LUA_ROCKS.tar.gz && \
+	cd $LUA_ROCKS  && \
+	./configure --lua-version=5.3 --prefix=$HOME/.local && \
+	make && \
+	make install && \
+	rm -rf /tmp/$LUA_ROCKS
 # use the following command to check luarocks is ready for use
 # luarocks path --help
 
@@ -88,20 +88,20 @@ RUN cd /tmp &&\
 # https://github.com/Koihik/LuaFormatter
 #
 RUN  luarocks install --server=https://luarocks.org/dev luaformatter && \
-     luarocks install luacheck
+	luarocks install luacheck
 
 # Install go language server and
 # Install null-ls source: goimports, golangci-lint
 # https://golangci-lint.run/usage/install/
 #
 RUN go install golang.org/x/tools/gopls@latest && \
-#    go install golang.org/x/tools/cmd/goimports@latest && \
-#    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
-#    go install github.com/jstemmer/gotags@latest && \
-#    go install github.com/mattn/efm-langserver@latest && \
-    go install mvdan.cc/gofumpt@latest && \
-    go clean -cache -modcache -testcache && \
-    rm -rf $GOPATH/src/*
+	#    go install golang.org/x/tools/cmd/goimports@latest && \
+	#    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
+	#    go install github.com/jstemmer/gotags@latest && \
+	#    go install github.com/mattn/efm-langserver@latest && \
+	go install mvdan.cc/gofumpt@latest && \
+	go clean -cache -modcache -testcache && \
+	rm -rf $GOPATH/src/*
 
 # https://github.com/amperser/proselint
 #
@@ -113,12 +113,12 @@ RUN pip3 install proselint pynvim
 #
 WORKDIR $HOME/.local
 RUN git clone --depth=1 https://github.com/sumneko/lua-language-server && \
-    cd lua-language-server && \
-    git submodule update --depth 1 --init --recursive  && \
-    cd 3rd/luamake && \
-    ./compile/install.sh && \
-    cd ../.. && \
-    ./3rd/luamake/luamake rebuild
+	cd lua-language-server && \
+	git submodule update --depth 1 --init --recursive  && \
+	cd 3rd/luamake && \
+	./compile/install.sh && \
+	cd ../.. && \
+	./3rd/luamake/luamake rebuild
 
 ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 WORKDIR $HOME
@@ -133,13 +133,13 @@ WORKDIR $HOME
 # https://github.com/wbthomason/packer.nvim
 #
 RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-	$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
+	$HOME/.local/share/nvim/site/pack/packer/opt/packer.nvim
 
 #------------------------------ NOTICE ------------------------------
 # The neovim configuration
 # based on https://github.com/NvChad/NvChad
 #
-RUN git clone --depth 1 https://github.com/NvChad/NvChad $HOME/.config/nvim
+RUN git clone https://github.com/NvChad/NvChad $HOME/.config/nvim --depth 1
 # Add file type to solve the dockerfile filetype problem. 2022/05/29
 COPY --chown=ide:develop ./conf/filetype.lua	$HOME/.config/nvim/
 COPY --chown=ide:develop ./custom		$HOME/.config/nvim/lua/custom
@@ -171,13 +171,13 @@ RUN ln -s /etc/terminfo/x/xterm-color $HOME/.terminfo/x/xterm-256color
 # https://github.com/wbthomason/packer.nvim/issues/502
 #
 # NvChad version
-RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 # Install treesitter language parsers
 # See :h packages
 # https://github.com/wbthomason/packer.nvim/issues/237
 #
-RUN nvim --headless -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown' +qall
+RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown' +qall
 
 ENV PATH=$OLDPATH
 CMD ["/bin/ash"]
