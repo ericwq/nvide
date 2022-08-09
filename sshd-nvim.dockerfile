@@ -27,7 +27,7 @@ USER root
 # set sudo user ide privilige
 # generarte SSH server key pairs
 #
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main ca-certificates curl
+# RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main ca-certificates curl
 RUN apk add --no-cache openssh sudo mosh-server mandoc man-pages ncurses-doc ncurses --update \
 	&& sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
 	&& sed -ie 's/#Port 22/Port 22/g' /etc/ssh/sshd_config \
