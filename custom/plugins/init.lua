@@ -15,22 +15,6 @@ return {
 		end,
 	},
 
-	-- symbols-outline
-	-- https://github.com/simrat39/symbols-outline.nvim
-	['simrat39/symbols-outline.nvim'] = {
-		after = "nvim-lspconfig",
-		setup = function()
-			vim.g.symbols_outline = {
-				relative_width = true,
-				show_guides = false,
-				width = 20,
-				auto_close = true,
-				auto_preview = false,
-				show_symbol_details = false,
-			}
-		end,
-	},
-
 	-- refer to https://github.com/siduck/dotfiles/blob/master/nvchad/custom/plugins/init.lua
 	["windwp/nvim-ts-autotag"] = {
 		ft = {
@@ -57,6 +41,32 @@ return {
 		after = "nvim-lspconfig",
 		config = function()
 			require("custom.plugins.null-ls").setup()
+		end,
+	},
+
+	-- symbols-outline
+	-- https://github.com/simrat39/symbols-outline.nvim
+	['simrat39/symbols-outline.nvim'] = {
+		after = "nvim-lspconfig",
+		setup = function()
+			vim.g.symbols_outline = {
+				relative_width = true,
+				show_guides = false,
+				width = 20,
+				auto_close = true,
+				auto_preview = false,
+				show_symbol_details = false,
+			}
+		end,
+		config = function()
+			require("symbols-outline").setup({
+				relative_width = true,
+				show_guides = false,
+				width = 20,
+				auto_close = true,
+				auto_preview = false,
+				show_symbol_details = false,
+			})
 		end,
 	},
 
