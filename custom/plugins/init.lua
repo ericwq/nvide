@@ -60,14 +60,6 @@ return {
 		end,
 		config = function()
 			require("symbols-outline").setup()
-			-- require("symbols-outline").setup({
-			-- 	relative_width = true,
-			-- 	show_guides = false,
-			-- 	width = 20,
-			-- 	auto_close = true,
-			-- 	auto_preview = false,
-			-- 	show_symbol_details = false,
-			-- })
 		end,
 	},
 
@@ -90,18 +82,6 @@ return {
 	-- 		}
 	--
 	-- 		require("telescope").load_extension "media_files"
-	-- 	end,
-	-- }
-	--
-	-- use {
-	-- 	"Pocco81/TrueZen.nvim",
-	-- 	cmd = {
-	-- 		"TZAtaraxis",
-	-- 		"TZMinimalist",
-	-- 		"TZFocus",
-	-- 	},
-	-- 	config = function()
-	-- 		require "custom.plugins.truezen"
 	-- 	end,
 	-- }
 }
