@@ -21,6 +21,7 @@ return {
 			"html",
 			"javascriptreact",
 		},
+		after = "nvim-treesitter",
 		config = function()
 			require("nvim-ts-autotag").setup()
 		end,
@@ -40,7 +41,7 @@ return {
 	["jose-elias-alvarez/null-ls.nvim"] = {
 		after = "nvim-lspconfig",
 		config = function()
-			require("custom.plugins.null-ls").setup()
+			require"custom.plugins.null-ls".setup()
 		end,
 	},
 
@@ -48,40 +49,16 @@ return {
 	-- https://github.com/simrat39/symbols-outline.nvim
 	["simrat39/symbols-outline.nvim"] = {
 		after = "nvim-lspconfig",
-		setup = function() -- Specifies code to run before this plugin is loaded.
-			vim.g.symbols_outline = {
-				relative_width = true,
-				show_guides = false,
-				width = 20,
-				auto_close = true,
-				auto_preview = false,
-				show_symbol_details = false,
-			}
+		setup = function()
+			require("core.lazy_load").on_file_open "symbols-outline.nvim"
 		end,
 		config = function()
-			require("symbols-outline")
+			local opts = {
+				show_guides = false,
+				auto_close = true,
+				show_symbol_details = false,
+			}
+			require("symbols-outline").setup(opts)
 		end,
 	},
-
-	-- use {
-	-- 	"nvim-telescope/telescope-media-files.nvim",
-	-- 	after = "telescope.nvim",
-	-- 	config = function()
-	-- 		require("telescope").setup {
-	-- 			extensions = {
-	-- 				media_files = {
-	-- 					filetypes = {
-	-- 						"png",
-	-- 						"webp",
-	-- 						"jpg",
-	-- 						"jpeg",
-	-- 					},
-	-- 					find_cmd = "rg", -- find command (defaults to `fd`)
-	-- 				},
-	-- 			},
-	-- 		}
-	--
-	-- 		require("telescope").load_extension "media_files"
-	-- 	end,
-	-- }
 }
