@@ -8,7 +8,7 @@ return {
 	},
 
 	-- treesitter context
-	['romgrk/nvim-treesitter-context'] = {
+	["romgrk/nvim-treesitter-context"] = {
 		after = "nvim-treesitter",
 		config = function()
 			require("custom.plugins.treesitter-context").setup()
@@ -46,9 +46,9 @@ return {
 
 	-- symbols-outline
 	-- https://github.com/simrat39/symbols-outline.nvim
-	['simrat39/symbols-outline.nvim'] = {
+	["simrat39/symbols-outline.nvim"] = {
 		after = "nvim-lspconfig",
-		setup = function()
+		setup = function() -- Specifies code to run before this plugin is loaded.
 			vim.g.symbols_outline = {
 				relative_width = true,
 				show_guides = false,
@@ -59,7 +59,7 @@ return {
 			}
 		end,
 		config = function()
-			require("symbols-outline").setup()
+			require("symbols-outline")
 		end,
 	},
 
