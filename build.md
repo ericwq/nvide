@@ -76,6 +76,7 @@ please change the ownership of mount directory.
 % rm ~/.ssh/known_hosts ~/.ssh/known_hosts.old
 % ssh ide@localhost
 % ssh root@localhost
+% apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main ca-certificates curl
 % docker exec -u 0 -it nvide ash
 % docker exec -u ide -it nvide ash
 ```
