@@ -8,12 +8,12 @@ LABEL maintainer="ericwq057@qq.com"
 # telscope depends on ripgrep, fzf, fd
 # vista depends on ctags
 #
-RUN apk add --no-cache ca-certificates git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags alpine-sdk --update
+RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags alpine-sdk
 
 # additional pacakges
 # mainly go, tmux, htop, protoc
 # 
-RUN apk add tmux colordiff curl tzdata htop go protoc cloc --update
+RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc
 
 # language server packages
 # https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
@@ -27,7 +27,7 @@ RUN apk add tmux colordiff curl tzdata htop go protoc cloc --update
 # luarocks depends on readline-dev, lua5.3-dev, cmake, unzip
 # c family language build tools: autoconf, automake,bear
 #
-RUN apk add py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear --update
+RUN apk add --no-cache --update py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear
 
 # https://github.com/fsouza/prettierd
 #
