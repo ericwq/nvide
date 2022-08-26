@@ -27,7 +27,7 @@ RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc
 # luarocks depends on readline-dev, lua5.3-dev, cmake, unzip
 # c family language build tools: autoconf, automake,bear
 #
-RUN apk add --no-cache --update py3-pip npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear
+RUN apk add --no-cache --update python3 py3-pip py3-pynvim npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear
 
 # https://github.com/fsouza/prettierd
 #
@@ -105,7 +105,7 @@ RUN go install golang.org/x/tools/gopls@latest && \
 
 # https://github.com/amperser/proselint
 #
-RUN pip3 install proselint pynvim
+RUN python3 -m pip install --user proselint
 
 # Install lua-language-server
 # https://github.com/sumneko/lua-language-server/wiki/Build-and-Run
