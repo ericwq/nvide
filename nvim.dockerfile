@@ -98,7 +98,7 @@ RUN go install golang.org/x/tools/gopls@latest && \
 	#    go install golang.org/x/tools/cmd/goimports@latest && \
 	#    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
 	#    go install github.com/jstemmer/gotags@latest && \
-	#    go install github.com/mattn/efm-langserver@latest && \
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
 	go install mvdan.cc/gofumpt@latest && \
 	go clean -cache -modcache -testcache && \
 	rm -rf $GOPATH/src/*
@@ -177,7 +177,7 @@ RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'autoc
 # See :h packages
 # https://github.com/wbthomason/packer.nvim/issues/237
 #
-RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown' +qall
+RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
 
 ENV PATH=$OLDPATH
 CMD ["/bin/ash"]

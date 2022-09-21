@@ -10,6 +10,7 @@ return {
 				"json",
 				"markdown",
 				"dockerfile",
+				"proto",
 			},
 			highlight = {
 				enable = true,
