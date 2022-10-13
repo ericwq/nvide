@@ -18,8 +18,8 @@ lspconfig.clangd.setup {
 	-- on_attach = attach,
 	on_attach = function(client, bufnr)
 		attach(client, bufnr)
-		client.resolved_capabilities.document_formatting = true
-		client.resolved_capabilities.document_range_formatting = true
+		client.server_capabilities.documentFormattingProvider = true
+		client.server_capabilities.documentRangeFormattingProvider = true
 	end,
 	capabilities = capabilities,
 	root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
@@ -42,8 +42,8 @@ lspconfig.clangd.setup {
 lspconfig.dockerls.setup {
 	on_attach = function(client, bufnr)
 		attach(client, bufnr)
-		client.resolved_capabilities.document_formatting = true
-		client.resolved_capabilities.document_range_formatting = true
+		client.server_capabilities.documentFormattingProvider = true
+		client.server_capabilities.documentRangeFormattingProvider = true
 	end,
 	-- on_attach = on_attach_vim,
 	capabilities = capabilities,
@@ -67,8 +67,8 @@ lspconfig.gopls.setup {
 	},
 	on_attach = function(client, bufnr)
 		attach(client, bufnr)
-		client.resolved_capabilities.document_formatting = true
-		client.resolved_capabilities.document_range_formatting = true
+		client.server_capabilities.documentFormattingProvider = true
+		client.server_capabilities.documentRangeFormattingProvider = true
 	end,
 	-- on_attach = on_attach_vim,
 	capabilities = capabilities,
