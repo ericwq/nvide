@@ -160,9 +160,9 @@ RUN chmod +x $HOME/.local/bin/yank
 COPY --chown=ide:develop ./conf/clang-format.txt $HOME/.clang-format
 
 # Add xterm-kitty link for alpine linux 2022/04/30
-RUN mkdir -p $HOME/.terminfo/x
-RUN ln -s /etc/terminfo/k/kitty $HOME/.terminfo/x/xterm-kitty
-RUN ln -s /etc/terminfo/x/xterm-color $HOME/.terminfo/x/xterm-256color
+# RUN mkdir -p $HOME/.terminfo/x
+# RUN ln -s /etc/terminfo/k/kitty $HOME/.terminfo/x/xterm-kitty
+# RUN ln -s /etc/terminfo/x/xterm-color $HOME/.terminfo/x/xterm-256color
 
 # Init shadafile
 # RUN nvim --headless -u NONE -c 'echo "init shadafile"' -c qall
