@@ -8,7 +8,7 @@ LABEL maintainer="ericwq057@qq.com"
 # telscope depends on ripgrep, fzf, fd
 # vista depends on ctags
 #
-RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags alpine-sdk
+RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags alpine-sdk icu-data-full
 
 # additional pacakges
 # mainly go, tmux, htop, protoc
@@ -69,7 +69,7 @@ WORKDIR $HOME
 #
 ENV LUA_ROCKS=luarocks-3.8.0
 RUN cd /tmp &&\
-	wget https://luarocks.github.io/luarocks/releases/$LUA_ROCKS.tar.gz && \
+	curl -R -O https://luarocks.github.io/luarocks/releases/$LUA_ROCKS.tar.gz && \
 	tar zxpf $LUA_ROCKS.tar.gz && \
 	cd $LUA_ROCKS  && \
 	./configure --lua-version=5.3 --prefix=$HOME/.local && \
@@ -112,7 +112,7 @@ RUN python3 -m pip install --user proselint
 # the lua-language-server is installed in $HOME/.local
 #
 WORKDIR $HOME/.local
-RUN git clone -b 3.5.6 --depth=1 https://github.com/sumneko/lua-language-server && \
+RUN git clone  --depth=1 https://github.com/sumneko/lua-language-server && \
 	cd lua-language-server && \
 	git submodule update --depth 1 --init --recursive  && \
 	cd 3rd/luamake && \
