@@ -105,7 +105,7 @@ RUN go install golang.org/x/tools/gopls@latest && \
 
 # https://github.com/amperser/proselint
 #
-RUN python3 -m pip install --user proselint
+# RUN python3 -m pip install --user proselint
 
 # Install lua-language-server
 # https://github.com/sumneko/lua-language-server/wiki/Build-and-Run

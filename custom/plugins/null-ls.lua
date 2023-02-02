@@ -25,9 +25,9 @@ local sources = {
 	-- b.diagnostics.golangci_lint.with({filetypes = {"go"}, diagnostics_format = "(#{s}) #{m}"}),
 
 	-- english text
-	b.diagnostics.proselint.with({
-		diagnostics_format = "(#{s}) #{m}",
-	}),
+	-- b.diagnostics.proselint.with({
+	-- 	diagnostics_format = "(#{s}) #{m}",
+	-- }),
 
 	-- lua
 	b.formatting.lua_format.with({
