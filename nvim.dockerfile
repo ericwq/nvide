@@ -106,9 +106,14 @@ RUN go install golang.org/x/tools/gopls@latest && \
 # https://github.com/amperser/proselint
 #
 # RUN python3 -m pip install --user proselint
+# prepare for the pip installation
+ENV VIRTUAL_ENV=$HOME/.local/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN pip install proselint --upgrade pip
 
 # Install lua-language-server
-# https://github.com/sumneko/lua-language-server/wiki/Build-and-Run
+# https://github.com/sumneko/lua-language-server/wiki/Getting-Started#linuxmacos
 # the lua-language-server is installed in $HOME/.local
 #
 WORKDIR $HOME/.local
@@ -121,7 +126,7 @@ RUN git clone  --depth=1 https://github.com/sumneko/lua-language-server && \
 	./3rd/luamake/luamake rebuild
 
 ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
-WORKDIR $HOME
+
 
 # Install packer.vim
 # PackerSync command will install packer.vim automaticlly, while the
@@ -132,6 +137,7 @@ WORKDIR $HOME
 # because NvChad install packer in 'opt' directory
 # https://github.com/wbthomason/packer.nvim
 #
+WORKDIR $HOME
 RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
 	$HOME/.local/share/nvim/site/pack/packer/opt/packer.nvim
 
