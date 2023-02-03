@@ -105,11 +105,10 @@ RUN go install golang.org/x/tools/gopls@latest && \
 
 # https://github.com/amperser/proselint
 #
-# RUN python3 -m pip install --user proselint
 # prepare for the pip installation
 ENV VIRTUAL_ENV=$HOME/.local/venv
 RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV PATH=$VIRTUAL_ENV/bin:$PATH
 RUN pip install proselint --upgrade pip
 
 # Install lua-language-server
@@ -123,7 +122,8 @@ RUN git clone  --depth=1 https://github.com/sumneko/lua-language-server && \
 	cd 3rd/luamake && \
 	./compile/install.sh && \
 	cd ../.. && \
-	./3rd/luamake/luamake rebuild
+	./3rd/luamake/luamake rebuild &&\
+	rm -rf ./.git ./3rd ./log ./test
 
 ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 
