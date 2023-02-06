@@ -1,4 +1,4 @@
-FROM ericwq057/nvide:0.7.8
+FROM ericwq057/nvide:0.7.9
 LABEL maintainer="ericwq057@qq.com"
 
 # Arguement for passwords and ssh public key
