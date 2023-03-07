@@ -112,18 +112,22 @@ ENV PATH=$VIRTUAL_ENV/bin:$PATH
 RUN pip install proselint --upgrade pip
 
 # Install lua-language-server
-# https://github.com/sumneko/lua-language-server/wiki/Getting-Started#linuxmacos
+# https://github.com/LuaLS/lua-language-server/wiki/Getting-Started#command-line
 # the lua-language-server is installed in $HOME/.local
 #
 WORKDIR $HOME/.local
-RUN git clone  --depth=1 https://github.com/sumneko/lua-language-server && \
+RUN git clone https://github.com/LuaLS/lua-language-server && \
 	cd lua-language-server && \
-	git submodule update --depth 1 --init --recursive  && \
-	cd 3rd/luamake && \
-	./compile/install.sh && \
-	cd ../.. && \
-	./3rd/luamake/luamake rebuild &&\
+	./make.sh && \
 	rm -rf ./.git ./3rd ./log ./test
+# RUN git clone  --depth=1 https://github.com/sumneko/lua-language-server && \
+# 	cd lua-language-server && \
+# 	git submodule update --depth 1 --init --recursive  && \
+# 	cd 3rd/luamake && \
+# 	./compile/install.sh && \
+# 	cd ../.. && \
+# 	./3rd/luamake/luamake rebuild &&\
+# 	rm -rf ./.git ./3rd ./log ./test
 
 ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 
