@@ -141,9 +141,15 @@ ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 # because NvChad install packer in 'opt' directory
 # https://github.com/wbthomason/packer.nvim
 #
+# WORKDIR $HOME
+# RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+# 	$HOME/.local/share/nvim/site/pack/packer/opt/packer.nvim
+
+# Install lazy.nvim
+# https://github.com/folke/lazy.nvim
 WORKDIR $HOME
-RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-	$HOME/.local/share/nvim/site/pack/packer/opt/packer.nvim
+RUN git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable \
+	$HOME/.local/share/nvim/lazy/lazy.nvim
 
 #------------------------------ NOTICE ------------------------------
 # The neovim configuration
@@ -181,13 +187,13 @@ COPY --chown=ide:develop ./conf/clang-format.txt $HOME/.clang-format
 # https://github.com/wbthomason/packer.nvim/issues/502
 #
 # NvChad version
-RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+# RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 # Install treesitter language parsers
 # See :h packages
 # https://github.com/wbthomason/packer.nvim/issues/237
 #
-RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
+# RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
 
 ENV PATH=$OLDPATH
 CMD ["/bin/ash"]

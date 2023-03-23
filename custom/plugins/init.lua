@@ -1,5 +1,6 @@
 return {
-	["nvim-treesitter/nvim-treesitter"] = {
+	{
+		"nvim-treesitter/nvim-treesitter",
 		override_options = {
 			ensure_installed = {
 				"lua",
@@ -36,7 +37,8 @@ return {
 		},
 	},
 
-	["nvim-tree/nvim-tree.lua"] = {
+	{
+		"nvim-tree/nvim-tree.lua",
 		override_options = {
 			filters = {
 				dotfiles = true,
@@ -52,7 +54,8 @@ return {
 		},
 	},
 
-	["lukas-reineke/indent-blankline.nvim"] = {
+	{
+		"lukas-reineke/indent-blankline.nvim",
 		override_options = {
 			show_current_context = false,
 			show_current_context_start = false,
@@ -60,15 +63,16 @@ return {
 	},
 
 	-- replace the alpha-nvim
-	["goolord/alpha-nvim"] = {
-		disable = false,
-		config = function()
-			require "custom.plugins.alpha"
-		end,
-	},
+	-- ["goolord/alpha-nvim"] = {
+	-- 	disable = false,
+	-- 	config = function()
+	-- 		require "custom.plugins.alpha"
+	-- 	end,
+	-- },
 
 	-- treesitter context
-	["romgrk/nvim-treesitter-context"] = {
+	{
+		"romgrk/nvim-treesitter-context",
 		after = "nvim-treesitter",
 		config = function()
 			require("custom.plugins.treesitter-context").setup()
@@ -76,7 +80,8 @@ return {
 	},
 
 	-- refer to https://github.com/siduck/dotfiles/blob/master/nvchad/custom/plugins/init.lua
-	["windwp/nvim-ts-autotag"] = {
+	{
+		"windwp/nvim-ts-autotag",
 		ft = {
 			"html",
 			"javascriptreact",
@@ -87,7 +92,8 @@ return {
 		end,
 	},
 
-	["neovim/nvim-lspconfig"] = {
+	{
+		"neovim/nvim-lspconfig",
 		opt = true,
 		setup = function()
 			require("core.lazy_load").on_file_open "nvim-lspconfig"
@@ -98,7 +104,8 @@ return {
 		end,
 	},
 
-	["jose-elias-alvarez/null-ls.nvim"] = {
+	{
+		"jose-elias-alvarez/null-ls.nvim",
 		after = "nvim-lspconfig",
 		config = function()
 			require"custom.plugins.null-ls".setup()
@@ -107,7 +114,8 @@ return {
 
 	-- symbols-outline
 	-- https://github.com/simrat39/symbols-outline.nvim
-	["simrat39/symbols-outline.nvim"] = {
+	{
+		"simrat39/symbols-outline.nvim",
 		after = "nvim-lspconfig",
 		setup = function()
 			require("core.lazy_load").on_file_open "symbols-outline.nvim"

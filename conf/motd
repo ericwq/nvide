@@ -1,4 +1,4 @@
-nvide:0.8.7
+nvide:0.8.8
 
 Lua, C/C++ and Golang Integrated Development Environment.
 Powered by neovim, luals, gopls and clangd.

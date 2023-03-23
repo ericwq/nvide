@@ -4,7 +4,7 @@
 local M = {}
 
 -- make sure you maintain the structure of `core/default_config.lua` here,
-M.plugins = require "custom.plugins"
+-- M.plugins = "custom.plugins"
 
 -- changing theme and UI
 M.ui = {
