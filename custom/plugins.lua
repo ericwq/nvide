@@ -49,7 +49,11 @@ local plugins = {
 
 	{
 		"romgrk/nvim-treesitter-context",
-		after = "nvim-treesitter",
+		dependencies = {
+			{
+				"nvim-treesitter/nvim-treesitter",
+			},
+		},
 		config = function()
 			require("custom.configs.treesitter-context").setup()
 		end,
@@ -61,7 +65,11 @@ local plugins = {
 			"html",
 			"javascriptreact",
 		},
-		after = "nvim-treesitter",
+		dependencies = {
+			{
+				"nvim-treesitter/nvim-treesitter",
+			},
+		},
 		config = function()
 			require("nvim-ts-autotag").setup()
 		end,
@@ -69,7 +77,11 @@ local plugins = {
 
 	{ -- https://github.com/simrat39/symbols-outline.nvim
 		"simrat39/symbols-outline.nvim",
-		after = "nvim-lspconfig",
+		dependencies = {
+			{
+				"neovim/nvim-lspconfig",
+			},
+		},
 		-- setup = function()
 		-- 	require("core.lazy_load").on_file_open "symbols-outline.nvim"
 		-- end,
