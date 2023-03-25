@@ -2,7 +2,6 @@ FROM alpine:edge
 LABEL maintainer="ericwq057@qq.com"
 
 # This is the base pacakges for neovim 
-# https://github.com/NvChad/NvChad
 #
 # tree-sitter depends on tree-sitter-cli, nodejs, alpine-sdk
 # telscope depends on ripgrep, fzf, fd
@@ -115,47 +114,24 @@ RUN pip install proselint --upgrade pip
 # https://github.com/LuaLS/lua-language-server/wiki/Getting-Started#command-line
 # the lua-language-server is installed in $HOME/.local
 #
-WORKDIR $HOME/.local
-RUN git clone https://github.com/LuaLS/lua-language-server && \
-	cd lua-language-server && \
-	./make.sh && \
-	rm -rf ./.git ./3rd ./log ./test
-# RUN git clone  --depth=1 https://github.com/sumneko/lua-language-server && \
+# WORKDIR $HOME/.local
+# RUN git clone https://github.com/LuaLS/lua-language-server && \
 # 	cd lua-language-server && \
-# 	git submodule update --depth 1 --init --recursive  && \
-# 	cd 3rd/luamake && \
-# 	./compile/install.sh && \
-# 	cd ../.. && \
-# 	./3rd/luamake/luamake rebuild &&\
+# 	./make.sh && \
 # 	rm -rf ./.git ./3rd ./log ./test
-
-ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
-
-
-# Install packer.vim
-# PackerSync command will install packer.vim automaticlly, while the
-# installation  will stop to wait for user <Enter> input.
-# So we install it manually.
-#
-# we install packer to 'opt' directory instead of 'start' directory
-# because NvChad install packer in 'opt' directory
-# https://github.com/wbthomason/packer.nvim
-#
-# WORKDIR $HOME
-# RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-# 	$HOME/.local/share/nvim/site/pack/packer/opt/packer.nvim
+# ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 
 # Install lazy.nvim
 # https://github.com/folke/lazy.nvim
-WORKDIR $HOME
-RUN git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable \
-	$HOME/.local/share/nvim/lazy/lazy.nvim
+# WORKDIR $HOME
+# RUN git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable \
+# 	$HOME/.local/share/nvim/lazy/lazy.nvim
 
 #------------------------------ NOTICE ------------------------------
 # The neovim configuration
 # based on https://github.com/NvChad/NvChad
 #
-RUN git clone https://github.com/NvChad/NvChad $HOME/.config/nvim --depth 1
+RUN git clone https://github.com/NvChad/NvChad.git $HOME/.config/nvim --depth 1
 # Add file type to solve the dockerfile filetype problem. 2022/05/29
 COPY --chown=ide:develop ./conf/filetype.lua	$HOME/.config/nvim/
 COPY --chown=ide:develop ./custom		$HOME/.config/nvim/lua/custom
@@ -189,11 +165,15 @@ COPY --chown=ide:develop ./conf/clang-format.txt $HOME/.clang-format
 # NvChad version
 # RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
+RUN nvim --headless "+Lazy! sync" +qa
+#RUN nvim --headless +"lua require('lazy').restore({wait=true})" +qa
+
 # Install treesitter language parsers
 # See :h packages
 # https://github.com/wbthomason/packer.nvim/issues/237
 #
-# RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
+# RUN nvim --headless -c 'packadd lazy.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
+
 
 ENV PATH=$OLDPATH
 CMD ["/bin/ash"]
