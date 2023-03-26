@@ -70,29 +70,42 @@ local plugins = {
 				"nvim-treesitter/nvim-treesitter",
 			},
 		},
+	},
+
+	{
+		"stevearc/aerial.nvim",
+		event = "BufEnter",
 		config = function()
-			require("nvim-ts-autotag").setup()
+			require('aerial').setup({
+				-- optionally use on_attach to set keymaps when aerial has attached to a buffer
+				on_attach = function(bufnr)
+					-- Jump forwards/backwards with '{' and '}'
+					vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', {
+						buffer = bufnr,
+					})
+					vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', {
+						buffer = bufnr,
+					})
+				end,
+			})
+			-- You probably also want to set a keymap to toggle aerial
+			vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle<CR>')
 		end,
 	},
 
 	{ -- https://github.com/simrat39/symbols-outline.nvim
 		"simrat39/symbols-outline.nvim",
+		event = "BufEnter",
 		dependencies = {
 			{
 				"neovim/nvim-lspconfig",
 			},
 		},
-		-- setup = function()
-		-- 	require("core.lazy_load").on_file_open "symbols-outline.nvim"
-		-- end,
-		config = function()
-			local opts = {
-				show_guides = false,
-				auto_close = true,
-				show_symbol_details = false,
-			}
-			require("symbols-outline").setup(opts)
-		end,
+		opts = {
+			show_guides = false,
+			auto_close = true,
+			show_symbol_details = false,
+		},
 	},
 
 	-- To make a plugin not be loaded

@@ -26,7 +26,7 @@ RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc
 # luarocks depends on readline-dev, lua5.3-dev, cmake, unzip
 # c family language build tools: autoconf, automake,bear
 #
-RUN apk add --no-cache --update python3 py3-pip py3-pynvim npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear waf
+RUN apk add --no-cache --update py3-pip py3-pynvim npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear waf
 
 # https://github.com/fsouza/prettierd
 #
