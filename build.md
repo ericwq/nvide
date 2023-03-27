@@ -88,3 +88,14 @@ please change the ownership of mount directory.
 ```
 % docker attach nvide
 ```
+
+## build lua_ls manually
+```
+% docker run -w /root -it --rm alpine:latest sh -uelic '
+  apk add git ninja bash build-base --update
+  sh
+  '
+% git clone https://github.com/LuaLS/lua-language-server
+% cd lua-language-server/
+% ./make.sh
+```
