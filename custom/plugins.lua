@@ -47,16 +47,20 @@ local plugins = {
 		end,
 	},
 
-	{
-		"romgrk/nvim-treesitter-context",
+	{ -- refer https://github.com/nvim-treesitter/nvim-treesitter-context
+		"nvim-treesitter/nvim-treesitter-context",
+		event = "BufEnter",
 		dependencies = {
 			{
 				"nvim-treesitter/nvim-treesitter",
 			},
 		},
-		config = function()
-			require("custom.configs.treesitter-context").setup()
+		opts = function()
+			return require "custom.configs.treesitter-context"
 		end,
+		-- config = function(_, opts)
+		-- 	require("nvim-treesitter-context").setup(opts)
+		-- end,
 	},
 
 	{ -- refer to https://github.com/siduck/dotfiles/blob/master/nvchad/custom/plugins/init.lua
