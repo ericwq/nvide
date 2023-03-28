@@ -12,7 +12,7 @@ RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs rip
 # additional pacakges
 # mainly go, tmux, htop, protoc
 # 
-RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc gzip wget
+RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc gzip wget gcompat
 
 # language server packages
 # https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
@@ -119,7 +119,12 @@ RUN pip install proselint --upgrade pip
 # 	cd lua-language-server && \
 # 	./make.sh && \
 # 	rm -rf ./.git ./3rd ./log ./test
+# RUN mkdir -p $HOME/.local/lua-language-server/
+# COPY --chown=ide:develop ./lua-language-server-3.6.18-linux-x64.tar.gz		$HOME/.local/lua-language-server/
+# RUN cd lua-language-server && \
+# 	tar xzf lua-language-server-3.6.18-linux-x64.tar.gz
 # ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
+WORKDIR $HOME
 
 # Install lazy.nvim
 # https://github.com/folke/lazy.nvim

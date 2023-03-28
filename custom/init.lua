@@ -26,3 +26,9 @@ vim.g.python3_host_prog = '/usr/bin/python3'
 vim.opt.expandtab = false
 vim.opt.tabstop = 3
 vim.opt.shiftwidth = 3
+
+local pkg = registry.get_package("lua-language-server")
+
+pkg:install{
+	target = "linux_x64_gnu",
+}
