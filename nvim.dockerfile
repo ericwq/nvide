@@ -179,6 +179,7 @@ RUN nvim --headless "+Lazy! sync" +qa
 #
 # RUN nvim --headless -c 'packadd lazy.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
 
+RUN nvim --headless -c "MasonInstall --target=linux_x64_gnu lua-language-server" -c qall
 
 ENV PATH=$OLDPATH
 CMD ["/bin/ash"]
