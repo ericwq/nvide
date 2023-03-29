@@ -12,7 +12,7 @@ RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs rip
 # additional pacakges
 # mainly go, tmux, htop, protoc
 # 
-RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc gzip wget gcompat
+RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc gzip wget
 
 # language server packages
 # https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
@@ -114,16 +114,12 @@ RUN pip install proselint --upgrade pip
 # https://github.com/LuaLS/lua-language-server/wiki/Getting-Started#command-line
 # the lua-language-server is installed in $HOME/.local
 #
-# WORKDIR $HOME/.local
-# RUN git clone https://github.com/LuaLS/lua-language-server && \
-# 	cd lua-language-server && \
-# 	./make.sh && \
-# 	rm -rf ./.git ./3rd ./log ./test
-# RUN mkdir -p $HOME/.local/lua-language-server/
-# COPY --chown=ide:develop ./lua-language-server-3.6.18-linux-x64.tar.gz		$HOME/.local/lua-language-server/
-# RUN cd lua-language-server && \
-# 	tar xzf lua-language-server-3.6.18-linux-x64.tar.gz
-# ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
+WORKDIR $HOME/.local
+RUN git clone https://github.com/LuaLS/lua-language-server && \
+	cd lua-language-server && \
+	./make.sh && \
+	rm -rf ./.git ./3rd ./log ./test
+ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 WORKDIR $HOME
 
 # Install lazy.nvim
@@ -171,7 +167,6 @@ COPY --chown=ide:develop ./conf/clang-format.txt $HOME/.clang-format
 # RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 RUN nvim --headless "+Lazy! sync" +qa
-#RUN nvim --headless +"lua require('lazy').restore({wait=true})" +qa
 
 # Install treesitter language parsers
 # See :h packages
@@ -179,7 +174,7 @@ RUN nvim --headless "+Lazy! sync" +qa
 #
 # RUN nvim --headless -c 'packadd lazy.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
 
-RUN nvim --headless -c "MasonInstall --target=linux_x64_gnu lua-language-server" -c qall
+#RUN nvim --headless -c "MasonInstall --target=linux_x64_gnu lua-language-server" -c qall
 
 ENV PATH=$OLDPATH
 CMD ["/bin/ash"]
