@@ -114,6 +114,10 @@ RUN pip install proselint --upgrade pip
 # https://github.com/LuaLS/lua-language-server/wiki/Getting-Started#command-line
 # the lua-language-server is installed in $HOME/.local
 #
+# check the following refs to bulid the musl version of lua-language-server.
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobs
+# https://github.com/LuaLS/lua-language-server/blob/master/.github/workflows/build.yml
+#
 WORKDIR $HOME/.local
 RUN git clone https://github.com/LuaLS/lua-language-server && \
 	cd lua-language-server && \
