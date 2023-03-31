@@ -90,6 +90,9 @@ please change the ownership of mount directory.
 ```
 
 ## build lua_ls manually
+
+check (act for macOS)[https://github.com/nektos/act/issues/1658]
+
 ```
 % docker run -w /root -it --rm alpine:latest sh -uelic '
   apk add git ninja bash build-base --update
