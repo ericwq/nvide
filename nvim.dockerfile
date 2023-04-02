@@ -122,7 +122,8 @@ WORKDIR $HOME/.local
 RUN git clone https://github.com/LuaLS/lua-language-server && \
 	cd lua-language-server && \
 	./make.sh && \
-	rm -rf ./.git ./3rd ./log ./test
+	rm -rf ./.git ./3rd ./log ./test ./build ./make.lua ./tools ./README.md ./make && \
+	rm -rf ./make.sh ./test.lua ./log ./make.bat ./theme-tokens.md
 ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 WORKDIR $HOME
 
