@@ -46,6 +46,10 @@ ENV PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 #
 ENV ENV=$HOME/.profile
 
+# Node.js provider
+#
+# RUN npm install -g neovim
+
 # Create user/group 
 # ide/develop
 #
@@ -101,10 +105,10 @@ RUN go install golang.org/x/tools/gopls@latest && \
 # https://github.com/amperser/proselint
 #
 # prepare for the pip installation
-ENV VIRTUAL_ENV=$HOME/.local/venv
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH=$VIRTUAL_ENV/bin:$PATH
-RUN pip install proselint --upgrade pip
+# ENV VIRTUAL_ENV=$HOME/.local/venv
+# RUN python3 -m venv $VIRTUAL_ENV
+# ENV PATH=$VIRTUAL_ENV/bin:$PATH
+# RUN pip install proselint --upgrade pip
 
 # Install lua-language-server
 # https://github.com/LuaLS/lua-language-server/wiki/Getting-Started#command-line
