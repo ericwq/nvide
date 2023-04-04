@@ -81,6 +81,7 @@ local plugins = {
 		event = "BufEnter",
 		config = function()
 			require('aerial').setup({
+				close_on_select = true,
 				-- optionally use on_attach to set keymaps when aerial has attached to a buffer
 				on_attach = function(bufnr)
 					-- Jump forwards/backwards with '{' and '}'
