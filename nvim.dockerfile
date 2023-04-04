@@ -28,10 +28,6 @@ RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc g
 #
 RUN apk add --no-cache --update py3-pip py3-pynvim npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear waf
 
-# https://github.com/fsouza/prettierd
-#
-RUN npm install -g @fsouza/prettierd neovim dockerfile-language-server-nodejs
-
 ENV HOME=/home/ide
 ENV GOPATH /go
 
@@ -127,6 +123,11 @@ RUN git clone https://github.com/LuaLS/lua-language-server && \
 ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 WORKDIR $HOME
 
+# https://github.com/fsouza/prettierd
+#
+ENV NPM_CONFIG_PREFIX=$HOME/.local/npm
+RUN npm install --prefix $HOME/.local/npm neovim
+
 # Install lazy.nvim
 # https://github.com/folke/lazy.nvim
 # WORKDIR $HOME
@@ -181,6 +182,7 @@ RUN nvim --headless "+Lazy! sync" +qa
 # RUN nvim --headless -c 'packadd lazy.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
 
 #RUN nvim --headless -c "MasonInstall --target=linux_x64_gnu lua-language-server" -c qall
+#RUN nvim --headless -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
 
 ENV PATH=$OLDPATH
 CMD ["/bin/ash"]
