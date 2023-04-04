@@ -137,6 +137,7 @@ WORKDIR $HOME
 # The neovim configuration
 # based on https://github.com/NvChad/NvChad
 #
+ADD --chown=ide:develop https://api.github.com/repos/NvChad/NvChad/git/refs/heads/v2.0 .nvchad-version.json
 RUN git clone https://github.com/NvChad/NvChad.git $HOME/.config/nvim --depth 1
 # Add file type to solve the dockerfile filetype problem. 2022/05/29
 COPY --chown=ide:develop ./conf/filetype.lua	$HOME/.config/nvim/
