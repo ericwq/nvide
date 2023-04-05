@@ -48,7 +48,7 @@ ENV ENV=$HOME/.profile
 
 # Node.js provider
 #
-# RUN npm install -g neovim
+# RUN npm install -g npm@latest
 
 # Create user/group 
 # ide/develop
@@ -129,8 +129,8 @@ WORKDIR $HOME
 
 # https://github.com/fsouza/prettierd
 #
-ENV NPM_CONFIG_PREFIX=$HOME/.local/npm
-RUN npm install --prefix $HOME/.local/npm neovim
+ENV NPM_CONFIG_PREFIX=$HOME/.npm-global
+RUN npm install --prefix $NPM_CONFIG_PREFIX -g npm@latest neovim wheel
 
 # Install lazy.nvim
 # https://github.com/folke/lazy.nvim
@@ -142,7 +142,7 @@ RUN npm install --prefix $HOME/.local/npm neovim
 # The neovim configuration
 # based on https://github.com/NvChad/NvChad
 #
-ADD --chown=ide:develop https://api.github.com/repos/NvChad/NvChad/git/refs/heads/v2.0 .nvchad-version.json
+ADD --chown=ide:develop https://api.github.com/repos/NvChad/NvChad/git/refs/heads/v2.0 .version/nvchad.json
 RUN git clone https://github.com/NvChad/NvChad.git $HOME/.config/nvim --depth 1
 # Add file type to solve the dockerfile filetype problem. 2022/05/29
 COPY --chown=ide:develop ./conf/filetype.lua	$HOME/.config/nvim/
@@ -177,6 +177,9 @@ COPY --chown=ide:develop ./conf/clang-format.txt $HOME/.clang-format
 # NvChad version
 # RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
+# check update before download
+ADD --chown=ide:develop https://api.github.com/repos/folke/lazy.nvim/git/refs/heads/main .version/lazy.json
+ADD --chown=ide:develop https://api.github.com/repos/williamboman/mason.nvim/git/refs/heads/main .version/mason.json
 RUN nvim --headless "+Lazy! sync" +qa
 
 # Install treesitter language parsers
