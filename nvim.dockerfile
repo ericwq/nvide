@@ -46,10 +46,6 @@ ENV PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 #
 ENV ENV=$HOME/.profile
 
-# Node.js provider
-#
-# RUN npm install -g npm@latest
-
 # Create user/group 
 # ide/develop
 #
@@ -127,7 +123,8 @@ RUN git clone https://github.com/LuaLS/lua-language-server && \
 ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 WORKDIR $HOME
 
-# https://github.com/fsouza/prettierd
+# Node.js provider
+# install base module: npm, neovim wheel globally.
 #
 ENV NPM_CONFIG_PREFIX=$HOME/.npm-global
 RUN npm install --prefix $NPM_CONFIG_PREFIX -g npm@latest neovim wheel
