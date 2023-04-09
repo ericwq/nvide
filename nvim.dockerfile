@@ -105,6 +105,10 @@ RUN go install golang.org/x/tools/gopls@latest && \
 # RUN python3 -m venv $VIRTUAL_ENV
 # ENV PATH=$VIRTUAL_ENV/bin:$PATH
 # RUN pip install proselint --upgrade pip
+#
+# https://packaging.python.org/en/latest/tutorials/installing-packages/#id11
+#
+# RUN python3 -m pip install --upgrade pip setuptools wheel
 
 # Install lua-language-server
 # https://github.com/LuaLS/lua-language-server/wiki/Getting-Started#command-line
