@@ -159,6 +159,9 @@ COPY --chown=ide:develop ./conf/profile		$HOME/.profile
 COPY --chown=ide:develop ./conf/tmux.conf 	$HOME/.tmux.conf
 COPY --chown=ide:develop ./conf/vimrc 		$HOME/.config/nvim/vimrc
 COPY --chown=ide:develop ./conf/yank 		$HOME/.local/bin/yank
+# ADD --chown=ide:develop --chmod=755 https://github.com/sunaku/home/blob/master/bin/yank ${HOME}/.local/bin/yank
+# https://neovim.discourse.group/t/writefile-to-dev-tty-stopped-working-in-nvim-0-9/3784/5
+# Writefile to /dev/tty stopped working in nvim 0.9
 RUN chmod +x $HOME/.local/bin/yank
 
 # Put the .clang-format in home directory 2022/04/30

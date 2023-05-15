@@ -26,15 +26,16 @@
 
 input=$( cat "$@" )
 input() { printf %s "$input" ;}
+known() { command -v "$1" >/dev/null ;}
+maybe() { known "$1" && input | "$@" ;}
+alive() { known "$1" && "$@" >/dev/null 2>&1 ;}
 
 # copy to tmux
-test -n "$TMUX" &&
-  command -v tmux >/dev/null && input | tmux load-buffer -
+test -n "$TMUX" && maybe tmux load-buffer -
 
 # copy via X11
-test -n "$DISPLAY" && {
-  command -v xsel >/dev/null && input | xsel -i -b ||
-  command -v xclip >/dev/null && input | xclip -sel c
+test -n "$DISPLAY" && alive xhost && {
+  maybe xsel -i -b || maybe xclip -sel c
 }
 
 # copy via OSC 52

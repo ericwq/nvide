@@ -56,7 +56,7 @@ please change the ownership of mount directory.
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
         nvide:0.7.11
 
-% docker run --rm -ti -h nvide --env TZ=Asia/Shanghai --name nvide \
+% docker run --rm -ti --privileged -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
         nvide:0.7.11
