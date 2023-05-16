@@ -61,7 +61,6 @@ M.nvimtree = {
 	git = {
 		enable = true,
 	},
-
 	renderer = {
 		highlight_git = true,
 		icons = {
@@ -72,9 +71,6 @@ M.nvimtree = {
 	},
 	filters = {
 		dotfiles = true,
-	},
-	view = {
-		hide_root_folder = false,
 	},
 	actions = {
 		open_file = {
