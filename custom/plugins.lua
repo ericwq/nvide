@@ -40,6 +40,14 @@ local plugins = {
 
 	-- Install a plugin
 	{
+		"ojroques/nvim-osc52",
+		event = "BufEnter",
+		config = function()
+			require "custom.configs.osc52"
+		end,
+	},
+
+	{
 		"max397574/better-escape.nvim",
 		event = "InsertEnter",
 		config = function()

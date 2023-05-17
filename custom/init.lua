@@ -1,16 +1,14 @@
 -- source a vimscript file for clipboard support
 -- vim.cmd('source ~/.config/nvim/vimrc')
-
 -- https://neovim.discourse.group/t/how-can-i-customize-clipboard-provider-using-lua/2564/2
-require "custom.clipboard"
-
-vim.cmd [[
-  augroup clip
-    autocmd!
-    autocmd TextYankPost * :lua require("custom.clipboard").handle_yank_post()
-  augroup end
-]]
-
+-- require "custom.clipboard"
+--
+-- vim.cmd [[
+--   augroup clip
+--     autocmd!
+--     autocmd TextYankPost * :lua require("custom.clipboard").handle_yank_post()
+--   augroup end
+-- ]]
 -----------------------------------------------------------
 -- Neovim provider
 -----------------------------------------------------------
