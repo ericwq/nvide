@@ -1,9 +1,9 @@
 ## Build the image
 
 ```sh
-% docker build -t nvide:0.7.11 -f nvim.dockerfile .
-% docker build --progress plain -t nvide:0.7.11 -f nvim.dockerfile .
-% docker build --no-cache --progress plain -t nvide:0.7.11 -f nvim.dockerfile .
+% docker build -t nvide:0.7.12 -f nvim.dockerfile .
+% docker build --progress plain -t nvide:0.7.12 -f nvim.dockerfile .
+% docker build --no-cache --progress plain -t nvide:0.7.12 -f nvim.dockerfile .
 ```
 
 ## create docker volume
@@ -20,14 +20,14 @@ please change the ownership of mount directory.
 % docker build --build-arg ROOT_PWD=passowrd \
 	--build-arg USER_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-	--progress plain -t ssh-nvide:0.8.8 -f sshd-nvim.dockerfile .
+	--progress plain -t ssh-nvide:0.8.9 -f sshd-nvim.dockerfile .
 ```
 
 ## Dryrun the container
 
 ```sh
-% docker run --rm -ti nvide:0.7.11
-% docker run -ti --rm -u ide -p 22:22 ssh-nvide:0.8.8
+% docker run --rm -ti nvide:0.7.12
+% docker run -ti --rm -u ide -p 22:22 ssh-nvide:0.8.9
 ```
 
 ## Publish images to [docker](hub.docker.com)
@@ -35,7 +35,7 @@ please change the ownership of mount directory.
 ### 1. Tag the image
 
 ```sh
-% docker tag nvide:0.7.11 ericwq057/nvide:0.7.11
+% docker tag nvide:0.7.12 ericwq057/nvide:0.7.12
 ```
 
 ### 2. sign in with your account at hub.docker.com
@@ -43,9 +43,9 @@ please change the ownership of mount directory.
 ### 3. Push to docker.io
 
 ```sh
-% docker push ericwq057/nvide:0.7.11
-% git tag -a 0.7.11 -m "release message."
-% git push origin 0.7.11
+% docker push ericwq057/nvide:0.7.12
+% git tag -a 0.7.12 -m "release message."
+% git push origin 0.7.12
 ```
 
 ## Start the container
@@ -54,22 +54,22 @@ please change the ownership of mount directory.
 % docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        nvide:0.7.11
+        nvide:0.7.12
 
 % docker run --rm -ti --privileged -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        nvide:0.7.11
+        nvide:0.7.12
 
 % docker run -d -p 22:22 -h ssh-nvide --env TZ=Asia/Shanghai --name ssh-nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        ssh-nvide:0.8.8
+        ssh-nvide:0.8.9
 
 % docker run -d -p 22:22 -p 60001:60001/udp -h ssh-nvide --env TZ=Asia/Shanghai --name ssh-nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        ssh-nvide:0.8.8
+        ssh-nvide:0.8.9
 ```
 
 ## Login to the containter
