@@ -62,9 +62,12 @@ Install one or all of the fonts, It's required by `nvide`.
 
 ```
 % brew tap homebrew/cask-fonts
+% brew install --cask font-jetbrains-mono-nerd-font
 % brew install --cask font-hack-nerd-font
 % brew install --cask font-cousine-nerd-font
 ```
+
+remeber to set font family as `JetbrainsMono Nerd Font` in `~/.config/kitty/kitty.conf`
 
 ### TERM environment variable
 
