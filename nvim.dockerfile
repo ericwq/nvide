@@ -35,7 +35,7 @@ ENV GOPATH /go
 # luarocks is also installed in $HOME/.local/
 #
 # save PATH in OLDPATH, depends on HOME/.profile for environment setup
-ENV OLDPATH=$PATH
+# ENV OLDPATH=$PATH
 ENV PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 
 # The source script
@@ -62,7 +62,7 @@ WORKDIR $HOME
 # 3. luaformatter
 # 4. efm-langserver
 #
-ENV LUA_ROCKS=luarocks-3.8.0
+ENV LUA_ROCKS=luarocks-3.9.2
 RUN cd /tmp &&\
 	curl -R -O https://luarocks.github.io/luarocks/releases/$LUA_ROCKS.tar.gz && \
 	tar zxpf $LUA_ROCKS.tar.gz && \
@@ -195,5 +195,5 @@ RUN nvim --headless "+Lazy! sync" +qa
 #RUN nvim --headless -c "MasonInstall --target=linux_x64_gnu lua-language-server" -c qall
 #RUN nvim --headless -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
 
-ENV PATH=$OLDPATH
+# ENV PATH=$OLDPATH
 CMD ["/bin/ash"]
