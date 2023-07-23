@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:latest
 LABEL maintainer="ericwq057@qq.com"
 
 # This is the base pacakges for neovim 
