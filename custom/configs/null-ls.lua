@@ -50,7 +50,7 @@ local sources = {
 
 	-- go
 	-- b.formatting.goimports,
-	-- b.formatting.gofmt,
+	b.formatting.gofmt,
 	-- b.diagnostics.golangci_lint.with({filetypes = {"go"}, diagnostics_format = "(#{s}) #{m}"}),
 }
 
