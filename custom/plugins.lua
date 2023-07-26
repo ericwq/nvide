@@ -118,6 +118,11 @@ local plugins = {
 			show_guides = false,
 			auto_close = true,
 			show_symbol_details = false,
+			wrap = false,
+			fold_markers = {
+				'',
+				'',
+			},
 		},
 	},
 
