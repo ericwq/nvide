@@ -22,7 +22,14 @@ please change the ownership of mount directory.
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
 	--progress plain -t ssh-nvide:0.8.9 -f sshd-nvim.dockerfile .
 ```
+## Build the Openrc image
 
+```sh
+% docker build --build-arg ROOT_PWD=passowrd \
+	--build-arg USER_PWD=password \
+	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
+	--progress plain -t openrc-nvide:0.8.9 -f openrc-nvim.dockerfile .
+```
 ## Dryrun the container
 
 ```sh
@@ -70,6 +77,16 @@ please change the ownership of mount directory.
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
         ssh-nvide:0.8.9
+```
+
+## Start openrc-nvide container
+
+```sh
+% docker run --env TZ=Asia/Shanghai --tty --privileged --volume /sys/fs/cgroup:/sys/fs/cgroup:ro \
+    --mount source=proj-vol,target=/home/ide/proj \
+    --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+    -h openrc-nvide --name openrc-nvide -d -p 22:22  -p 60000:60000/udp  -p 60001:60001/udp -p 60002:60002/udp \
+    openrc-nvide:0.8.9
 ```
 
 ## Login to the containter
