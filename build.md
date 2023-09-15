@@ -1,9 +1,9 @@
 ## Build the image
 
 ```sh
-% docker build -t nvide:0.7.12 -f nvim.dockerfile .
-% docker build --progress plain -t nvide:0.7.12 -f nvim.dockerfile .
-% docker build --no-cache --progress plain -t nvide:0.7.12 -f nvim.dockerfile .
+% docker build -t nvide:0.7.13 -f nvim.dockerfile .
+% docker build --progress plain -t nvide:0.7.13 -f nvim.dockerfile .
+% docker build --no-cache --progress plain -t nvide:0.7.13 -f nvim.dockerfile .
 ```
 
 ## create docker volume
@@ -28,12 +28,12 @@ please change the ownership of mount directory.
 % docker build --build-arg ROOT_PWD=passowrd \
 	--build-arg USER_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-	--progress plain -t openrc-nvide:0.8.9 -f openrc-nvim.dockerfile .
+	--progress plain -t openrc-nvide:0.9.0 -f openrc-nvim.dockerfile .
 ```
 ## Dryrun the container
 
 ```sh
-% docker run --rm -ti nvide:0.7.12
+% docker run --rm -ti nvide:0.7.13
 % docker run -ti --rm -u ide -p 22:22 ssh-nvide:0.8.9
 ```
 
@@ -42,7 +42,7 @@ please change the ownership of mount directory.
 ### 1. Tag the image
 
 ```sh
-% docker tag nvide:0.7.12 ericwq057/nvide:0.7.12
+% docker tag nvide:0.7.13 ericwq057/nvide:0.7.13
 ```
 
 ### 2. sign in with your account at hub.docker.com
@@ -50,9 +50,9 @@ please change the ownership of mount directory.
 ### 3. Push to docker.io
 
 ```sh
-% docker push ericwq057/nvide:0.7.12
-% git tag -a 0.7.12 -m "release message."
-% git push origin 0.7.12
+% docker push ericwq057/nvide:0.7.13
+% git tag -a 0.7.13 -m "release message."
+% git push origin 0.7.13
 ```
 
 ## Start the container
@@ -61,12 +61,12 @@ please change the ownership of mount directory.
 % docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        nvide:0.7.12
+        nvide:0.7.13
 
 % docker run --rm -ti --privileged -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        nvide:0.7.12
+        nvide:0.7.13
 
 % docker run -d -p 22:22 -h ssh-nvide --env TZ=Asia/Shanghai --name ssh-nvide \
         --mount source=proj-vol,target=/home/ide/proj \
@@ -86,7 +86,7 @@ please change the ownership of mount directory.
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h openrc-nvide --name openrc-nvide -d -p 22:22  -p 60000:60000/udp  -p 60001:60001/udp -p 60002:60002/udp \
-    openrc-nvide:0.8.9
+    -p 6060:6060 openrc-nvide:0.9.0
 ```
 
 ## Login to the containter

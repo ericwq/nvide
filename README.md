@@ -85,11 +85,11 @@ The easy way to use `nvide` is to use the in-stock image. See [here](https://hub
 - The second `exec` command login the docker container as root user.
 
 ```sh
-% docker pull ericwq057/nvide:0.7.12
+% docker pull ericwq057/nvide:0.7.13
 % docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        ericwq057/nvide:0.7.12
+        ericwq057/nvide:0.7.13
 % docker exec -u ide -it nvide ash
 % docker exec -u root -it nvide ash
 ```
@@ -101,12 +101,12 @@ Run the following command to build the docker image by yourself.
 ```sh
 % git clone https://github.com/ericwq/nvide.git
 % cd nvide
-% docker build -t nvide:0.7.12 -f nvim.dockerfile .
+% docker build -t nvide:0.7.13 -f nvim.dockerfile .
 ```
 
 ## Build and run the SSH/mosh image
 
-Run the following commands to build the SSH/mosh image by yourself. Please note that SSH/mosh image is based on `ericwq057/nvide:0.7.12`. You need the latest base image to build the SSH/mosh image.
+Run the following commands to build the SSH/mosh image by yourself. Please note that SSH/mosh image is based on `ericwq057/nvide:0.7.13`. You need the latest base image to build the SSH/mosh image.
 
 ```sh
 % docker build --build-arg ROOT_PWD=passowrd \

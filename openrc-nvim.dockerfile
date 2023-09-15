@@ -4,9 +4,9 @@
 #
 # https://github.com/dockage/alpine/blob/main/3.17/Dockerfile
 #
-FROM nvide:0.7.12
+FROM nvide:0.7.13
 LABEL maintainer="ericwq057@qq.com"
-LABEL build_date="2023-08-04"
+LABEL build_date="2023-09-15"
 
 # ENV container=docker
 
@@ -94,6 +94,7 @@ VOLUME ["/sys/fs/cgroup"]
 COPY ./conf/motd 		/etc/motd
 
 EXPOSE 22
+EXPOSE 6060
 EXPOSE 60000/udp
 EXPOSE 60001/udp
 EXPOSE 60002/udp
