@@ -68,7 +68,15 @@ RUN rc-update add sshd boot \
 	&& rm -rf /var/cache/apk/*
 
 # enable rsyslog 
-RUN rc-update add rsyslog boot 
+RUN rc-update add rsyslog boot \
+   # enable syslog udp 514
+   && sed -i \
+	-e 's/#module(load="imudp").*/module(load="imudp")/g' \
+	-e 's/#input(.*/input(/g' \
+	-e 's/#.*type="imudp"/\ttype="imudp"/g' \
+	-e 's/#.*port="514"/\tport="514"/g' \
+	-e 's/#).*/)/g' \
+   /etc/rsyslog.conf
 
 # enable root login, for debug dockerfile purpose.
 # set root password
