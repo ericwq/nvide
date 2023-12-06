@@ -86,7 +86,7 @@ please change the ownership of mount directory.
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h openrc-nvide --name openrc-nvide -d -p 22:22  -p 60000:60000/udp  -p 60001:60001/udp -p 60002:60002/udp \
-    -p 6060:6060 openrc-nvide:0.9.0
+    -p 60003:60003/udp openrc-nvide:0.9.0
 ```
 
 ## Login to the containter

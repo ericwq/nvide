@@ -102,10 +102,11 @@ VOLUME ["/sys/fs/cgroup"]
 COPY ./conf/motd 		/etc/motd
 
 EXPOSE 22
-EXPOSE 6060
+# EXPOSE 6060
 EXPOSE 60000/udp
 EXPOSE 60001/udp
 EXPOSE 60002/udp
+EXPOSE 60003/udp
 
 # setup time zone
 # RUN echo "export TZ=Asia/Shanghai" >> /etc/profile
