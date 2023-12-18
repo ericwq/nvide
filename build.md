@@ -4,6 +4,7 @@
 % docker build -t nvide:0.7.13 -f nvim.dockerfile .
 % docker build --progress plain -t nvide:0.7.13 -f nvim.dockerfile .
 % docker build --no-cache --progress plain -t nvide:0.7.13 -f nvim.dockerfile .
+% docker build --no-cache --progress plain -t nvide:0.8.0 -f nvim.dockerfile .
 ```
 
 ## create docker volume
@@ -28,7 +29,7 @@ please change the ownership of mount directory.
 % docker build --build-arg ROOT_PWD=passowrd \
 	--build-arg USER_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-	--progress plain -t openrc-nvide:0.9.0 -f openrc-nvim.dockerfile .
+	--progress plain -t openrc-nvide:0.10.0 -f openrc-nvim.dockerfile .
 ```
 ## Dryrun the container
 
@@ -86,7 +87,7 @@ please change the ownership of mount directory.
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h openrc-nvide --name openrc-nvide -d -p 22:22  -p 60000:60000/udp  -p 60001:60001/udp -p 60002:60002/udp \
-    -p 60003:60003/udp openrc-nvide:0.9.0
+    -p 60003:60003/udp openrc-nvide:0.10.0
 ```
 
 ## Login to the containter

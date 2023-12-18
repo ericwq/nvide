@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 LABEL maintainer="ericwq057@qq.com"
 
 # This is the base pacakges for neovim 
