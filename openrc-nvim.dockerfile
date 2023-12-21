@@ -4,9 +4,9 @@
 #
 # https://github.com/dockage/alpine/blob/main/3.17/Dockerfile
 #
-FROM nvide:0.8.0
+FROM nvide:0.8.2
 LABEL maintainer="ericwq057@qq.com"
-LABEL build_date="2023-09-15"
+LABEL build_date="2023-12-21"
 
 # ENV container=docker
 
