@@ -12,7 +12,7 @@ RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs rip
 # additional pacakges
 # mainly go, tmux, htop, protoc
 # 
-RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc gzip wget util-linux-misc
+RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc gzip wget util-linux-misc sudo
 
 # language server packages
 # https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
@@ -51,6 +51,7 @@ ENV ENV=$HOME/.profile
 #
 RUN addgroup develop && adduser -D -h $HOME -s /bin/ash -G develop ide
 RUN mkdir -p $GOPATH && chown -R ide:develop $GOPATH
+RUN echo 'ide ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/ide
 
 USER ide:develop
 WORKDIR $HOME
