@@ -90,11 +90,11 @@ The easy way to use `nvide` is to use the in-stock image. See [here](https://hub
 - The second `exec` command login the docker container as root user.
 
 ```sh
-% docker pull ericwq057/nvide:0.8.3
+% docker pull ericwq057/nvide:0.8.4
 % docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        ericwq057/nvide:0.8.3
+        ericwq057/nvide:0.8.4
 % docker exec -u ide -it nvide ash
 % docker exec -u root -it nvide ash
 ```
@@ -106,18 +106,18 @@ Run the following command to build the docker image by yourself.
 ```sh
 % git clone https://github.com/ericwq/nvide.git
 % cd nvide
-% docker build -t nvide:0.8.3 -f nvim.dockerfile .
+% docker build -t nvide:0.8.4 -f nvim.dockerfile .
 ```
 
 ## Build and run the openrc nvide image
 
-Run the following commands to build the SSH/mosh image by yourself. Please note that SSH/mosh image is based on `ericwq057/nvide:0.8.3`. You need the latest base image to build the SSH/mosh image.
+Run the following commands to build the SSH/mosh image by yourself. Please note that SSH/mosh image is based on `ericwq057/nvide:0.8.4`. You need the latest base image to build the SSH/mosh image.
 
 ```sh
 % docker build --build-arg ROOT_PWD=passowrd \
         --build-arg USER_PWD=password \
         --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-        --progress plain -t openrc-nvide:0.10.1 -f openrc-nvim.dockerfile .
+        --progress plain -t openrc-nvide:0.10.2 -f openrc-nvim.dockerfile .
 ```
 
 - `ROOT_PWD` is the root password.
@@ -159,10 +159,10 @@ Please NOTE: the SSH/mosh image accepts both the password and public key login, 
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h openrc-nvide --name openrc-nvide -d -p 22:22  -p 60000:60000/udp  -p 60001:60001/udp -p 60002:60002/udp \
-    -p 60003:60003/udp openrc-nvide:0.10.1
+    -p 60003:60003/udp openrc-nvide:0.10.2
 % docker container ls
 CONTAINER ID   IMAGE             COMMAND               CREATED         STATUS         PORTS                                          NAMES
-ef0f9cec7ad8   ssh-nvide:0.10.1   "/usr/sbin/sshd -D"   6 minutes ago   Up 6 minutes   0.0.0.0:22->22/tcp, 0.0.0.0:60001->60001/udp   ssh-nvide
+ef0f9cec7ad8   ssh-nvide:0.10.2   "/usr/sbin/sshd -D"   6 minutes ago   Up 6 minutes   0.0.0.0:22->22/tcp, 0.0.0.0:60001->60001/udp   ssh-nvide
 ```
 
 The SSH/mosh container listens on the port 22. Use the following command to login to the SSH/mosh container.
