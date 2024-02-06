@@ -69,14 +69,10 @@ RUN rc-update add sshd boot \
 
 # enable rsyslog 
 RUN rc-update add rsyslog boot \
-   # enable syslog udp 514
-   && sed -i \
-	-e 's/#module(load="imudp").*/module(load="imudp")/g' \
-	-e 's/#input(.*/input(/g' \
-	-e 's/#.*type="imudp"/\ttype="imudp"/g' \
-	-e 's/#.*port="514"/\tport="514"/g' \
-	-e 's/#).*/)/g' \
-   /etc/rsyslog.conf
+   # H;1h;$!d;x; slurps the file into memory
+	&& sed -ie \
+	'H;1h;$!d;x; s/#module.*imudp\(.*\)514\(.*\)#)/module(load="imudp")\ninput(type="imudp" port="514")\n/g' \
+	/etc/rsyslog.conf
 
 # enable root login, for debug dockerfile purpose.
 # set root password
