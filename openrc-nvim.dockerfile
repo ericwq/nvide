@@ -68,10 +68,17 @@ RUN rc-update add sshd boot \
 	&& rm -rf /var/cache/apk/*
 
 # enable rsyslog 
+#
+# How do I match any character across multiple lines in a regular expression?
+# https://stackoverflow.com/questions/159118/how-do-i-match-any-character-across-multiple-lines-in-a-regular-expression
+#
+# GNU sed live editor - JS.ORG
+# https://sed.js.org/
+#
 RUN rc-update add rsyslog boot \
    # H;1h;$!d;x; slurps the file into memory
 	&& sed -ie \
-	'H;1h;$!d;x; s/#module.*imudp\(.*\)514\(.*\)#)/module(load="imudp")\ninput(type="imudp" port="514")\n/g' \
+	'H;1h;$!d;x; s/#module.*imudp\(.*\)514\(.*\)#)/module(load="imudp")\ninput(type="imudp" port="514")/g' \
 	/etc/rsyslog.conf
 
 # enable root login, for debug dockerfile purpose.
