@@ -61,7 +61,7 @@ RUN apk add --update --no-cache openssh-server openrc utmps mandoc man-pages ncu
 #
 RUN rc-update add sshd boot \
 	&& sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
-	&& sed -ie 's/#Port 22/Port 22/g' /etc/ssh/sshd_config \
+	&& sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config \
 	# && echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel \
 	&& ssh-keygen -A \
 	# && adduser ide wheel \
@@ -77,7 +77,7 @@ RUN rc-update add sshd boot \
 #
 RUN rc-update add rsyslog boot \
    # H;1h;$!d;x; slurps the file into memory
-	&& sed -ie \
+	&& sed -i \
 	'H;1h;$!d;x; s/#module.*imudp\(.*\)514\(.*\)#)/module(load="imudp")\ninput(type="imudp" port="514")/g' \
 	/etc/rsyslog.conf
 
