@@ -148,7 +148,7 @@ drwxr-xr-x+ 38 qiwang  staff  1216 Feb 10 14:42 ..
 Run the following commands to build the SSH/mosh image by yourself. Please note that SSH/mosh image is based on `ericwq057/nvide:0.8.4`. You need the latest base image to build the SSH/mosh image.
 
 ```sh
-$ docker build --build-arg ROOT_PWD=passowrd \
+$ docker build --build-arg ROOT_PWD=password \
         --build-arg USER_PWD=password \
         --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
         --progress plain -t openrc-nvide:0.10.2 -f openrc-nvim.dockerfile .

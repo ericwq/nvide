@@ -25,7 +25,7 @@ please change the ownership of mount directory.
 ## Build the Openrc image
 
 ```sh
-% docker build --build-arg ROOT_PWD=passowrd \
+% docker build --build-arg ROOT_PWD=password \
 	--build-arg USER_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
 	--progress plain -t openrc-nvide:0.10.2 -f openrc-nvim.dockerfile .
