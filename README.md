@@ -114,8 +114,8 @@ Run the following command to build the docker image by yourself.
 
 On your local machine (for me, it's my Mac book). Make sure your `~/.ssh/id_rsa.pub` file exist in your SSH client side. If it doesn't, use `% ssh_keygen` command to generate it for you.
 
-```sh
-qiwang@gauss .ssh % ssh-keygen
+```shell
+$ ssh-keygen
 Generating public/private rsa key pair.
 Enter file in which to save the key (/Users/qiwang/.ssh/id_rsa):
 Enter passphrase (empty for no passphrase):
@@ -136,12 +136,21 @@ The key's randomart image is:
 |  .****+ o       |
 |   *OO**=        |
 +----[SHA256]-----+
-qiwang@gauss .ssh % ls -al ~/.ssh
+```
+
+list the content in `~/.ssh`.
+```sh
+$ ls -al ~/.ssh
 total 16
 drwx------   4 qiwang  staff   128 Feb 10 14:45 .
 drwxr-xr-x+ 38 qiwang  staff  1216 Feb 10 14:42 ..
 -rw-------   1 qiwang  staff  2602 Feb 10 14:45 id_rsa
 -rw-r--r--   1 qiwang  staff   572 Feb 10 14:45 id_rsa.pub
+```
+
+add your certificate to the SSH agent.
+```sh
+$ ssh-add /Users/qiwang/.ssh/id_rsa
 ```
 
 ## Build openrc-nvide image
