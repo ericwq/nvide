@@ -6,7 +6,7 @@
 #
 FROM nvide:0.8.4
 LABEL maintainer="ericwq057@qq.com"
-LABEL build_date="2023-12-21"
+LABEL build_date="2024-02-10"
 
 # ENV container=docker
 

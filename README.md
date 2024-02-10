@@ -78,7 +78,8 @@ $ export TERM=alacritty
 ```
 or you can run the following script
 ```sh
-kitty +kitten ssh your.remote.server
+kitty +kitten ssh ide@localhost
+kitty +kitten ssh root@localhost
 ```
 according to [xterm-kitty: unknown terminal type - redgreen](https://redgreen.no/2020/05/10/kitty-unknown-terminal-type.html#:~:text=In%20order%20to%20copy%20over%20a%20terminfo%20file,on%20every%20session%20from%20kitty%20in%20the%20future.)
 
