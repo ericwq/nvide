@@ -109,12 +109,46 @@ Run the following command to build the docker image by yourself.
 % docker build -t nvide:0.8.4 -f nvim.dockerfile .
 ```
 
-## Build and run the openrc nvide image
+## Creating SSH Keys
+
+On your local machine (for me, it's my Mac book). Make sure your `~/.ssh/id_rsa.pub` file exist in your SSH client side. If it doesn't, use `% ssh_keygen` command to generate it for you.
+
+```sh
+qiwang@gauss .ssh % ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/qiwang/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /Users/qiwang/.ssh/id_rsa
+Your public key has been saved in /Users/qiwang/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:wkLkm5ts4MeSBPovZz1q/zRqbuDpp1y4QSJ3/K/Y75E qiwang@gauss.local
+The key's randomart image is:
++---[RSA 3072]----+
+|    .            |
+|   o             |
+|.   o            |
+|.. o +           |
+|o = B o S        |
+| * O.* . .       |
+|  =.X+o E        |
+|  .****+ o       |
+|   *OO**=        |
++----[SHA256]-----+
+qiwang@gauss .ssh % ls -al ~/.ssh
+total 16
+drwx------   4 qiwang  staff   128 Feb 10 14:45 .
+drwxr-xr-x+ 38 qiwang  staff  1216 Feb 10 14:42 ..
+-rw-------   1 qiwang  staff  2602 Feb 10 14:45 id_rsa
+-rw-r--r--   1 qiwang  staff   572 Feb 10 14:45 id_rsa.pub
+```
+
+## Build openrc-nvide image
 
 Run the following commands to build the SSH/mosh image by yourself. Please note that SSH/mosh image is based on `ericwq057/nvide:0.8.4`. You need the latest base image to build the SSH/mosh image.
 
 ```sh
-% docker build --build-arg ROOT_PWD=passowrd \
+$ docker build --build-arg ROOT_PWD=passowrd \
         --build-arg USER_PWD=password \
         --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
         --progress plain -t openrc-nvide:0.10.2 -f openrc-nvim.dockerfile .
@@ -122,62 +156,38 @@ Run the following commands to build the SSH/mosh image by yourself. Please note 
 
 - `ROOT_PWD` is the root password.
 - `USER_PWD` is the `ide` user password.
-- `SSH_PUB_KEY` is the public key from the client(SSH) side.
+- `SSH_PUB_KEY` is the public key from the SSH client side.
 
-Make sure your `~/.ssh/id_rsa.pub` file exist in your SSH client side. If it doesn't, use `% ssh_keygen` command to generate it in your SSH client side.
 
-```sh
-$ ssh-keygen
-Generating public/private rsa key pair.
-Enter file in which to save the key (/home/ide/.ssh/id_rsa):
-Enter passphrase (empty for no passphrase):
-Enter same passphrase again:
-Your identification has been saved in /home/ide/.ssh/id_rsa
-Your public key has been saved in /home/ide/.ssh/id_rsa.pub
-The key fingerprint is:
-SHA256:0WcUbGRYR6qpLVl+W8qwNIvq0vrgGexTev4SczZhdVg ide@nvide-ssh
-The key's randomart image is:
-+---[RSA 3072]----+
-|           BEoo  |
-|         .+o+o   |
-|        ...o+    |
-|        o. =     |
-|       .S.+      |
-|   .  + +*       |
-|    ++ =+.* . .  |
-|   o+++  + B +   |
-|    =O=+o o +    |
-+----[SHA256]-----+
-$ ls ~/.ssh/
-authorized_keys  id_rsa           id_rsa.pub
-```
+## Run the openrc-nvide container
 
 Please NOTE: the SSH/mosh image accepts both the password and public key login, user/password is supported if the public key is invalid/missing. Use the following command to start the SSH/mosh container.
 
 ```sh
-% docker run --env TZ=Asia/Shanghai --tty --privileged --volume /sys/fs/cgroup:/sys/fs/cgroup:ro \
+$ docker run --env TZ=Asia/Shanghai --tty --privileged --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h openrc-nvide --name openrc-nvide -d -p 22:22  -p 60000:60000/udp  -p 60001:60001/udp -p 60002:60002/udp \
     -p 60003:60003/udp openrc-nvide:0.10.2
-% docker container ls
-CONTAINER ID   IMAGE             COMMAND               CREATED         STATUS         PORTS                                          NAMES
-ef0f9cec7ad8   ssh-nvide:0.10.2   "/usr/sbin/sshd -D"   6 minutes ago   Up 6 minutes   0.0.0.0:22->22/tcp, 0.0.0.0:60001->60001/udp   ssh-nvide
+$ docker container ls
+CONTAINER ID   IMAGE          COMMAND        CREATED      STATUS        PORTS                                                      NAMES
+974d9be61314   8858f2fb84a5   "/sbin/init"   3 days ago   Up 17 hours   0.0.0.0:22->22/tcp, 0.0.0.0:60000-60003->60000-60003/udp   openrc-nvide
 ```
 
-The SSH/mosh container listens on the port 22. Use the following command to login to the SSH/mosh container.
+The openrc-nvide container listens on the port 22. Use the following command to login to the openrc-nvide container.
 
 ```sh
+% rm ~/.ssh/known_hosts ~/.ssh/known_hosts.old
 % ssh ide@localhost
 % ssh root@localhost
 ```
 
-Or you can login to the SSH/mosh container.
-
-```sh
-$ mosh ide@localhost
-$ mosh root@localhost
-```
+<!-- Or you can login to the SSH/mosh container. -->
+<!---->
+<!-- ```sh -->
+<!-- $ mosh ide@localhost -->
+<!-- $ mosh root@localhost -->
+<!-- ``` -->
 
 ## Sample project
 

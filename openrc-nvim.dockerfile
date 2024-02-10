@@ -60,10 +60,13 @@ RUN apk add --update --no-cache openssh-server openrc utmps mandoc man-pages ncu
 # enable sshd, permit root login, enable port 22, generate ssh key.
 #
 RUN rc-update add sshd boot \
-	&& sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
-	&& sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config \
+	&& sed -i \
+	-e 's/#PermitRootLogin.*/PermitRootLogin\ yes/g' \
+	-e 's/#PubkeyAuthentication.*/PubkeyAuthentication\ yes/g' \
+	-e 's/#Port 22/Port 22/g' \
+	/etc/ssh/sshd_config \
 	# && echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel \
-	&& ssh-keygen -A \
+	# && ssh-keygen -A \
 	# && adduser ide wheel \
 	&& rm -rf /var/cache/apk/*
 
