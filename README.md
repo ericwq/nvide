@@ -10,9 +10,11 @@ ooooo      ooo oooooo     oooo ooooo oooooooooo.   oooooooooooo
 o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 ```
 
+## Introduction
+
 `nvide` is a C/C++, Go, Lua Integrated Development Environment. It inherits the version number from [ericwq/golangIDE](https://github.com/ericwq/golangIDE). It also tries to combine [ericwq/golangIDE](https://github.com/ericwq/golangIDE) with [ericwq/gccIDE](https://github.com/ericwq/gccIDE) into one: `nvide`. `nvide` is based on [NvChad](https://github.com/NvChad/NvChad), with additional packages and custom configuration.
 
-## Files description
+### Files description
 
 - `custom` directory : contains additional packages and custom configuration for `NvChad`.
 - `conf` directory : contains part of the `neovim` configuration, mainly clipboard related.
@@ -21,7 +23,7 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 - `sshd-nvim.dockerfile`: the SSH/mosh docker file.
 - `reference.md` : the references (most of) about how to setup `nvide`.
 
-## Additional packages
+### Additional packages
 
 - `romgrk/nvim-treesitter-context`
 - `folke/which-key.nvim`
@@ -99,10 +101,13 @@ The easy way to use `nvide` is to use the in-stock image. See [here](https://hub
 % docker exec -u ide -it nvide ash
 % docker exec -u root -it nvide ash
 ```
+## Build customized image
 
-## Build image
+why we need a customized image? Here you need to choose the password for `ide` and `root` account, you also need to create ssh keys and install them in the image.
 
-Run the following command to build the docker image by yourself.
+### Build base image
+
+Run the following command to build the base image.
 
 ```sh
 % git clone https://github.com/ericwq/nvide.git
@@ -110,9 +115,9 @@ Run the following command to build the docker image by yourself.
 % docker build -t nvide:0.8.4 -f nvim.dockerfile .
 ```
 
-## Creating SSH Keys
+### Creating SSH Keys
 
-On your local machine (for me, it's my Mac book). Make sure your `~/.ssh/id_rsa.pub` file exist in your SSH client side. If it doesn't, use `% ssh_keygen` command to generate it for you.
+Before build [openrc-nvide image](#build-openrc-nvide-image), you need to creat ssh keys first. On your local machine (for me, it's my Mac book). Make sure your `~/.ssh/id_rsa.pub` file exist in your SSH client side. If it doesn't, use `% ssh_keygen` command to generate it for you.
 
 ```shell
 $ ssh-keygen
@@ -138,7 +143,7 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-list the content in `~/.ssh`.
+check the keys by listing the content in `~/.ssh`.
 ```sh
 $ ls -al ~/.ssh
 total 16
@@ -148,14 +153,14 @@ drwxr-xr-x+ 38 qiwang  staff  1216 Feb 10 14:42 ..
 -rw-r--r--   1 qiwang  staff   572 Feb 10 14:45 id_rsa.pub
 ```
 
-add your certificate to the SSH agent.
+it's a good idea to add your keys to the SSH agent.
 ```sh
 $ ssh-add /Users/qiwang/.ssh/id_rsa
 ```
 
-## Build openrc-nvide image
+### Build openrc-nvide image
 
-Run the following commands to build the SSH/mosh image by yourself. Please note that SSH/mosh image is based on `ericwq057/nvide:0.8.4`. You need the latest base image to build the SSH/mosh image.
+With the generated keys and passwords for your accounts, it's time to build the `openrc-nvide` image. Please note the `openrc-nvide` image is based on `nvide:0.8.4`. You need [base image](#build-base-image) to build the `openrc-nvide` image.
 
 ```sh
 $ docker build --build-arg ROOT_PWD=password \
@@ -166,12 +171,12 @@ $ docker build --build-arg ROOT_PWD=password \
 
 - `ROOT_PWD` is the root password.
 - `USER_PWD` is the `ide` user password.
-- `SSH_PUB_KEY` is the public key from the SSH client side.
+- `SSH_PUB_KEY` is the public key we just created.
 
 
-## Run the openrc-nvide container
+### Run the openrc-nvide container
 
-Please NOTE: the SSH/mosh image accepts both the password and public key login, user/password is supported if the public key is invalid/missing. Use the following command to start the SSH/mosh container.
+Please NOTE: the `openrc-nvide` image accepts both the password and public key login, user/password is supported if the public key is invalid/missing. Use the following command to start the container.
 
 ```sh
 $ docker run --env TZ=Asia/Shanghai --tty --privileged --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
@@ -184,7 +189,7 @@ CONTAINER ID   IMAGE          COMMAND        CREATED      STATUS        PORTS   
 974d9be61314   8858f2fb84a5   "/sbin/init"   3 days ago   Up 17 hours   0.0.0.0:22->22/tcp, 0.0.0.0:60000-60003->60000-60003/udp   openrc-nvide
 ```
 
-The openrc-nvide container listens on the port 22. Use the following command to login to the openrc-nvide container.
+The `openrc-nvide` container listens on the port 22. Use the following command to login to the openrc-nvide container.
 
 ```sh
 % rm ~/.ssh/known_hosts ~/.ssh/known_hosts.old
