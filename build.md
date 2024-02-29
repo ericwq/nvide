@@ -73,7 +73,7 @@ please change the ownership of mount directory.
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
         ssh-nvide:0.10.2
 
-% docker run -d -p 22:22 -p 60001:60001/udp -h ssh-nvide --env TZ=Asia/Shanghai --name ssh-nvide \
+% docker run -d -p 22:22 -p 8101:8101/udp -h ssh-nvide --env TZ=Asia/Shanghai --name ssh-nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
         ssh-nvide:0.10.2
@@ -85,8 +85,8 @@ please change the ownership of mount directory.
 % docker run --env TZ=Asia/Shanghai --tty --privileged --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-    -h openrc-nvide --name openrc-nvide -d -p 22:22  -p 60000:60000/udp  -p 60001:60001/udp -p 60002:60002/udp \
-    -p 60003:60003/udp openrc-nvide:0.10.2
+    -h openrc-nvide --name openrc-nvide -d -p 22:22  -p 8100:8100/udp  -p 8101:8101/udp -p 8102:8102/udp \
+    -p 8103:8103/udp openrc-nvide:0.10.2
 ```
 
 ## Login to the containter

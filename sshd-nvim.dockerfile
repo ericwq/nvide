@@ -51,6 +51,6 @@ RUN mkdir -p /root/.ssh \
 COPY ./conf/motd 		/etc/motd
 
 EXPOSE 22
-EXPOSE 60001/udp
+EXPOSE 8101/udp
 
 CMD ["/usr/sbin/sshd", "-D"]
