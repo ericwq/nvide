@@ -182,8 +182,8 @@ Please NOTE: the `openrc-nvide` image accepts both the password and public key l
 $ docker run --env TZ=Asia/Shanghai --tty --privileged --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-    -h openrc-nvide --name openrc-nvide -d -p 22:22  -p 8100:8100/udp  -p 8101:8101/udp -p 8102:8102/udp \
-    -p 8103:8103/udp openrc-nvide:0.10.2
+    -h openrc-nvide --name openrc-nvide -d -p 22:22 \
+    -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp openrc-nvide:0.10.2
 ```
 
 The `openrc-nvide` container listens on the port 22. Use the following command to login to the openrc-nvide container.

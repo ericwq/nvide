@@ -108,8 +108,6 @@ VOLUME ["/sys/fs/cgroup"]
 COPY ./conf/motd 		/etc/motd
 
 EXPOSE 22
-# EXPOSE 6060
-EXPOSE 8100/udp
 EXPOSE 8101/udp
 EXPOSE 8102/udp
 EXPOSE 8103/udp
