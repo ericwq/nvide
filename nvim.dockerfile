@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:3.20
 LABEL maintainer="ericwq057@qq.com"
 
 # This is the base pacakges for neovim 
@@ -7,12 +7,13 @@ LABEL maintainer="ericwq057@qq.com"
 # telscope depends on ripgrep, fzf, fd
 # vista depends on ctags
 #
-RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs ripgrep \
-	fzf fd ctags alpine-sdk icu-data-full cloc gzip wget util-linux-misc sudo \
-	bash unzip luarocks5.3 lua-language-server \
-	tmux colordiff curl tzdata htop go protoc \
-	py3-pip py3-pynvim py3-wheel npm clang-dev cppcheck ninja cmake readline-dev \
-	autoconf automake bear waf linux-headers
+RUN apk add --no-cache --update neovim neovim-doc tree-sitter-cli nodejs ripgrep \
+	fzf fd ctags icu-data-full cloc gzip wget util-linux-misc sudo \
+	tmux colordiff curl tzdata htop go protoc git \
+	py3-pip py3-pynvim py3-wheel npm clang-dev cppcheck ninja bash \
+	autoconf automake bear waf linux-headers \
+	build-base curl-dev readline-dev unzip luarocks5.1 lua5.1-dev cmake
+RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/community lua-language-server
 
 # additional pacakges
 # mainly go, tmux, htop, protoc
@@ -32,8 +33,8 @@ RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs rip
 #
 # RUN apk add --no-cache --update
 
-RUN  luarocks-5.3 install --server=https://luarocks.org/dev luaformatter && \
-	luarocks-5.3 install luacheck
+RUN  luarocks-5.1 install --server=https://luarocks.org/dev luaformatter && \
+	luarocks-5.1 install luacheck
 
 ENV HOME=/home/ide
 ENV GOPATH /go
@@ -149,8 +150,9 @@ RUN npm install --prefix $NPM_CONFIG_PREFIX -g npm@latest neovim wheel
 # The neovim configuration
 # based on https://github.com/NvChad/NvChad
 #
-ADD --chown=ide:develop https://api.github.com/repos/NvChad/NvChad/git/refs/heads/v2.0 .version/nvchad.json
-RUN git clone https://github.com/NvChad/NvChad.git $HOME/.config/nvim --depth 1
+# ADD --chown=ide:develop https://api.github.com/repos/NvChad/NvChad/git/refs/heads/v2.0 .version/nvchad.json
+# RUN git clone https://github.com/NvChad/NvChad.git $HOME/.config/nvim --depth 1
+RUN git clone https://github.com/NvChad/starter ~/.config/nvim
 # Add file type to solve the dockerfile filetype problem. 2022/05/29
 COPY --chown=ide:develop ./conf/filetype.lua	$HOME/.config/nvim/
 COPY --chown=ide:develop ./custom		$HOME/.config/nvim/lua/custom
@@ -188,8 +190,8 @@ COPY --chown=ide:develop ./conf/clang-format.txt $HOME/.clang-format
 # RUN nvim --headless -c 'packadd packer.nvim' -c 'lua require"plugins"' -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 # check update before download
-ADD --chown=ide:develop https://api.github.com/repos/folke/lazy.nvim/git/refs/heads/main .version/lazy.json
-ADD --chown=ide:develop https://api.github.com/repos/williamboman/mason.nvim/git/refs/heads/main .version/mason.json
+# ADD --chown=ide:develop https://api.github.com/repos/folke/lazy.nvim/git/refs/heads/main .version/lazy.json
+# ADD --chown=ide:develop https://api.github.com/repos/williamboman/mason.nvim/git/refs/heads/main .version/mason.json
 RUN nvim --headless "+Lazy! sync" +qa
 
 # Install treesitter language parsers
@@ -198,8 +200,8 @@ RUN nvim --headless "+Lazy! sync" +qa
 #
 # RUN nvim --headless -c 'packadd lazy.nvim' -c 'lua require"plugins"' -c 'packadd nvim-treesitter' -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
 
-#RUN nvim --headless -c "MasonInstall --target=linux_x64_gnu lua-language-server" -c qall
-#RUN nvim --headless -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
+# RUN nvim --headless -c "MasonInstall --target=linux_x64_gnu lua-language-server" -c qall
+# RUN nvim --headless -c 'TSInstallSync go c cpp yaml lua json dockerfile markdown proto' +qall
 
 # ENV PATH=$OLDPATH
 CMD ["/bin/ash"]
