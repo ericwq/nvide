@@ -4,7 +4,7 @@
 #
 # https://github.com/dockage/alpine/blob/main/3.17/Dockerfile
 #
-FROM nvide:0.8.4
+FROM nvide:0.8.5
 LABEL maintainer="ericwq057@qq.com"
 LABEL build_date="2024-02-10"
 
@@ -66,7 +66,7 @@ RUN rc-update add sshd boot \
 	-e 's/#Port 22/Port 22/g' \
 	/etc/ssh/sshd_config \
 	# && echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel \
-	# && ssh-keygen -A \
+	&& ssh-keygen -A \
 	# && adduser ide wheel \
 	&& rm -rf /var/cache/apk/*
 

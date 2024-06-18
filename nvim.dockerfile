@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine:edge
 LABEL maintainer="ericwq057@qq.com"
 
 # This is the base pacakges for neovim 
@@ -7,12 +7,16 @@ LABEL maintainer="ericwq057@qq.com"
 # telscope depends on ripgrep, fzf, fd
 # vista depends on ctags
 #
-RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs ripgrep fzf fd ctags alpine-sdk icu-data-full
+RUN apk add --no-cache --update git neovim neovim-doc tree-sitter-cli nodejs ripgrep \
+	fzf fd ctags alpine-sdk icu-data-full cloc gzip wget util-linux-misc sudo \
+	bash unzip luarocks5.3 lua-language-server \
+	tmux colordiff curl tzdata htop go protoc \
+	py3-pip py3-pynvim py3-wheel npm clang-dev cppcheck ninja cmake readline-dev \
+	autoconf automake bear waf linux-headers
 
 # additional pacakges
 # mainly go, tmux, htop, protoc
 # 
-RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc gzip wget util-linux-misc sudo
 
 # language server packages
 # https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
@@ -26,7 +30,10 @@ RUN apk add --no-cache --update tmux colordiff curl tzdata htop go protoc cloc g
 # luarocks depends on readline-dev, lua5.3-dev, cmake, unzip
 # c family language build tools: autoconf, automake,bear
 #
-RUN apk add --no-cache --update py3-pip py3-pynvim py3-wheel npm clang-dev cppcheck ninja bash unzip cmake readline-dev lua5.3-dev autoconf automake bear waf linux-headers
+# RUN apk add --no-cache --update
+
+RUN  luarocks-5.3 install --server=https://luarocks.org/dev luaformatter && \
+	luarocks-5.3 install luacheck
 
 ENV HOME=/home/ide
 ENV GOPATH /go
@@ -63,15 +70,15 @@ WORKDIR $HOME
 # 3. luaformatter
 # 4. efm-langserver
 #
-ENV LUA_ROCKS=luarocks-3.9.2
-RUN cd /tmp &&\
-	curl -R -O https://luarocks.github.io/luarocks/releases/$LUA_ROCKS.tar.gz && \
-	tar zxpf $LUA_ROCKS.tar.gz && \
-	cd $LUA_ROCKS  && \
-	./configure --lua-version=5.3 --prefix=$HOME/.local && \
-	make && \
-	make install && \
-	rm -rf /tmp/$LUA_ROCKS
+# ENV LUA_ROCKS=luarocks-3.9.2
+# RUN cd /tmp &&\
+# 	curl -R -O https://luarocks.github.io/luarocks/releases/$LUA_ROCKS.tar.gz && \
+# 	tar zxpf $LUA_ROCKS.tar.gz && \
+# 	cd $LUA_ROCKS  && \
+# 	./configure --lua-version=5.3 --prefix=$HOME/.local && \
+# 	make && \
+# 	make install && \
+# 	rm -rf /tmp/$LUA_ROCKS
 # use the following command to check luarocks is ready for use
 # luarocks path --help
 
@@ -83,8 +90,6 @@ RUN cd /tmp &&\
 # https://github.com/mpeterv/luacheck
 # https://github.com/Koihik/LuaFormatter
 #
-RUN  luarocks install --server=https://luarocks.org/dev luaformatter && \
-	luarocks install luacheck
 
 # Install go language server and
 # Install null-ls source: goimports, golangci-lint
@@ -119,13 +124,13 @@ RUN go install golang.org/x/tools/gopls@latest && \
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobs
 # https://github.com/LuaLS/lua-language-server/blob/master/.github/workflows/build.yml
 #
-WORKDIR $HOME/.local
-RUN git clone https://github.com/LuaLS/lua-language-server && \
-	cd lua-language-server && \
-	./make.sh && \
-	rm -rf ./.git ./3rd ./log ./test ./build ./make.lua ./tools ./README.md ./make && \
-	rm -rf ./make.sh ./test.lua ./log ./make.bat ./theme-tokens.md
-ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
+# WORKDIR $HOME/.local
+# RUN git clone https://github.com/LuaLS/lua-language-server && \
+# 	cd lua-language-server && \
+# 	./make.sh && \
+# 	rm -rf ./.git ./3rd ./log ./test ./build ./make.lua ./tools ./README.md ./make && \
+# 	rm -rf ./make.sh ./test.lua ./log ./make.bat ./theme-tokens.md
+# ENV PATH=$PATH:$HOME/.local/lua-language-server/bin
 WORKDIR $HOME
 
 # Node.js provider

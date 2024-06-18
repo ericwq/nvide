@@ -93,11 +93,11 @@ The easy way to use `nvide` is to use the in-stock image. See [here](https://hub
 - The second `exec` command login the docker container as root user.
 
 ```sh
-% docker pull ericwq057/nvide:0.8.4
+% docker pull ericwq057/nvide:0.8.5
 % docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
         --mount source=proj-vol,target=/home/ide/proj \
         --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-        ericwq057/nvide:0.8.4
+        ericwq057/nvide:0.8.5
 % docker exec -u ide -it nvide ash
 % docker exec -u root -it nvide ash
 ```
@@ -112,7 +112,7 @@ Run the following command to build the base image.
 ```sh
 % git clone https://github.com/ericwq/nvide.git
 % cd nvide
-% docker build -t nvide:0.8.4 -f nvim.dockerfile .
+% docker build -t nvide:0.8.5 -f nvim.dockerfile .
 ```
 
 ### Creating SSH Keys
@@ -160,13 +160,13 @@ $ ssh-add /Users/qiwang/.ssh/id_rsa
 
 ### Build openrc-nvide image
 
-With the generated keys and passwords for your accounts, it's time to build the `openrc-nvide` image. Please note the `openrc-nvide` image is based on `nvide:0.8.4`. You need [base image](#build-base-image) to build the `openrc-nvide` image.
+With the generated keys and passwords for your accounts, it's time to build the `openrc-nvide` image. Please note the `openrc-nvide` image is based on `nvide:0.8.5`. You need [base image](#build-base-image) to build the `openrc-nvide` image.
 
 ```sh
 $ docker build --build-arg ROOT_PWD=password \
         --build-arg USER_PWD=password \
         --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-        --progress plain -t openrc-nvide:0.10.2 -f openrc-nvim.dockerfile .
+        --progress plain -t openrc-nvide:0.10.3 -f openrc-nvim.dockerfile .
 ```
 
 - `ROOT_PWD` is the root password.
@@ -183,7 +183,7 @@ $ docker run --env TZ=Asia/Shanghai --tty --privileged --volume /sys/fs/cgroup:/
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h openrc-nvide --name openrc-nvide -d -p 22:22 \
-    -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp openrc-nvide:0.10.2
+    -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp openrc-nvide:0.10.3
 ```
 
 The `openrc-nvide` container listens on the port 22. Use the following command to login to the openrc-nvide container.
