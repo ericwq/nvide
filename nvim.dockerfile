@@ -1,27 +1,9 @@
 FROM alpine:3.20
 LABEL maintainer="ericwq057@qq.com"
 
-# This is the base pacakges for neovim 
-#
 # tree-sitter depends on tree-sitter-cli, nodejs, alpine-sdk
 # telscope depends on ripgrep, fzf, fd
 # vista depends on ctags
-#
-RUN apk add --no-cache --update neovim neovim-doc tree-sitter-cli nodejs ripgrep \
-	fzf fd ctags icu-data-full cloc gzip wget util-linux-misc sudo \
-	tmux colordiff curl tzdata htop go protoc git \
-	py3-pip py3-pynvim py3-wheel npm clang-dev cppcheck ninja bash \
-	autoconf automake bear waf linux-headers \
-	build-base curl-dev readline-dev unzip luarocks5.1 lua5.1-dev cmake
-RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/community lua-language-server
-
-# additional pacakges
-# mainly go, tmux, htop, protoc
-# 
-
-# language server packages
-# https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
-#
 # proselint (null-ls) depends on py3-pip 
 # prettierd (null-ls) depends on npm
 # clang-format (null-ls) depends on clang-dev
@@ -31,26 +13,32 @@ RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/community lua-language
 # luarocks depends on readline-dev, lua5.3-dev, cmake, unzip
 # c family language build tools: autoconf, automake,bear
 #
-# RUN apk add --no-cache --update
+# additional pacakges
+# mainly go, tmux, htop, protoc
+#
+RUN apk add --no-cache --update neovim neovim-doc tree-sitter-cli nodejs ripgrep \
+	fzf fd ctags icu-data-full cloc gzip wget util-linux-misc sudo \
+	tmux colordiff curl tzdata htop go protoc git \
+	py3-pip py3-pynvim py3-wheel npm clang-dev cppcheck ninja bash \
+	autoconf automake bear waf linux-headers \
+	build-base curl-dev readline-dev unzip luarocks5.1 lua5.1-dev cmake
+RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/community lua-language-server
 
-RUN  luarocks-5.1 install --server=https://luarocks.org/dev luaformatter && \
+RUN luarocks-5.1 install --server=https://luarocks.org/dev luaformatter && \
 	luarocks-5.1 install luacheck
 
 ENV HOME=/home/ide
 ENV GOPATH /go
 
+# language server packages
+# https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
 # proselint is installed in $HOME/.local/bin
-# luarocks is also installed in $HOME/.local/
 #
-# save PATH in OLDPATH, depends on HOME/.profile for environment setup
-# ENV OLDPATH=$PATH
 ENV PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 
 # The source script
 # https://hhoeflin.github.io/2020/08/19/bash-in-docker/
 # https://unix.stackexchange.com/questions/176027/ash-profile-configuration-file
-#
-# ENV=$HOME/.profile
 #
 ENV ENV=$HOME/.profile
 
@@ -90,7 +78,6 @@ WORKDIR $HOME
 # https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.mkdir
 # https://github.com/mpeterv/luacheck
 # https://github.com/Koihik/LuaFormatter
-#
 
 # Install go language server and
 # Install null-ls source: goimports, golangci-lint
@@ -140,18 +127,11 @@ WORKDIR $HOME
 ENV NPM_CONFIG_PREFIX=$HOME/.npm-global
 RUN npm install --prefix $NPM_CONFIG_PREFIX -g npm@latest neovim wheel
 
-# Install lazy.nvim
-# https://github.com/folke/lazy.nvim
-# WORKDIR $HOME
-# RUN git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable \
-# 	$HOME/.local/share/nvim/lazy/lazy.nvim
-
 #------------------------------ NOTICE ------------------------------
 # The neovim configuration
 # based on https://github.com/NvChad/NvChad
 #
 # ADD --chown=ide:develop https://api.github.com/repos/NvChad/NvChad/git/refs/heads/v2.0 .version/nvchad.json
-# RUN git clone https://github.com/NvChad/NvChad.git $HOME/.config/nvim --depth 1
 RUN git clone https://github.com/NvChad/starter ~/.config/nvim
 # Add file type to solve the dockerfile filetype problem. 2022/05/29
 COPY --chown=ide:develop ./conf/filetype.lua	$HOME/.config/nvim/
