@@ -4,6 +4,7 @@
 docker build -t nvide:0.8.5 -f nvim.dockerfile .
 docker build --progress plain -t nvide:0.8.5 -f nvim.dockerfile .
 docker build --no-cache --progress plain -t nvide:0.8.5 -f nvim.dockerfile .
+docker build --progress plain -t lazy:0.1.0 -f lazy.dockerfile .
 ```
 
 ## create docker volume
@@ -26,6 +27,7 @@ docker build --build-arg ROOT_PWD=password \
 
 ```sh
 docker run --rm -ti nvide:0.8.5
+docker run --rm -ti lazy:0.1.0
 docker run --rm -ti -u ide -p 22:22 openrc-nvide:0.10.3
 ```
 
