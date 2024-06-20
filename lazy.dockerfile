@@ -41,7 +41,7 @@ RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
 RUN echo 'require("osc52")' >> ~/.config/nvim/lua/config/lazy.lua
 COPY ./lazy/osc52.lua   $HOME/.config/nvim/lua
 COPY ./lazy/profile     $HOME/.profile
-COPY ./lazy/plugins/*.lua          $HOME/.config/nvim/lua/plugins
+#COPY ./lazy/plugins/*.lua          $HOME/.config/nvim/lua/plugins
 
 RUN nvim --headless "+Lazy! sync" +qa
 CMD ["/bin/ash"]
