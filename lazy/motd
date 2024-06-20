@@ -1,0 +1,4 @@
+openrc-nvide:0.10.3
+
+Lua, C/C++ and Golang Integrated Development Environment.
+Powered by neovim, luals, gopls and clangd.

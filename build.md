@@ -4,7 +4,7 @@
 docker build -t nvide:0.8.5 -f nvim.dockerfile .
 docker build --progress plain -t nvide:0.8.5 -f nvim.dockerfile .
 docker build --no-cache --progress plain -t nvide:0.8.5 -f nvim.dockerfile .
-docker build --progress plain -t lazy:0.1.0 -f lazy.dockerfile .
+docker build --progress plain -t nvide:0.8.5 -f lazy.dockerfile .
 ```
 
 ## create docker volume
@@ -22,12 +22,15 @@ docker build --build-arg ROOT_PWD=password \
 	--build-arg USER_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
 	--progress plain -t openrc-nvide:0.10.3 -f openrc-nvim.dockerfile .
+docker build --build-arg ROOT_PWD=password \
+	--build-arg USER_PWD=password \
+	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
+	--progress plain -t sshd-lazy:0.10.3 -f sshd-lazy.dockerfile .
 ```
 ## Dryrun the container
 
 ```sh
 docker run --rm -ti nvide:0.8.5
-docker run --rm -ti lazy:0.1.0
 docker run --rm -ti -u ide -p 22:22 openrc-nvide:0.10.3
 ```
 
@@ -74,6 +77,12 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h openrc-nvide --name openrc-nvide -d -p 22:22 \
     -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp openrc-nvide:0.10.3
+docker run --env TZ=Asia/Shanghai --tty --privileged \
+    --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
+    --mount source=proj-vol,target=/home/ide/proj \
+    --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+    -h sshd-lazy --name sshd-lazy -d -p 8022:22 \
+    -p 8201:8101/udp -p 8202:8102/udp -p 8203:8103/udp sshd-lazy:0.10.3
 ```
 
 ## Login to the containter

@@ -9,11 +9,40 @@ RUN apk add -U icu-data-full docs go \
 	git lazygit neovim ripgrep alpine-sdk \
 	curl wget fzf fd tree-sitter-cli nodejs bash npm py3-pip py3-pynvim py3-wheel gzip unzip
 
+RUN apk add -U sudo ncurses tzdata
+
 RUN npm install -g neovim
-RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
+
+ENV HOME=/home/ide
+ENV GOPATH /go
+ENV PATH=$PATH:$GOPATH/bin
+ENV ENV=$HOME/.profile
+
+RUN addgroup develop && adduser -D -h $HOME -s /bin/ash -G develop ide
+RUN mkdir -p $GOPATH && chown -R ide:develop $GOPATH
+RUN echo 'ide ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/ide
+
+USER ide:develop
+WORKDIR $HOME
+
+RUN go install golang.org/x/tools/gopls@latest && \
+	#    go install golang.org/x/tools/cmd/goimports@latest && \
+	#    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
+	#    go install github.com/jstemmer/gotags@latest && \
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
+	go install mvdan.cc/gofumpt@latest && \
+	go clean -cache -modcache -testcache && \
+	rm -rf $GOPATH/src/*
 
 # https://github.com/LazyVim/LazyVim/discussions/2862 transparent
 # run :LazyHealth after installation.
-RUN nvim --headless "+Lazy! sync" -c "MasonInstall stylua shfmt" -c qall
+#
+RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
+RUN echo 'require("osc52")' >> ~/.config/nvim/lua/config/lazy.lua
+COPY ./lazy/osc52.lua   $HOME/.config/nvim/lua
+COPY ./lazy/profile     $HOME/.profile
+COPY ./lazy/plugins/catppuccin.lua          $HOME/.config/nvim/lua/plugins
+COPY ./lazy/plugins/treesitter-context.lua  $HOME/.config/nvim/lua/plugins
 
+RUN nvim --headless "+Lazy! sync" +qa
 CMD ["/bin/ash"]
