@@ -40,9 +40,10 @@ RUN go install golang.org/x/tools/gopls@latest && \
 # run :LazyHealth after installation.
 #
 RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
-COPY ./lazy/config/options.lua 		$HOME/.config/nvim/lua/config/options.lua
-COPY ./lazy/profile			$HOME/.profile
-COPY ./lazy/plugins/*.lua		$HOME/.config/nvim/lua/plugins/
+COPY ./lazy/config/options.lua  $HOME/.config/nvim/lua/config/options.lua
+COPY ./lazy/profile             $HOME/.profile
+COPY ./lazy/clang-format        $HOME/.clang-format
+COPY ./lazy/plugins/*.lua       $HOME/.config/nvim/lua/plugins/
 
 # https://github.com/folke/lazy.nvim/discussions/1188
 #
