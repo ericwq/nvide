@@ -42,6 +42,8 @@ COPY ./lazy/config/options.lua 		$HOME/.config/nvim/lua/config/options.lua
 COPY ./lazy/profile			$HOME/.profile
 COPY ./lazy/plugins/*.lua		$HOME/.config/nvim/lua/plugins/
 
+# https://github.com/folke/lazy.nvim/discussions/1188
+#
 RUN nvim --headless "+Lazy! sync" +MasonToolsInstallSync +q!
 # RUN nvim --headless "+Lazy! sync" +qa
 # RUN nvim --headless "+LspInstall lua_ls" +q!
