@@ -2,9 +2,9 @@ return {
   {
     import = "lazyvim.plugins.extras.lang.go",
   },
-  -- {
-  --   import = "lazyvim.plugins.extras.lang.clangd",
-  -- },
+  {
+    import = "lazyvim.plugins.extras.lang.clangd",
+  },
   {
     import = "lazyvim.plugins.extras.editor.aerial",
   },
@@ -16,6 +16,9 @@ return {
     opts = {
       servers = {
         clangd = {
+          mason = false,
+        },
+        gopls = {
           mason = false,
         },
       },
