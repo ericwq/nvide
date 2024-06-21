@@ -9,7 +9,7 @@ RUN apk add -U icu-data-full docs go \
 	git lazygit neovim ripgrep alpine-sdk \
 	curl wget fzf fd tree-sitter-cli nodejs bash npm py3-pip py3-pynvim py3-wheel gzip unzip
 
-RUN apk add -U sudo ncurses tzdata
+RUN apk add -U sudo tzdata clang-dev
 
 RUN npm install -g neovim
 
@@ -26,9 +26,9 @@ USER ide:develop
 WORKDIR $HOME
 
 RUN go install golang.org/x/tools/gopls@latest && \
-	#    go install golang.org/x/tools/cmd/goimports@latest && \
+	go install golang.org/x/tools/cmd/goimports@latest && \
 	#    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
-	#    go install github.com/jstemmer/gotags@latest && \
+	go install github.com/jstemmer/gotags@latest && \
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
 	go install mvdan.cc/gofumpt@latest && \
 	go clean -cache -modcache -testcache && \
@@ -38,10 +38,12 @@ RUN go install golang.org/x/tools/gopls@latest && \
 # run :LazyHealth after installation.
 #
 RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
-RUN echo 'require("osc52")' >> ~/.config/nvim/lua/config/lazy.lua
-COPY ./lazy/osc52.lua   $HOME/.config/nvim/lua
-COPY ./lazy/profile     $HOME/.profile
-#COPY ./lazy/plugins/*.lua          $HOME/.config/nvim/lua/plugins
+COPY ./lazy/config/options.lua 		$HOME/.config/nvim/lua/config/options.lua
+COPY ./lazy/profile			$HOME/.profile
+COPY ./lazy/plugins/*.lua		$HOME/.config/nvim/lua/plugins/
 
-RUN nvim --headless "+Lazy! sync" +qa
+RUN nvim --headless "+Lazy! sync" +MasonToolsInstallSync +q!
+# RUN nvim --headless "+Lazy! sync" +qa
+# RUN nvim --headless "+LspInstall lua_ls" +q!
+# RUN nvim --headless "+LspInstall clangd" +q!
 CMD ["/bin/ash"]
