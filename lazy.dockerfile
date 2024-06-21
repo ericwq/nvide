@@ -9,8 +9,8 @@ RUN apk add -U icu-data-full docs go \
   git lazygit neovim ripgrep alpine-sdk \
   curl wget fzf fd tree-sitter-cli nodejs bash npm py3-pip py3-pynvim py3-wheel gzip unzip
 
-# clangd and luarocks
-RUN apk add -U sudo tzdata htop clang-dev luarocks5.1
+# clangd, luarocks, protoc
+RUN apk add -U sudo tzdata htop clang-dev luarocks5.1 protoc cloc
 
 RUN npm install -g neovim
 
@@ -32,6 +32,7 @@ RUN go install golang.org/x/tools/gopls@latest && \
   go install github.com/jstemmer/gotags@latest && \
   go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
   go install mvdan.cc/gofumpt@latest && \
+  go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest \
   go clean -cache -modcache -testcache && \
   rm -rf $GOPATH/src/*
 
