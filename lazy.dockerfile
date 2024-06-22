@@ -52,3 +52,5 @@ RUN nvim --headless "+Lazy! sync" +"MasonInstall lua-language-server stylua mark
 # RUN nvim --headless "+LspInstall lua_ls" +q!
 # RUN nvim --headless "+LspInstall clangd" +q!
 CMD ["/bin/ash"]
+# https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
+# install nerd font
