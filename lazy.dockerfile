@@ -32,7 +32,7 @@ RUN go install golang.org/x/tools/gopls@latest && \
   go install github.com/jstemmer/gotags@latest && \
   go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
   go install mvdan.cc/gofumpt@latest && \
-  go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest \
+  # go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest \
   go clean -cache -modcache -testcache && \
   rm -rf $GOPATH/src/*
 
@@ -40,14 +40,14 @@ RUN go install golang.org/x/tools/gopls@latest && \
 # run :LazyHealth after installation.
 #
 RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
-COPY ./lazy/config/options.lua  $HOME/.config/nvim/lua/config/options.lua
-COPY ./lazy/profile             $HOME/.profile
-COPY ./lazy/clang-format        $HOME/.clang-format
-COPY ./lazy/plugins/*.lua       $HOME/.config/nvim/lua/plugins/
+COPY --chown=ide:develop ./lazy/profile             $HOME/.profile
+COPY --chown=ide:develop ./lazy/clang-format        $HOME/.clang-format
+COPY --chown=ide:develop ./lazy/plugins/*.lua       $HOME/.config/nvim/lua/plugins/
+COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/config/options.lua
 
 # https://github.com/folke/lazy.nvim/discussions/1188
 #
-RUN nvim --headless "+Lazy! sync" +MasonToolsInstallSync +q!
+RUN nvim --headless "+Lazy! sync" +"MasonInstall lua-language-server stylua markdownlint shfmt" +qa
 # RUN nvim --headless "+Lazy! sync" +qa
 # RUN nvim --headless "+LspInstall lua_ls" +q!
 # RUN nvim --headless "+LspInstall clangd" +q!
