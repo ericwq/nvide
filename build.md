@@ -89,6 +89,8 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
 
 ```sh
 rm ~/.ssh/known_hosts ~/.ssh/known_hosts.old
+kitty +kitten ssh ide@localhost   # setup TERM
+kitty +kitten ssh root@localhost  # setup TERM
 ssh ide@localhost
 ssh root@localhost
 apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main ca-certificates curl

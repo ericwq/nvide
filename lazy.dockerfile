@@ -1,6 +1,6 @@
 FROM alpine:3.20
 LABEL maintainer="ericwq057@qq.com"
-LABEL build_date="2024-06-19"
+# build_date="2024-06-19"
 
 # 1. go and docs
 # 2. LazyVim starter depends
@@ -47,7 +47,8 @@ COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/confi
 
 # https://github.com/folke/lazy.nvim/discussions/1188
 #
-RUN nvim --headless "+Lazy! sync" +"MasonInstall lua-language-server stylua markdownlint shfmt" +qa
+RUN nvim --headless "+Lazy! sync" +"MasonInstall lua-language-server \
+  stylua markdownlint shfmt dockerfile-language-server docker-compose-language-service" +qa
 # RUN nvim --headless "+Lazy! sync" +qa
 # RUN nvim --headless "+LspInstall lua_ls" +q!
 # RUN nvim --headless "+LspInstall clangd" +q!
