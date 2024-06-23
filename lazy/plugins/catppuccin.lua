@@ -11,16 +11,6 @@ return {
 		opts = {
 			transparent_background = true,
 			flavour = "frappe",
-			styles = {
-				comments = {
-					"italic",
-				},
-			},
-			-- color_overrides = {
-			--   all = {
-			--     overlay0 = "#C0C0C0",
-			--   },
-			-- },
 		},
 		priority = 1000,
 		lazy = false,
@@ -29,6 +19,21 @@ return {
 		"LazyVim/LazyVim",
 		opts = {
 			colorscheme = "catppuccin",
+		},
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = {
+			"nvim-lua/lsp-status.nvim",
+		},
+		opts = {
+			sections = {
+				lualine_z = {
+					function()
+						return require("lsp-status").status()
+					end,
+				},
+			},
 		},
 	},
 }
