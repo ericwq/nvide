@@ -9,8 +9,8 @@ RUN apk add -U icu-data-full docs go \
   git lazygit neovim ripgrep alpine-sdk \
   curl wget fzf fd tree-sitter-cli nodejs bash npm py3-pip py3-pynvim py3-wheel gzip unzip
 
-# clangd, luarocks, protoc
-RUN apk add -U sudo tzdata htop clang-dev luarocks5.1 protoc cloc
+# clangd, luarocks, protoc, fish_indent
+RUN apk add -U sudo tzdata htop clang-dev luarocks5.1 protoc cloc fish
 
 RUN npm install -g neovim
 
