@@ -6,6 +6,7 @@ return {
   { import = "lazyvim.plugins.extras.editor.outline" },
   { import = "lazyvim.plugins.extras.ui.treesitter-context" },
   { import = "lazyvim.plugins.extras.coding.mini-comment" },
+  { import = "lazyvim.plugins.extras.test.core" },
   {
     "neovim/nvim-lspconfig",
     opts = {
