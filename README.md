@@ -22,7 +22,7 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 - `lazy/emulator` directory : terminal emulator configuration files.
 - `build.md` : contains the docker commands to build image and run container.
 - `lazy.dockerfile` : the IDE docker file.
-- `sshd-lazy.dockerfile`: the IDE docker file with ssh enable.
+- `sshd-lazy.dockerfile`: the IDE docker file with ssh enabled.
 - `reference.md` : the references about how to setup `nvide`.
 
 ## Client requirement
@@ -51,9 +51,9 @@ Copy the configuration file from `nvide` to `neovim` `.config` directory.
 ```sh
 git clone https://github.com/ericwq/nvide.git
 cd nvide/lazy/emulator
-cp -r emulator/alacritty    ~/.config/
-cp -r emulator/kitty        ~/.config/
-cp -r emulator/wezterm      ~/.config/
+cp -r alacritty    ~/.config/
+cp -r kitty        ~/.config/
+cp -r wezterm      ~/.config/
 ```
 
 ### Install fonts
