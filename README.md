@@ -106,9 +106,9 @@ Run the following command to build the base image.
 
 ### Creating SSH Keys
 
-Before build `sshd-lazy` image, you need to create ssh keys first. On your local machine (for me, it's my Mac book), make sure your `~/.ssh/id_rsa.pub` file exist. If it doesn't, use `% ssh_keygen` command to generate it for you.
+Before build `sshd-lazy` image, you need to create ssh keys first. On your local machine (for me, it's my Mac book), make sure `~/.ssh/id_rsa.pub` file exist. If it doesn't, use `% ssh_keygen` to generate it.
 
-Check ssh keys by listing the content in `~/.ssh`.
+Check ssh keys by list the content in `~/.ssh`.
 ```
 $ ls -al ~/.ssh
 total 16
@@ -142,7 +142,6 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-
 It's a good idea to add your keys to the SSH agent.
 ```sh
 $ ssh-add ~/.ssh/id_rsa
@@ -150,7 +149,7 @@ $ ssh-add ~/.ssh/id_rsa
 
 ### Build sshd-lazy image
 
-With the generated keys and passwords in hands, it's time to build the `sshd-lazy` image. Please note the `sshd-lazy` image is based on `nvide:0.8.5`. You need base image to build the `ssh-lazy` image.
+With the base image, ssh keys and passwords in hands, it's time to build the `sshd-lazy` image. Please note `sshd-lazy` image is based on `nvide:0.8.5`. Base image is required to build the `ssh-lazy` image.
 
 - `ROOT_PWD` is the root password.
 - `USER_PWD` is the `ide` user password.
@@ -167,7 +166,7 @@ docker build --build-arg ROOT_PWD=password \
 
 ### Run sshd-lazy container
 
-Please NOTE: the `sshd-lazy` image accepts both the password and public key login, user/password is supported if the public key is invalid/missing. Use the following command to start the container.
+Please NOTE: `sshd-lazy` image accepts both the password, public key authentication, public key authentication has higher priority than password authentication.. Use the following command to start the container.
 
 ```sh
 docker run --env TZ=Asia/Shanghai --tty --privileged \

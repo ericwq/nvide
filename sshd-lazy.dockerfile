@@ -28,7 +28,8 @@ RUN mkdir -p $HOME/.ssh \
 USER root
 
 # Enable init.
-RUN apk add --update --no-cache openssh-server openrc utmps mandoc man-pages ncurses-doc ncurses rsyslog rsyslog-openrc \
+RUN apk add --update --no-cache openssh-server openrc utmps mandoc man-pages \
+  docs ncurses-doc ncurses rsyslog rsyslog-openrc \
   && apk add --no-cache --virtual .build-dependencies uuidgen \
   && uuidgen -r > /etc/machine-id \
   # Disable getty's

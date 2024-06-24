@@ -2,13 +2,13 @@ FROM alpine:3.20
 LABEL maintainer="ericwq057@qq.com"
 # build_date="2024-06-19"
 
-# 1. go and docs
+# 1. go
 # 2. LazyVim starter depends
 # 3. lazy.nvim depends
 # 4. clangd, luarocks, protoc, fish_indent
 # 5. clean apk cache
 # 6. neovim npm
-RUN apk add --no-cache icu-data-full docs go \
+RUN apk add --no-cache icu-data-full go \
   git lazygit neovim ripgrep alpine-sdk \
   curl wget fzf fd tree-sitter-cli nodejs bash npm py3-pip py3-pynvim py3-wheel gzip unzip \
   sudo tzdata htop clang-dev luarocks5.1 protoc cloc fish && \

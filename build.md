@@ -26,7 +26,7 @@ docker build --build-arg ROOT_PWD=password \
 
 ```sh
 docker run --rm -ti nvide:0.8.5
-docker run --rm -ti -u ide -p 22:22 openrc-nvide:0.10.3
+docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.10.3
 ```
 
 ## Start base container
@@ -53,7 +53,7 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-    -h openrc-nvide --name openrc-nvide -d -p 22:22 \
+    -h sshd-lazy --name sshd-lazy -d -p 22:22 \
     -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp sshd-lazy:0.10.3
 
 # map port 22 to 8022, 810x to 820x
@@ -71,8 +71,9 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
 rm ~/.ssh/known_hosts*
 kitty +kitten ssh ide@localhost   # setup TERM
 kitty +kitten ssh root@localhost  # setup TERM
-ssh ide@localhost
 ssh root@localhost
+setup-utmp                        # start utmps service
+ssh ide@localhost
 apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main ca-certificates curl
 docker exec -u 0 -it nvide ash
 docker exec -u ide -it nvide ash
@@ -86,8 +87,8 @@ docker attach nvide
 
 ## upgrade to new version
 ```shell
-sed -i 's/0\.8\.4/0\.8\.5/g' build.md sshd-nvim.dockerfile openrc-nvim.dockerfile README.md
-sed -i 's/0\.10\.2/0\.10\.3/g' build.md README.md conf/motd
+sed -i 's/0\.8\.4/0\.8\.5/g' build.md sshd-lazy.dockerfile lazy.dockerfile README.md
+sed -i 's/0\.10\.2/0\.10\.3/g' build.md README.md lazy/motd
 ```
 
 ## Publish images to [docker](hub.docker.com)
