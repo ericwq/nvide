@@ -171,8 +171,7 @@ Please NOTE: `sshd-lazy` image accepts both the password, public key authenticat
 ```sh
 docker run --env TZ=Asia/Shanghai --tty --privileged \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
-    -h sshd-lazy --name sshd-lazy -d -p 22:22 \
-    -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp sshd-lazy:0.10.3
+    -h sshd-lazy --name sshd-lazy -d -p 22:22  sshd-lazy:0.10.3
 ```
 
 The `sshd-lazy` container listens on the port 22. Use the following command to login.
@@ -192,7 +191,7 @@ The `sshd-lazy` container listens on the port 22. Use the following command to l
 
 ## Sample project
 
-Please refer the `build.md` to create the `nvide` docker image. Currently, c/c++, go and `lua` language server are ready.
+Please refer the [build.md](build.md) to build `nvide` docker image step by step.
 
 - See [grpc-go project in nvide](reference.md#grpc-go-project-in-nvide) for example.
 - See [ccls project in nvide](reference.md#ccls-project-in-nvide) for example.
