@@ -1,4 +1,4 @@
-## Build the image
+## Build base image
 
 ```sh
 docker build -t nvide:0.8.5 -f lazy.dockerfile .
@@ -6,7 +6,7 @@ docker build --progress plain -t nvide:0.8.5 -f lazy.dockerfile .
 docker build --no-cache --progress plain -t nvide:0.8.5 -f lazy.dockerfile .
 ```
 
-## create docker volume
+## Create docker volume
 
 ```sh
 docker volume create proj-vol
@@ -22,32 +22,14 @@ docker build --build-arg ROOT_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
 	--progress plain -t sshd-lazy:0.10.3 -f sshd-lazy.dockerfile .
 ```
-## Dry run the container
+## Dry run base container
 
 ```sh
 docker run --rm -ti nvide:0.8.5
 docker run --rm -ti -u ide -p 22:22 openrc-nvide:0.10.3
 ```
 
-## Publish images to [docker](hub.docker.com)
-
-### 1. Tag the image
-
-```sh
-docker tag nvide:0.8.5 ericwq057/nvide:0.8.5
-```
-
-### 2. Sign in with your account at hub.docker.com
-
-### 3. Push to docker.io
-
-```sh
-docker push ericwq057/nvide:0.8.5
-git tag -a 0.8.5 -m "release message."
-git push origin 0.8.5
-```
-
-## Start nvide container
+## Start base container
 
 ```sh
 # start container as daemon
@@ -72,7 +54,7 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h openrc-nvide --name openrc-nvide -d -p 22:22 \
-    -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp openrc-nvide:0.10.3
+    -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp sshd-lazy:0.10.3
 
 # map port 22 to 8022, 810x to 820x
 docker run --env TZ=Asia/Shanghai --tty --privileged \
@@ -107,4 +89,21 @@ docker attach nvide
 sed -i 's/0\.8\.4/0\.8\.5/g' build.md sshd-nvim.dockerfile openrc-nvim.dockerfile README.md
 sed -i 's/0\.10\.2/0\.10\.3/g' build.md README.md conf/motd
 ```
+
+## Publish images to [docker](hub.docker.com)
+
+### 1. Tag the image
+
+```sh
+docker tag nvide:0.8.5 ericwq057/nvide:0.8.5
+```
+
+### 2. Sign in with your account at hub.docker.com
+
+### 3. Push to docker.io
+
+```sh
+docker push ericwq057/nvide:0.8.5
+git tag -a 0.8.5 -m "release message."
+git push origin 0.8.5
 ```
