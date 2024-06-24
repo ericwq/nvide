@@ -12,7 +12,6 @@ RUN apk add --no-cache icu-data-full docs go \
   git lazygit neovim ripgrep alpine-sdk \
   curl wget fzf fd tree-sitter-cli nodejs bash npm py3-pip py3-pynvim py3-wheel gzip unzip \
   sudo tzdata htop clang-dev luarocks5.1 protoc cloc fish && \
-  rm /var/cache/apk/* && \
   npm install -g neovim
 
 ENV HOME=/home/ide
