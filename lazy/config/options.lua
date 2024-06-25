@@ -8,6 +8,7 @@ vim.o.clipboard = "unnamedplus"
 local function no_paste(_)
   return function(_)
     -- Do nothing! We can't paste with OSC52
+    return ""
   end
 end
 
