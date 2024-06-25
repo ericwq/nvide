@@ -85,7 +85,7 @@ docker exec -u ide -it nvide ash
 docker attach nvide
 ```
 
-## upgrade to new version
+## Upgrade to new version
 ```shell
 sed -i 's/0\.8\.4/0\.8\.5/g' build.md sshd-lazy.dockerfile lazy.dockerfile README.md
 sed -i 's/0\.10\.2/0\.10\.3/g' build.md README.md lazy/motd

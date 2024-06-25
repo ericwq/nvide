@@ -4,7 +4,7 @@
 #
 # https://github.com/dockage/alpine/blob/main/3.17/Dockerfile
 #
-FROM nvide:0.8.5
+FROM ericwq057/nvide:0.8.5
 LABEL maintainer="ericwq057@qq.com"
 # build_date="2024-02-10"
 
