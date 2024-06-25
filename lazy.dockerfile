@@ -1,8 +1,8 @@
 FROM alpine:3.20
 LABEL maintainer="ericwq057@qq.com"
-# build_date="2024-06-19"
+# build_date="2024-06-25"
 
-#  go and openjdk
+#  go
 #  jdk
 #  LazyVim starter depends
 #  lazy.nvim depends
@@ -16,7 +16,7 @@ RUN apk add --no-cache icu-data-full go \
   sudo tzdata htop clang-dev luarocks5.1 protoc cloc fish && \
   npm install -g neovim
 
-# luarocks work around
+# luarocks symbol link
 WORKDIR /usr/bin
 RUN ln -s luarocks-5.1 luarocks
 
@@ -55,7 +55,7 @@ COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/confi
 #
 RUN nvim --headless "+Lazy! sync" +"MasonInstall lua-language-server \
   # jdtls \
-  stylua markdownlint shfmt dockerfile-language-server docker-compose-language-service" +qa
+  stylua markdownlint shfmt dockerfile-language-server docker-compose-language-service delve" +qa
 
 CMD ["/bin/ash"]
 # https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e

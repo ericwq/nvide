@@ -13,12 +13,9 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        clangd = {
-          mason = false,
-        },
-        gopls = {
-          mason = false,
-        },
+        clangd = { mason = false },
+        gopls = { mason = false },
+        -- delve = { mason = false },
       },
     },
   },
