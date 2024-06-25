@@ -182,13 +182,6 @@ The `sshd-lazy` container listens on the port 22. Use the following command to l
 % ssh root@localhost
 ```
 
-<!-- Or you can login to the SSH/mosh container. -->
-<!---->
-<!-- ```sh -->
-<!-- $ mosh ide@localhost -->
-<!-- $ mosh root@localhost -->
-<!-- ``` -->
-
 ## Sample project
 
 Please refer the [build.md](build.md) to build `nvide` docker image step by step.
@@ -202,6 +195,5 @@ Please refer the [build.md](build.md) to build `nvide` docker image step by step
 
 ## Unresolved problem
 
-<!-- - `neovim` text color doesn't work for `mosh` connection, while it works for `ssh` connection. see [Any chance we could get a new release? #1115](https://github.com/mobile-shell/mosh/issues/1115) -->
-<!-- - For `clangd`, cross-file navigation may result the single file mode. -->
-<!-- - It's not intuitive to operate the [reference or implementation quickfix window](reference.md#reference-or-implementation-quickfix-window). -->
+- mason can't install codelldb: error="The current platform is unsupported."
+- osc clipboard: provider returned invalid data

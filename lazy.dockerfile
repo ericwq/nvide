@@ -53,9 +53,9 @@ COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/confi
 
 # https://github.com/folke/lazy.nvim/discussions/1188
 #
-RUN nvim --headless "+Lazy! sync" +"MasonInstall lua-language-server \
+RUN nvim --headless "+Lazy! sync" +"MasonInstall lua-language-server delve shfmt \
   # jdtls \
-  stylua markdownlint shfmt dockerfile-language-server docker-compose-language-service delve" +qa
+  stylua markdownlint dockerfile-language-server docker-compose-language-service" +qa
 
 CMD ["/bin/ash"]
 # https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
