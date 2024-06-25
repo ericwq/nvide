@@ -27,4 +27,10 @@ return {
       close_if_last_window = true,
     },
   },
+  {
+    "hedyhli/outline.nvim",
+    opts = {
+      outline_window = { auto_close = true },
+    },
+  },
 }
