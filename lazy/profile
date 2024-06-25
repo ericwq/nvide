@@ -4,4 +4,4 @@ export PS1='\u@\h:\w $ '
 export LC_ALL=en_US.UTF-8
 
 alias vi=nvim
-alias luarocks=luarocks-5.1
+# alias luarocks=luarocks-5.1

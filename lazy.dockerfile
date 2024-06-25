@@ -16,6 +16,10 @@ RUN apk add --no-cache icu-data-full go \
   sudo tzdata htop clang-dev luarocks5.1 protoc cloc fish && \
   npm install -g neovim
 
+# luarocks work around
+WORKDIR /usr/bin
+RUN ln -s luarocks-5.1 luarocks
+
 ENV HOME=/home/ide
 ENV GOPATH /go
 ENV PATH=$PATH:$GOPATH/bin
