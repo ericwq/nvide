@@ -163,7 +163,6 @@ docker build --build-arg ROOT_PWD=password \
 	--progress plain -t sshd-lazy:0.10.3 -f sshd-lazy.dockerfile .
 ```
 
-
 ### Run sshd-lazy container
 
 Please NOTE: `sshd-lazy` image accepts both the password, public key authentication, public key authentication has higher priority than password authentication.. Use the following command to start the container.
@@ -196,4 +195,4 @@ Please refer the [build.md](build.md) to build `nvide` docker image step by step
 ## Unresolved problem
 
 - mason can't install codelldb: error="The current platform is unsupported."
-- osc clipboard: provider returned invalid data
+<!-- - osc clipboard: provider returned invalid data -->

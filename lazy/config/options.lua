@@ -5,8 +5,8 @@
 vim.o.clipboard = "unnamedplus"
 
 -- https://github.com/neovim/neovim/discussions/28010
-local function no_paste(reg)
-  return function(lines)
+local function no_paste(_)
+  return function(_)
     -- Do nothing! We can't paste with OSC52
   end
 end
