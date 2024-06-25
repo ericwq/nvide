@@ -52,9 +52,7 @@ COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/confi
 RUN nvim --headless "+Lazy! sync" +"MasonInstall lua-language-server \
   # jdtls \
   stylua markdownlint shfmt dockerfile-language-server docker-compose-language-service" +qa
-# RUN nvim --headless "+Lazy! sync" +qa
-# RUN nvim --headless "+LspInstall lua_ls" +q!
-# RUN nvim --headless "+LspInstall clangd" +q!
+
 CMD ["/bin/ash"]
 # https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
 # install nerd font

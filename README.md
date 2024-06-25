@@ -46,7 +46,7 @@ brew install --cask wezterm
 brew install --cask iterm2
 ```
 
-Copy the configuration file from `nvide` to `neovim` `.config` directory.
+Copy the configuration file from `nvide` to `neovim` `.config` directory.The configuration file set default font as `JetbrainsMono Nerd Font` in `kitty`,`alacritty`,`wezterm`.
 
 ```sh
 git clone https://github.com/ericwq/nvide.git
@@ -58,7 +58,7 @@ cp -r wezterm      ~/.config/
 
 ### Install fonts
 
-Install one or all of the fonts, It's required by `nvide`. I set set font family as `JetbrainsMono Nerd Font` in `~/.config/kitty/kitty.conf`
+Install one or all of the fonts, It's required by `nvide`.
 
 ```sh
 brew search '/font-.*-nerd-font/'                   # search nerd font
