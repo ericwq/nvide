@@ -2,14 +2,19 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 
+-- https://github.com/neovim/neovim/discussions/28010
+--
+-- local function no_paste(_)
+--   return function(_)
+--   end
+-- end
 vim.o.clipboard = "unnamedplus"
 
--- https://github.com/neovim/neovim/discussions/28010
-local function no_paste(_)
-  return function(_)
-    -- Do nothing! We can't paste with OSC52
-    return ""
-  end
+local function paste()
+  return {
+    vim.fn.split(vim.fn.getreg(""), "\n"),
+    vim.fn.getregtype(""),
+  }
 end
 
 vim.g.clipboard = {
@@ -19,8 +24,8 @@ vim.g.clipboard = {
     ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
   },
   paste = {
-    ["+"] = no_paste("+"), -- Pasting disabled
-    ["*"] = no_paste("*"), -- Pasting disabled
+    ["+"] = paste,
+    ["*"] = paste,
   },
 }
 
@@ -48,6 +53,7 @@ vim.g.clipboard = {
 -- }
 
 -- disable language provider support (lua and vimscript plugins only)
+--
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 -- vim.g.loaded_node_provider = 0
