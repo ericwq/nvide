@@ -16,13 +16,13 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 
 ### Files description
 
-- `lazy` directory : contains additional packages and custom configuration for `Lazy.nvim`.
-- `lazy/conf` directory : add `osc52` clipboard support.
+- `lazy` directory : additional packages and custom configuration for `Lazy.nvim`.
+- `lazy/conf` directory : customized `osc52` clipboard support.
 - `lazy/plugins` directory : customized color scheme, status line, etc.
 - `lazy/emulator` directory : terminal emulator configuration files.
-- `build.md` : contains the docker commands to build image and run container.
-- `lazy.dockerfile` : the IDE docker file.
-- `sshd-lazy.dockerfile`: the IDE docker file with ssh enabled.
+- `build.md` : step by step guide to build image and run container.
+- `lazy.dockerfile` : the base image docker file.
+- `sshd-lazy.dockerfile`: the docker file with ssh enabled.
 - `reference.md` : the references about how to setup `nvide`.
 
 ## Client requirement
@@ -149,7 +149,7 @@ $ ssh-add ~/.ssh/id_rsa
 
 ### Build sshd-lazy image
 
-With the base image, ssh keys and passwords in hands, it's time to build the `sshd-lazy` image. Please note `sshd-lazy` image is based on `nvide:0.8.5`. Base image is required to build the `ssh-lazy` image.
+With the base image, ssh keys and passwords in hands, it's time to build the `sshd-lazy` image. Please note `sshd-lazy` image is based on `ericwq057/nvide:0.8.5`. Base image is required to build the `ssh-lazy` image.
 
 - `ROOT_PWD` is the root password.
 - `USER_PWD` is the `ide` user password.
@@ -165,7 +165,7 @@ docker build --build-arg ROOT_PWD=password \
 
 ### Run sshd-lazy container
 
-Please NOTE: `sshd-lazy` image accepts both the password, public key authentication, public key authentication has higher priority than password authentication.. Use the following command to start the container.
+Please NOTE: `sshd-lazy` image accepts both public key and password authentication, public key authentication has higher priority than password authentication. Use the following command to start the container.
 
 ```sh
 docker run --env TZ=Asia/Shanghai --tty --privileged \
@@ -181,16 +181,16 @@ The `sshd-lazy` container listens on the port 22. Use the following command to l
 % ssh root@localhost
 ```
 
-## Sample project
+## Sample projects
 
-Please refer the [build.md](build.md) to build `nvide` docker image step by step.
+Please refer the [build.md](build.md) to build `nvide` docker image step by step. The following is `nvide` user guide for some sample projects.
 
-- See [grpc-go project in nvide](reference.md#grpc-go-project-in-nvide) for example.
-- See [ccls project in nvide](reference.md#ccls-project-in-nvide) for example.
-- See [st project in nvide](https://github.com/ericwq/examples/blob/main/tty/ref.md#st) for example.
-- See [mosh project in nvide](https://github.com/ericwq/examples/blob/main/tty/ref.md#mosh) for example.
-- See [zutty project in nvide](https://github.com/ericwq/examples/blob/main/tty/ref.md#zutty) for example.
-- See [lua project in nvide](reference.md#lua-project-in-nvide) for example.
+- [grpc-go](reference.md#grpc-go-project-in-nvide) project
+- [ccls](reference.md#ccls-project-in-nvide) project
+- [st](https://github.com/ericwq/examples/blob/main/tty/ref.md#st) project
+- [mosh](https://github.com/ericwq/examples/blob/main/tty/ref.md#mosh) project
+- [zutty](https://github.com/ericwq/examples/blob/main/tty/ref.md#zutty) project
+- [lua](reference.md#lua-project-in-nvide) project
 
 ## Unresolved problem
 
