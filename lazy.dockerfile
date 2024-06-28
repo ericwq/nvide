@@ -9,6 +9,8 @@ LABEL maintainer="ericwq057@qq.com"
 #  clangd, luarocks, protoc, fish_indent
 #  clean apk cache
 #  neovim npm
+
+# hadolint ignore=DL3018,DL3016
 RUN apk add --no-cache icu-data-full go \
   # openjdk21 \
   git lazygit neovim ripgrep alpine-sdk \

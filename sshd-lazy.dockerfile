@@ -25,9 +25,11 @@ RUN mkdir -p $HOME/.ssh \
   && chmod 0700 $HOME/.ssh \
   && echo "$SSH_PUB_KEY" > $HOME/.ssh/authorized_keys
 
+# hadolint ignore=DL3002
 USER root
 
 # Enable init.
+# hadolint ignore=DL3018
 RUN apk add --update --no-cache openssh-server openrc utmps mandoc man-pages \
   docs ncurses-doc ncurses rsyslog rsyslog-openrc \
   && apk add --no-cache --virtual .build-dependencies uuidgen \
@@ -90,12 +92,14 @@ RUN rc-update add rsyslog boot
 # set root password
 # set ide password
 # set root public key login
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN mkdir -p /root/.ssh \
   && chmod 0700 /root/.ssh \
   && echo "root:${ROOT_PWD}" | chpasswd \
   && echo "ide:${USER_PWD}" | chpasswd \
   && echo "$SSH_PUB_KEY" > /root/.ssh/authorized_keys
-
+# hadolint ignore=DL4006
+#
 # setup utmp
 # the following script doesn't work for image build.
 # you need to run it in container and reboot it again.

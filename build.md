@@ -17,6 +17,7 @@ Please change the ownership of mount directory.
 ## Build `sshd-lazy` image
 
 ```sh
+docker tag nvide:0.8.5 ericwq057/nvide:0.8.5
 docker build --build-arg ROOT_PWD=password \
 	--build-arg USER_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
