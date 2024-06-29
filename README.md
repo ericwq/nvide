@@ -194,5 +194,4 @@ Please refer the [build.md](build.md) to build `nvide` docker image step by step
 
 ## Unresolved problem
 
-- mason can't install codelldb: error="The current platform is unsupported."
-<!-- - osc clipboard: provider returned invalid data -->
+- mason can't install codelldb: error="The current platform is unsupported." [reason](https://github.com/vadimcn/codelldb/issues/391)
