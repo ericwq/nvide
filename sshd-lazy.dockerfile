@@ -98,8 +98,7 @@ RUN mkdir -p /root/.ssh \
   && echo "root:${ROOT_PWD}" | chpasswd \
   && echo "ide:${USER_PWD}" | chpasswd \
   && echo "$SSH_PUB_KEY" > /root/.ssh/authorized_keys
-# hadolint ignore=DL4006
-#
+
 # setup utmp
 # the following script doesn't work for image build.
 # you need to run it in container and reboot it again.
