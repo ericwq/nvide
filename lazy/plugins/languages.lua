@@ -17,7 +17,7 @@ return {
       servers = {
         clangd = { mason = false },
         gopls = { mason = false },
-        -- delve = { mason = false },
+        codelldb = { mason = false },
       },
     },
   },
