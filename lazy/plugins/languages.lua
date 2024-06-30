@@ -8,6 +8,7 @@ return {
   { import = "lazyvim.plugins.extras.editor.mini-files" },
   { import = "lazyvim.plugins.extras.ui.treesitter-context" },
   { import = "lazyvim.plugins.extras.coding.mini-comment" },
+  { import = "lazyvim.plugins.extras.coding.luasnip" },
   { import = "lazyvim.plugins.extras.test.core" },
   { import = "lazyvim.plugins.extras.dap.core" },
   {
