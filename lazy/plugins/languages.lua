@@ -17,7 +17,7 @@ return {
       servers = {
         clangd = { mason = false },
         gopls = { mason = false },
-        codelldb = { mason = false },
+        -- codelldb = { mason = false },
       },
     },
   },
@@ -32,5 +32,10 @@ return {
     opts = {
       outline_window = { auto_close = true },
     },
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    lazy = true,
+    event = "VeryLazy",
   },
 }
