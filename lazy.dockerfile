@@ -3,16 +3,15 @@ LABEL maintainer="ericwq057@qq.com"
 # build_date="2024-06-25"
 
 #  go
-#  jdk
+#  openjdk
 #  LazyVim starter depends
 #  lazy.nvim depends
-#  clangd, luarocks, protoc, fish_indent
-#  clean apk cache
+#  c/c++, clangd, luarocks, protoc, fish_indent
 #  neovim npm
 
 # hadolint ignore=DL3018,DL3016
 RUN apk add --no-cache icu-data-full go \
-  openjdk21 maven gradle \
+  openjdk21 maven \
   git lazygit neovim ripgrep alpine-sdk \
   curl wget fzf fd tree-sitter-cli nodejs bash npm py3-pip py3-pynvim py3-wheel gzip unzip \
   sudo tzdata htop clang-dev luarocks5.1 protoc cloc fish && \
