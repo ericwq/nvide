@@ -12,7 +12,7 @@ LABEL maintainer="ericwq057@qq.com"
 
 # hadolint ignore=DL3018,DL3016
 RUN apk add --no-cache icu-data-full go \
-  # openjdk21 \
+  openjdk21 maven gradle \
   git lazygit neovim ripgrep alpine-sdk \
   curl wget fzf fd tree-sitter-cli nodejs bash npm py3-pip py3-pynvim py3-wheel gzip unzip \
   sudo tzdata htop clang-dev luarocks5.1 protoc cloc fish && \
@@ -59,8 +59,7 @@ COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/confi
 ADD --chown=ide:develop https://api.github.com/repos/folke/lazy.nvim/releases/latest .version/lazy.nvim.json
 ADD --chown=ide:develop https://api.github.com/repos/LazyVim/LazyVim/releases/latest .version/LazyVim.json
 RUN nvim --headless "+Lazy! sync" +"MasonInstall lua-language-server delve shfmt \
-  # jdtls \
-  stylua markdownlint dockerfile-language-server docker-compose-language-service" +qa
+  jdtls stylua markdownlint dockerfile-language-server docker-compose-language-service" +qa
 
 CMD ["/bin/ash"]
 # https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
