@@ -22,7 +22,7 @@ WORKDIR /usr/bin
 RUN ln -s luarocks-5.1 luarocks
 
 ENV HOME=/home/ide
-ENV GOPATH /go
+ENV GOPATH=/go
 ENV PATH=$PATH:$GOPATH/bin
 ENV ENV=$HOME/.profile
 
