@@ -11,7 +11,7 @@ LABEL maintainer="ericwq057@qq.com"
 
 # hadolint ignore=DL3018,DL3016
 RUN apk add --no-cache icu-data-full go \
-  openjdk21 maven \
+  openjdk17 maven \
   git lazygit neovim ripgrep alpine-sdk \
   curl wget fzf fd tree-sitter-cli nodejs bash npm py3-pip py3-pynvim py3-wheel gzip unzip \
   sudo tzdata htop clang-dev luarocks5.1 protoc cloc fish && \
