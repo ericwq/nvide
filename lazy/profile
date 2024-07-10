@@ -1,5 +1,5 @@
 export GOPATH=/go
-export PATH=$PATH:$GOPATH/bin
+export PATH=$HOME/.local/bin:$PATH:$GOPATH/bin
 export PS1='\u@\h:\w $ '
 export LC_ALL=en_US.UTF-8
 export JAVA_HOME=/usr/lib/jvm/default-jvm
