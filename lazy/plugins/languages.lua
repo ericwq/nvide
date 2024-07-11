@@ -4,11 +4,12 @@ return {
   { import = "lazyvim.plugins.extras.lang.docker" },
   { import = "lazyvim.plugins.extras.lang.go" },
   { import = "lazyvim.plugins.extras.lang.clangd" },
-  { import = "lazyvim.plugins.extras.editor.outline" },
   { import = "lazyvim.plugins.extras.editor.mini-files" },
-  { import = "lazyvim.plugins.extras.ui.treesitter-context" },
+  { import = "lazyvim.plugins.extras.editor.aerial" },
+  -- { import = "lazyvim.plugins.extras.editor.outline" },
   -- { import = "lazyvim.plugins.extras.coding.mini-comment" },
   -- { import = "lazyvim.plugins.extras.coding.luasnip" },
+  { import = "lazyvim.plugins.extras.ui.treesitter-context" },
   { import = "lazyvim.plugins.extras.test.core" },
   { import = "lazyvim.plugins.extras.dap.core" },
   {
@@ -28,11 +29,17 @@ return {
     },
   },
   {
-    "hedyhli/outline.nvim",
+    "stevearc/aerial.nvim",
     opts = {
-      outline_window = { auto_close = true },
+      close_on_select = true,
     },
   },
+  -- {
+  --   "hedyhli/outline.nvim",
+  --   opts = {
+  --     outline_window = { auto_close = true },
+  --   },
+  -- },
   -- {
   --   "L3MON4D3/LuaSnip",
   --   lazy = true,
