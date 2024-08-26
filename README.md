@@ -188,6 +188,7 @@ Please refer the [build.md](build.md) to build `nvide` docker image step by step
 - [grpc-go](reference.md#grpc-go-project-in-nvide) project
 - [ccls](reference.md#ccls-project-in-nvide) project
 - [st](https://github.com/ericwq/examples/blob/main/tty/ref.md#st) project
+- [foot](https://github.com/ericwq/examples/blob/main/tty/ref.md#foot) project
 - [mosh](https://github.com/ericwq/examples/blob/main/tty/ref.md#mosh) project
 - [zutty](https://github.com/ericwq/examples/blob/main/tty/ref.md#zutty) project
 - [lua](reference.md#lua-project-in-nvide) project
