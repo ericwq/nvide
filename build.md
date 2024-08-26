@@ -75,7 +75,6 @@ kitty +kitten ssh root@localhost  # setup TERM
 ssh root@localhost
 setup-utmp                        # start utmps service
 ssh ide@localhost
-apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main ca-certificates curl
 docker exec -u 0 -it nvide ash
 docker exec -u ide -it nvide ash
 ```
