@@ -43,6 +43,12 @@ RUN go install golang.org/x/tools/gopls@latest && \
   go clean -cache -modcache -testcache && \
   rm -rf $GOPATH/src/*
 
+# install rust, ast-grep, rust-analyzer
+# hadolint ignore=DL4006
+RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
+  $HOME/.cargo/bin/cargo install ast-grep --locked && \
+  $HOME/.cargo/bin/rustup component add rust-analyzer
+
 # https://github.com/LazyVim/LazyVim/discussions/2862 transparent
 # run :LazyHealth after installation.
 #
@@ -57,7 +63,7 @@ COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/confi
 # check new release
 ADD --chown=ide:develop https://api.github.com/repos/folke/lazy.nvim/releases/latest .version/lazy.nvim.json
 ADD --chown=ide:develop https://api.github.com/repos/LazyVim/LazyVim/releases/latest .version/LazyVim.json
-RUN nvim --headless +"Lazy! sync" +"MasonInstall lua-language-server delve shfmt \
+RUN nvim --headless +"Lazy! sync" +"MasonInstall lua-language-server delve shfmt taplo \
   jdtls stylua markdownlint dockerfile-language-server docker-compose-language-service" +qa
 
 CMD ["/bin/ash"]

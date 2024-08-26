@@ -1,4 +1,4 @@
-sshd-lazy:0.11.0
+sshd-lazy:0.11.1
 
-Lua, C/C++, Java and Golang IDE
-Powered by neovim, lazy.nvim, luals, clangd, jdtls and gopls.
+Lua, C/C++, Java, Rust and Golang IDE
+Powered by neovim, lazy.nvim, luals, clangd, jdtls, rust-analyzer and gopls.
