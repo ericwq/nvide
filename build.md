@@ -54,7 +54,7 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-    -h sshd-lazy --name sshd-lazy -d -p 22:22 \
+    -h sshd-lazy --name sshd-lazy -d -p 22:22 -p 80:80 -p 8080:8080 \
     -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp sshd-lazy:0.11.1
 
 # map port 22 to 8022, 810x to 820x
@@ -62,7 +62,7 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-    -h sshd-lazy --name sshd-lazy -d -p 8022:22 \
+    -h sshd-lazy --name sshd-lazy -d -p 8022:22 -p 80:80 -p 8080:8080 \
     -p 8201:8101/udp -p 8202:8102/udp -p 8203:8103/udp sshd-lazy:0.11.1
 ```
 

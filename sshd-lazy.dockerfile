@@ -6,7 +6,7 @@
 #
 FROM ericwq057/nvide:0.9.1
 LABEL maintainer="ericwq057@qq.com"
-# build_date="2024-02-10"
+# build_date="2024-08-29"
 
 # ENV container=docker
 
@@ -113,6 +113,8 @@ VOLUME ["/sys/fs/cgroup"]
 COPY ./lazy/motd 		/etc/motd
 
 EXPOSE 22
+EXPOSE 80
+EXPOSE 8080
 EXPOSE 8101/udp
 EXPOSE 8102/udp
 EXPOSE 8103/udp

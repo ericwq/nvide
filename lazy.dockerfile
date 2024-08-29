@@ -1,6 +1,6 @@
 FROM alpine:3.20
 LABEL maintainer="ericwq057@qq.com"
-# build_date="2024-06-25"
+# build_date="2024-08-29"
 
 #  go
 #  openjdk
