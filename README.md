@@ -12,7 +12,7 @@ o8o        `8        `8'       o888o o888bood8P'   o888ooooood8
 
 ## Introduction
 
-`nvide` is a Lua, C/C++, Java, Rust and Golang IDE.  It combined project [ericwq/golangIDE](https://github.com/ericwq/golangIDE) and project [ericwq/gccIDE](https://github.com/ericwq/gccIDE) into one: `nvide`. It inherits version number from [ericwq/golangIDE](https://github.com/ericwq/golangIDE).`nvide` is based on [Lazy.nvim](https://www.lazyvim.org/), with additional packages and custom configuration.
+`nvide` is a Lua, C/C++, Java, Golang and Rust IDE.  It origin from project [ericwq/golangIDE](https://github.com/ericwq/golangIDE) and project [ericwq/gccIDE](https://github.com/ericwq/gccIDE) into one: `nvide`. It inherits version number from [ericwq/golangIDE](https://github.com/ericwq/golangIDE). Start from version 0.9, `nvide` is based on [Lazy.nvim](https://www.lazyvim.org/), with additional packages and custom configuration.
 
 ### Files description
 
