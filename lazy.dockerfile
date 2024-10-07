@@ -63,8 +63,11 @@ COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/confi
 # check new release
 ADD --chown=ide:develop https://api.github.com/repos/folke/lazy.nvim/releases/latest .version/lazy.nvim.json
 ADD --chown=ide:develop https://api.github.com/repos/LazyVim/LazyVim/releases/latest .version/LazyVim.json
-RUN nvim --headless +"Lazy! sync" +"MasonInstall lua-language-server delve shfmt taplo \
-  jdtls stylua markdownlint dockerfile-language-server docker-compose-language-service" +qa
+RUN nvim --headless +"Lazy! sync" +"MasonInstall delve shfmt taplo \
+  jdtls dockerfile-language-server docker-compose-language-service markdownlint" +qa
+# for apple sillicon chips (such as m1,m2), the following language server is not supported
+# codelldb doesn't support musl
+# RUN nvim --headless +"Lazy! sync" +"MasonInstall lua-language-server stylua codelldb" +qa
 
 CMD ["/bin/ash"]
 # https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
