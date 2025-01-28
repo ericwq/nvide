@@ -1,9 +1,9 @@
 ## Build base image
 
 ```sh
-docker build -t nvide:0.9.1 -f lazy.dockerfile .
-docker build --progress plain -t nvide:0.9.1 -f lazy.dockerfile .
-docker build --no-cache --progress plain -t nvide:0.9.1 -f lazy.dockerfile .
+docker build -t nvide:0.9.2 -f lazy.dockerfile .
+docker build --progress plain -t nvide:0.9.2 -f lazy.dockerfile .
+docker build --no-cache --progress plain -t nvide:0.9.2 -f lazy.dockerfile .
 ```
 
 ## Create docker volume
@@ -17,17 +17,17 @@ Please change the ownership of mount directory.
 ## Build `sshd-lazy` image
 
 ```sh
-docker tag nvide:0.9.1 ericwq057/nvide:0.9.1
+docker tag nvide:0.9.2 ericwq057/nvide:0.9.2
 docker build --build-arg ROOT_PWD=password \
 	--build-arg USER_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-	--progress plain -t sshd-lazy:0.11.1 -f sshd-lazy.dockerfile .
+	--progress plain -t sshd-lazy:0.11.2 -f sshd-lazy.dockerfile .
 ```
 ## Dry run base container
 
 ```sh
-docker run --rm -ti nvide:0.9.1
-docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.11.1
+docker run --rm -ti nvide:0.9.2
+docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.11.2
 ```
 
 ## Start base container
@@ -37,13 +37,13 @@ docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.11.1
 docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-    nvide:0.9.1
+    nvide:0.9.2
 
 # start container and destroy it after use
 docker run --rm -ti --privileged -h nvide --env TZ=Asia/Shanghai --name nvide \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
-    nvide:0.9.1
+    nvide:0.9.2
 ```
 
 ## Start sshd-lazy container
@@ -55,7 +55,7 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h sshd-lazy --name sshd-lazy -d -p 22:22 -p 80:80 -p 8080:8080 \
-    -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp sshd-lazy:0.11.1
+    -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp sshd-lazy:0.11.2
 
 # map port 22 to 8022, 810x to 820x
 docker run --env TZ=Asia/Shanghai --tty --privileged \
@@ -63,7 +63,7 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     -h sshd-lazy --name sshd-lazy -d -p 8022:22 -p 80:80 -p 8080:8080 \
-    -p 8201:8101/udp -p 8202:8102/udp -p 8203:8103/udp sshd-lazy:0.11.1
+    -p 8201:8101/udp -p 8202:8102/udp -p 8203:8103/udp sshd-lazy:0.11.2
 ```
 
 ## Login to the container
@@ -96,7 +96,7 @@ sed -i 's/0\.11\.0/0\.11\.1/g' build.md README.md lazy/motd
 ### 1. Tag the image
 
 ```sh
-docker tag nvide:0.9.1 ericwq057/nvide:0.9.1
+docker tag nvide:0.9.2 ericwq057/nvide:0.9.2
 ```
 
 ### 2. Sign in with your account at hub.docker.com
@@ -104,7 +104,7 @@ docker tag nvide:0.9.1 ericwq057/nvide:0.9.1
 ### 3. Push to docker.io
 
 ```sh
-docker push ericwq057/nvide:0.9.1
-git tag -a 0.9.1 -m "release message."
-git push origin 0.9.1
+docker push ericwq057/nvide:0.9.2
+git tag -a 0.9.2 -m "release message."
+git push origin 0.9.2
 ```

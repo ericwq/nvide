@@ -85,8 +85,8 @@ kitty +kitten ssh root@localhost
 The easy way to use `nvide` is to use [in-stock image](https://hub.docker.com/repository/docker/ericwq057/nvide).
 
 ```sh
-docker pull ericwq057/nvide:0.9.1
-docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide ericwq057/nvide:0.9.1
+docker pull ericwq057/nvide:0.9.2
+docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide ericwq057/nvide:0.9.2
 docker exec -u ide -it nvide ash    # login as user ide
 docker exec -u root -it nvide ash   # login as root
 ```
@@ -101,7 +101,7 @@ Run the following command to build the base image.
 ```sh
 % git clone https://github.com/ericwq/nvide.git
 % cd nvide
-% docker build -t nvide:0.9.1 -f lazy.dockerfile .
+% docker build -t nvide:0.9.2 -f lazy.dockerfile .
 ```
 
 ### Creating SSH Keys
@@ -149,18 +149,18 @@ $ ssh-add ~/.ssh/id_rsa
 
 ### Build sshd-lazy image
 
-With the base image, ssh keys and passwords in hands, it's time to build the `sshd-lazy` image. Please note `sshd-lazy` image is based on `ericwq057/nvide:0.9.1`. Base image is required to build the `ssh-lazy` image.
+With the base image, ssh keys and passwords in hands, it's time to build the `sshd-lazy` image. Please note `sshd-lazy` image is based on `ericwq057/nvide:0.9.2`. Base image is required to build the `ssh-lazy` image.
 
 - `ROOT_PWD` is the root password.
 - `USER_PWD` is the `ide` user password.
 - `SSH_PUB_KEY` is the public key we just created.
 
 ```sh
-docker build -t nvide:0.9.1 -f lazy.dockerfile .
+docker build -t nvide:0.9.2 -f lazy.dockerfile .
 docker build --build-arg ROOT_PWD=password \
 	--build-arg USER_PWD=password \
 	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-	--progress plain -t sshd-lazy:0.11.1 -f sshd-lazy.dockerfile .
+	--progress plain -t sshd-lazy:0.11.2 -f sshd-lazy.dockerfile .
 ```
 
 ### Run sshd-lazy container
@@ -170,7 +170,7 @@ Please NOTE: `sshd-lazy` image accepts both public key and password authenticati
 ```sh
 docker run --env TZ=Asia/Shanghai --tty --privileged \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
-    -h sshd-lazy --name sshd-lazy -d -p 22:22  sshd-lazy:0.11.1
+    -h sshd-lazy --name sshd-lazy -d -p 22:22  sshd-lazy:0.11.2
 ```
 
 The `sshd-lazy` container listens on the port 22. Use the following command to login.
