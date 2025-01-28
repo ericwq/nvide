@@ -1,4 +1,4 @@
-FROM alpine:3.20
+FROM alpine:3.21
 LABEL maintainer="ericwq057@qq.com"
 # build_date="2024-08-29"
 

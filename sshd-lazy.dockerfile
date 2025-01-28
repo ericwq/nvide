@@ -4,7 +4,7 @@
 #
 # https://github.com/dockage/alpine/blob/main/3.17/Dockerfile
 #
-FROM ericwq057/nvide:0.9.1
+FROM ericwq057/nvide:0.9.2
 LABEL maintainer="ericwq057@qq.com"
 # build_date="2024-08-29"
 
@@ -56,8 +56,13 @@ RUN apk add --update --no-cache openssh-server openrc utmps mandoc man-pages \
   /etc/init.d/machine-id \
   /etc/init.d/modloop \
   # Can't do cgroups
-  && sed -i 's/cgroup_add_service /# cgroup_add_service /g' /lib/rc/sh/openrc-run.sh \
-  && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh \
+  #
+  # 2025/1/27: change from /lib/rc/sh/ to /usr/libexec/rc/sh
+  && sed -i 's/cgroup_add_service /# cgroup_add_service /g' /usr/libexec/rc/sh/openrc-run.sh \
+  && sed -i 's/VSERVER/DOCKER/Ig' /usr/libexec/rc/sh/init.sh \
+  #
+  # && sed -i 's/cgroup_add_service /# cgroup_add_service /g' /lib/rc/sh/openrc-run.sh \
+  # && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh \
   && apk del .build-dependencies
 
 # enable sshd, permit root login, enable port 22, generate ssh key.
