@@ -11,24 +11,24 @@
 vim.o.clipboard = "unnamedplus"
 
 local function paste()
-  return {
-    vim.fn.split(vim.fn.getreg(""), "\n"),
-    vim.fn.getregtype(""),
-  }
+	return {
+		vim.fn.split(vim.fn.getreg(""), "\n"),
+		vim.fn.getregtype(""),
+	}
 end
 
 vim.g.clipboard = {
-  name = "OSC 52",
-  copy = {
-    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-  },
-  paste = {
-    ["+"] = paste,
-    ["*"] = paste,
-    -- ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-    -- ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
-  },
+	name = "OSC 52",
+	copy = {
+		["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+		["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+	},
+	paste = {
+		["+"] = paste,
+		["*"] = paste,
+		-- ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+		-- ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+	},
 }
 
 -- local function copy(lines, _)
@@ -58,6 +58,7 @@ vim.g.clipboard = {
 --
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
+vim.g.lazyvim_check_order = false
 -- vim.g.loaded_node_provider = 0
 -- vim.g.loaded_python_provider = 0
 -- vim.g.loaded_python3_provider = 0
