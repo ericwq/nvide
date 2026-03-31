@@ -2,6 +2,7 @@
 
 ```sh
 docker build -t nvide:0.9.3 -f lazy.dockerfile .
+podman build -t ulazy:0.1.0 -f ubuntu-lazy.dockerfile .
 docker build --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 ```
@@ -27,6 +28,7 @@ docker build --build-arg ROOT_PWD=password \
 
 ```sh
 docker run --rm -ti nvide:0.9.3
+podman run --rm -ti ulazy:0.1.0
 docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.11.3
 ```
 
@@ -38,6 +40,12 @@ docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     nvide:0.9.3
+
+podman run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty --privileged \
+    --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
+    --mount source=proj-vol,target=/home/ide/proj \
+    --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+    ulazy:0.1.0
 
 # start container and destroy it after use
 docker run --rm -ti --privileged -h nvide --env TZ=Asia/Shanghai --name nvide \
@@ -77,6 +85,7 @@ setup-utmp                        # start utmps service
 ssh ide@localhost
 docker exec -u 0 -it nvide ash
 docker exec -u ide -it nvide ash
+podman exec -u ide -it ulazy bash
 ```
 
 ## Attach to the container
