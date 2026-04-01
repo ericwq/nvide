@@ -123,8 +123,9 @@ COPY --chown=ide:develop ./lazy/clang-format        $HOME/.clang-format
 COPY --chown=ide:develop ./lazy/plugins/*.lua       $HOME/.config/nvim/lua/plugins/
 COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/config/options.lua
 
-RUN echo 'export LANG=C.UTF-8' >> /home/ide/.bashrc && \
-  echo 'export LC_ALL=C.UTF-8' >> /home/ide/.bashrc
+RUN echo 'export LANG=C.UTF-8' >> ${HOME}/.bashrc && \
+  echo 'export LC_ALL=C.UTF-8' >> ${HOME}/.bashrc && \
+  echo 'alias vi=nvim' >> ${HOME}/.bashrc
 
 ENV PATH=$HOME/.local/bin:$PATH
 RUN nvim --headless +"Lazy! sync" +"MasonInstall shfmt lua-language-server stylua " +qa
