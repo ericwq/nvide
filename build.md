@@ -2,7 +2,8 @@
 
 ```sh
 docker build -t nvide:0.9.3 -f lazy.dockerfile .
-podman build -t ulazy:0.1.0 -f ubuntu-lazy.dockerfile .
+podman build -t ulazy:0.1.0 -f ubuntu-lazy-amd64.dockerfile .
+podman build -t ulazy:0.1.0 -f ubuntu-lazy-arm64.dockerfile .
 docker build --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 ```
@@ -43,8 +44,8 @@ docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
 
 podman run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty --privileged \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
-    --mount source=proj-vol,target=/home/ide/proj \
-    --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+    -v proj-vol:/home/ide/proj \
+    -v /Users/qiwang/dev:/home/ide/develop:Z \
     ulazy:0.1.0
 
 # start container and destroy it after use
