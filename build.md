@@ -43,9 +43,10 @@ docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
     nvide:0.9.3
 
 podman run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty --privileged \
+    --user root \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v proj-vol:/home/ide/proj \
-    -v /Users/qiwang/dev:/home/ide/develop:Z \
+    -v /Users/qiwang/dev:/home/ide/develop \
     ulazy:0.1.0
 
 # start container and destroy it after use
@@ -86,6 +87,7 @@ setup-utmp                        # start utmps service
 ssh ide@localhost
 docker exec -u 0 -it nvide ash
 docker exec -u ide -it nvide ash
+podman exec -u root -it ulazy bash # login with root
 podman exec -u ide -it ulazy bash
 ```
 
