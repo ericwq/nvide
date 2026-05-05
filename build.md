@@ -47,7 +47,6 @@ podman run -it --rm --mount type=bind,source=${HOME}/dev,target=/develop ubuntu:
 
 # start container and run in background
 podman run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty --privileged \
-    --user root \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v proj-vol:/home/ide/proj \
     -v /Users/qiwang/dev:/home/ide/develop \
