@@ -42,6 +42,10 @@ docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
     --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
     nvide:0.9.3
 
+# start container and mount local directory
+podman run -it --rm --mount type=bind,source=${HOME}/dev,target=/develop ubuntu:24.04 /bin/bash
+
+# start container and run in background
 podman run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty --privileged \
     --user root \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
