@@ -46,6 +46,7 @@ docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
 podman run -it --rm --mount type=bind,source=${HOME}/dev,target=/develop ubuntu:24.04 /bin/bash
 
 # start container and run in background
+# check https://oneuptime.com/blog/post/2026-03-16-use-bind-mounts-podman/view for rootful and rootless mode
 podman run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty --privileged \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v proj-vol:/home/ide/proj \
