@@ -47,10 +47,10 @@ podman run -it --rm --mount type=bind,source=${HOME}/dev,target=/develop ubuntu:
 
 # start container and run in background
 # check https://oneuptime.com/blog/post/2026-03-16-use-bind-mounts-podman/view for rootful and rootless mode
-podman run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty --privileged \
+podman run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v proj-vol:/home/ide/proj \
-    -v /Users/qiwang/dev:/home/ide/develop \
+    -v /Users/wangqi/dev:/home/ide/develop \
     ulazy:0.1.0
 
 # start container and destroy it after use
