@@ -2,8 +2,8 @@
 
 ```sh
 docker build -t nvide:0.9.3 -f lazy.dockerfile .
-podman build -t ulazy:0.1.0 -f ubuntu-lazy-amd64.dockerfile .
-podman build -t ulazy:0.1.0 -f ubuntu-lazy-arm64.dockerfile .
+docker build -t ulazy:0.1.0 -f ubuntu-lazy-amd64.dockerfile .
+docker build -t ulazy:0.1.0 -f ubuntu-lazy-arm64.dockerfile .
 docker build --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 ```
@@ -29,7 +29,7 @@ docker build --build-arg ROOT_PWD=password \
 
 ```sh
 docker run --rm -ti nvide:0.9.3
-podman run --rm -ti ulazy:0.1.0
+docker run --rm -ti ulazy:0.1.0
 docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.11.3
 ```
 
@@ -43,11 +43,11 @@ docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
     nvide:0.9.3
 
 # start container and mount local directory
-podman run -it --rm --mount type=bind,source=${HOME}/dev,target=/develop ubuntu:24.04 /bin/bash
+docker run -it --rm --mount type=bind,source=${HOME}/dev,target=/develop ubuntu:24.04 /bin/bash
 
 # start container and run in background
 # check https://oneuptime.com/blog/post/2026-03-16-use-bind-mounts-podman/view for rootful and rootless mode
-podman run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty \
+docker run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v proj-vol:/home/ide/proj \
     -v /Users/wangqi/dev:/home/ide/develop \
@@ -89,10 +89,10 @@ kitty +kitten ssh root@localhost  # setup TERM
 ssh root@localhost
 setup-utmp                        # start utmps service
 ssh ide@localhost
-docker exec -u 0 -it nvide ash
-docker exec -u ide -it nvide ash
-podman exec -u root -it ulazy bash # login with root
-podman exec -u ide -it ulazy bash
+# docker exec -u 0 -it nvide bash
+# docker exec -u ide -it nvide ash
+docker exec -u root -it ulazy bash # login with root
+docker exec -u ide -it ulazy bash
 ```
 
 ## Attach to the container

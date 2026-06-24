@@ -110,7 +110,7 @@ RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
 
 # install OpenCode
 # hadolint ignore=DL4006
-RUN curl -fsSL https://opencode.ai/install | bash
+# RUN curl -fsSL https://opencode.ai/install | bash
 
 # install node.js npm
 # hadolint ignore=DL4006
