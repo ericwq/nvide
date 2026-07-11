@@ -39,7 +39,7 @@ docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.11.3
 # start container as daemon
 docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
     --mount source=proj-vol,target=/home/ide/proj \
-    --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+    --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
     nvide:0.9.3
 
 # start container and mount local directory
@@ -50,13 +50,13 @@ docker run -it --rm --mount type=bind,source=${HOME}/dev,target=/develop ubuntu:
 docker run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v proj-vol:/home/ide/proj \
-    -v /Users/wangqi/dev:/home/ide/develop \
+    -v ${HOME}/dev:/home/ide/develop \
     ulazy:0.1.0
 
 # start container and destroy it after use
 docker run --rm -ti --privileged -h nvide --env TZ=Asia/Shanghai --name nvide \
     --mount source=proj-vol,target=/home/ide/proj \
-    --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+    --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
     nvide:0.9.3
 ```
 
@@ -67,7 +67,7 @@ docker run --rm -ti --privileged -h nvide --env TZ=Asia/Shanghai --name nvide \
 docker run --env TZ=Asia/Shanghai --tty --privileged \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     --mount source=proj-vol,target=/home/ide/proj \
-    --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+    --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
     -h sshd-lazy --name sshd-lazy -d -p 22:22 -p 80:80 -p 8080:8080 \
     -p 8101:8101/udp -p 8102:8102/udp -p 8103:8103/udp sshd-lazy:0.11.3
 
@@ -75,7 +75,7 @@ docker run --env TZ=Asia/Shanghai --tty --privileged \
 docker run --env TZ=Asia/Shanghai --tty --privileged \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     --mount source=proj-vol,target=/home/ide/proj \
-    --mount type=bind,source=/Users/qiwang/dev,target=/home/ide/develop \
+    --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
     -h sshd-lazy --name sshd-lazy -d -p 8022:22 -p 80:80 -p 8080:8080 \
     -p 8201:8101/udp -p 8202:8102/udp -p 8203:8103/udp sshd-lazy:0.11.3
 ```
