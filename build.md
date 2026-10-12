@@ -8,6 +8,19 @@ docker build --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 ```
 
+## Build pi agent arm64 image
+
+```sh
+# 构建命令
+docker buildx build --platform linux/arm64 -t pi-agent:26.04 -f pi-agent.dockerfile . --load
+
+# 后台启动
+docker run -d --name pi-agent-container --platform linux/arm64 pi-agent:26.04
+
+# 进入容器
+docker exec -it pi-agent-container /bin/bash
+```
+
 ## Create docker volume
 
 ```sh
