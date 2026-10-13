@@ -16,14 +16,14 @@ docker pull --platform linux/amd64 michaelwadman/pi-agent
 docker pull --platform linux/arm64 ocramz/pi-container
 
 # 构建命令
-docker build --platform linux/arm64 -t pi-agent:26.04 -f pi-agent.dockerfile .
+docker build --platform linux/arm64 -t pi-agent:0.1 -f pi-agent.dockerfile .
 
 # 后台启动
 docker run -d -ti --name pi-agent --platform linux/arm64 -h pi-agent \
     --env TZ=Asia/Shanghai \
     --mount source=proj-vol,target=/ide/proj \
     --mount type=bind,source=${HOME}/dev,target=/ide/develop \
-    pi-agent:26.04
+    pi-agent:0.1
 
 # 进入容器
 docker exec -it pi-agent /bin/bash
