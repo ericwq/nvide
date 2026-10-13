@@ -12,6 +12,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-e", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 # 设置时区上海
 ENV TZ=Asia/Shanghai
+# 设置终端类型，保证交互式 shell 的彩色输出和光标控制正常
+ENV TERM=xterm-256color
 
 # 1. 安装 curl ca-certificates + tzdata，增加 --no-install-recommends 消除 DL3015
 RUN apt-get update \
@@ -19,6 +21,9 @@ RUN apt-get update \
   curl \
   ca-certificates \
   tzdata \
+  sudo \
+  nodejs \
+  npm \
   && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && apt-get clean \
@@ -33,9 +38,12 @@ RUN groupadd develop \
 # 切换默认用户为 ide
 USER ide
 
-# 3. 使用官方脚本安装 pi-agent（pi-agent 内部自行安装 node/npm）
-WORKDIR /ide
-RUN curl -fsSL https://pi.dev/install.sh | sh
+# 3. 配置 npm 使用国内镜像源，加速后续安装
+# RUN npm config set registry https://registry.npmmirror.com
+
+# 4. 使用官方脚本安装 pi-agent（pi-agent 内部自行安装 node/npm）
+# WORKDIR /ide
+# RUN curl -fsSL https://pi.dev/install.sh | sh
 
 # 默认工作目录
 WORKDIR /ide
