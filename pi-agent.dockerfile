@@ -22,8 +22,10 @@ RUN apt-get update \
   ca-certificates \
   tzdata \
   sudo \
-  nodejs \
-  npm \
+  bash \
+  git \
+  ripgrep \
+  fd-find \
   && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && apt-get clean \
@@ -42,8 +44,8 @@ USER ide
 # RUN npm config set registry https://registry.npmmirror.com
 
 # 4. 使用官方脚本安装 pi-agent（pi-agent 内部自行安装 node/npm）
-# WORKDIR /ide
-# RUN curl -fsSL https://pi.dev/install.sh | sh
+WORKDIR /ide
+RUN curl -fsSL https://pi.dev/install.sh | sh
 
 # 默认工作目录
 WORKDIR /ide

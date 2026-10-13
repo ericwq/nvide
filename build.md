@@ -11,6 +11,10 @@ docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 ## Build pi agent arm64 image
 
 ```sh
+# 现成的容器
+docker pull --platform linux/amd64 michaelwadman/pi-agent
+docker pull --platform linux/arm64 ocramz/pi-container
+
 # 构建命令
 docker build --platform linux/arm64 -t pi-agent:26.04 -f pi-agent.dockerfile .
 
