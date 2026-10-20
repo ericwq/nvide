@@ -8,7 +8,15 @@ docker build --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 ```
 
-## Build pi agent image for amd64
+## Create docker volume
+
+```sh
+docker volume create proj-vol
+```
+
+Please change the ownership of mount directory.
+
+## Build pi agent image (default for amd64)
 
 ```sh
 # 现成的容器
@@ -29,13 +37,9 @@ docker run -d -ti --name pi-agent --platform linux/amd64 -h pi-agent \
 docker exec -it pi-agent /bin/bash
 ```
 
-## Create docker volume
+如果你为 arm64 平台制作镜像，请去掉 `--platform linux/amd64` 参数
 
-```sh
-docker volume create proj-vol
-```
-
-Please change the ownership of mount directory.
+在容器中利用 host.docker.internal 访问宿主机的端口
 
 ## Build `sshd-lazy` image
 

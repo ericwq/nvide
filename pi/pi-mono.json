@@ -1,0 +1,22 @@
+{
+  "extends": "default",
+  "meta": {
+    "name": "pi-mono"
+  },
+  "groups": {
+    "include": [
+      "node_runtime"
+    ]
+  },
+  "workdir": {
+    "access": "readwrite"
+  },
+  "filesystem": {
+    "allow": [
+      "$HOME/.pi/agent/",
+      "$HOME/develop/projects/",
+      "$HOME/develop/MDE/"
+    ],
+    "read": []
+  }
+}

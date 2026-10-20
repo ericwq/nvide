@@ -39,6 +39,7 @@ RUN VERSION=$(curl -sIL https://github.com/nolabs-ai/nono/releases/latest | grep
   && dpkg -i nono-cli_${VERSION}_${ARCH}.deb \
   && rm nono-cli_${VERSION}_${ARCH}.deb
 
+# 安装 pi agent
 # hadolint ignore=DL3016
 RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 
@@ -48,15 +49,37 @@ RUN groupadd develop \
   && mkdir -p /home/ide \
   && chown -R ide:develop /home/ide
 
-# 切换默认用户为 ide
+# 切换工作目录
 WORKDIR /home/ide
+ENV HOME=/home/ide
+ARG NPM_PATH=/home/ide/.npm-global
 
-RUN mkdir -p /home/ide/.npm-global \
-  && npm config set prefix '/home/ide/.npm-global' \
-  && chown -R ide:develop /home/ide/.npm-global
-ENV PATH=/home/ide/.npm-global/bin:$PATH
+RUN mkdir -p ${NPM_PATH} \
+  && npm config set prefix "${NPM_PATH}" \
+  && chown -R ide:develop ${NPM_PATH}
+ENV PATH=${NPM_PATH}/bin:$PATH
 
 USER ide
 
-# 默认进入交互式shell
+# 安装 lattice
+ARG PI_SKILLS=${HOME}/.pi/agent/skills/
+RUN mkdir -p ${PI_SKILLS} && chown -R ide:develop ${PI_SKILLS}
+# hadolint ignore=DL3003
+RUN git clone https://github.com/techygarg/lattice.git && \
+  cd lattice && \
+  ./tools/install.sh ${PI_SKILLS}
+
+# 安装配置文件
+WORKDIR /home/ide
+ARG NONO_PROFILE=/home/ide/.config/nono/profiles/
+RUN mkdir -p ${NONO_PROFILE} && chown -R ide:develop ${NONO_PROFILE}
+COPY --chown=ide:develop ./pi/pi-mono.json  ${NONO_PROFILE}/pi-mono.json
+COPY --chown=ide:develop ./pi/AGENTS.md     ${HOME}/.pi/agent/AGENTS.md
+
+# 添加别名到 bashrc
+RUN cat >> /home/ide/.bashrc <<'EOF'
+alias np='nono run --profile pi-mono -- pi'
+EOF
+
+# 默认进入交互式SHELL
 CMD ["/bin/bash"]
