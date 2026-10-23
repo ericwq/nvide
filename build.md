@@ -16,13 +16,19 @@ docker volume create proj-vol
 
 Please change the ownership of mount directory.
 
-## Build pi agent image (default for amd64)
+## Build pi-agent image
+
+### build from stock image
 
 ```sh
-# 现成的容器
+# 仅 pi-agent 缺少其他工具
 docker pull --platform linux/amd64 michaelwadman/pi-agent
 docker pull --platform linux/arm64 ocramz/pi-container
+```
 
+### build for amd64
+
+```sh
 # 构建命令
 docker build --platform linux/amd64 -t pi-agent:0.1 -f pi-agent.dockerfile .
 
@@ -32,14 +38,28 @@ docker run -d -ti --name pi-agent --platform linux/amd64 -h pi-agent \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
     pi-agent:0.1
+```
 
-# 进入容器
+### build for arm64
+
+```sh
+# 构建命令
+docker build -t pi-agent:0.2 -f pi-agent.dockerfile .
+
+# 后台启动
+docker run -d -ti --name pi-agent -h pi-agent \
+    --env TZ=Asia/Shanghai \
+    --mount source=proj-vol,target=/home/ide/proj \
+    --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
+    pi-agent:0.2
+```
+
+### 进入容器
+```sh
 docker exec -it pi-agent /bin/bash
 ```
 
-如果你为 arm64 平台制作镜像，请去掉 `--platform linux/amd64` 参数
-
-在容器中利用 host.docker.internal 访问宿主机的端口
+在容器中可利用 host.docker.internal 访问宿主机的端口
 
 ## Build `sshd-lazy` image
 

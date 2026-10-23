@@ -25,11 +25,21 @@ RUN apt-get update \
   fd-find \
   neovim \
   poppler-utils \
+  python3 \
+  python3-pip \
+  python3-lxml \
+  python3-venv \
   && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && ln -sf /usr/bin/fdfind /usr/local/bin/fd \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
+
+# 安装 python-docx
+RUN python3 -m venv /opt/pyvenv
+ENV PATH="/opt/pyvenv/bin:$PATH"
+# hadolint ignore=DL3013
+RUN pip install --no-cache-dir python-docx
 
 # 安装 nono
 # hadolint ignore=DL4001
@@ -69,7 +79,7 @@ RUN git clone https://github.com/techygarg/lattice.git && \
   cd lattice && \
   ./tools/install.sh ${PI_SKILLS}
 
-# 安装配置文件
+# 安装 nono, pi agent 配置文件
 WORKDIR /home/ide
 ARG NONO_PROFILE=/home/ide/.config/nono/profiles/
 RUN mkdir -p ${NONO_PROFILE} && chown -R ide:develop ${NONO_PROFILE}
