@@ -17,6 +17,11 @@
       "$HOME/develop/projects/",
       "$HOME/develop/MDE/"
     ],
-    "read": []
+    "read": [
+      "/opt/pyvenv/"
+    ],
+    "allow_file": [
+      "/opt/pyvenv/pyvenv.cfg"
+    ],
   }
 }
