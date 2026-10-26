@@ -15,6 +15,7 @@
     "allow": [
       "$HOME/.pi/agent/",
       "$HOME/develop/projects/",
+      "/tmp/",
       "$HOME/develop/MDE/"
     ],
     "read": [
@@ -22,6 +23,6 @@
     ],
     "allow_file": [
       "/opt/pyvenv/pyvenv.cfg"
-    ],
+    ]
   }
 }
