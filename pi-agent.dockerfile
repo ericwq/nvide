@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # 设置时区上海
 ENV TZ=Asia/Shanghai
 
-# 1. 安装 curl ca-certificates + tzdata，增加 --no-install-recommends 消除 DL3015
+# 安装 curl ca-certificates + tzdata，增加 --no-install-recommends 消除 DL3015
 # hadolint ignore=DL3008
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
@@ -49,15 +49,13 @@ RUN VERSION=$(curl -sIL https://github.com/nolabs-ai/nono/releases/latest | grep
   && dpkg -i nono-cli_${VERSION}_${ARCH}.deb \
   && rm nono-cli_${VERSION}_${ARCH}.deb
 
-# 安装 pi agent
-# hadolint ignore=DL3016
-RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
-
-# 2. 创建组 develop，创建用户 ide，创建工作目录
+# 创建组 develop，创建用户 ide，创建工作目录
 RUN groupadd develop \
   && useradd -m -g develop ide \
   && mkdir -p /home/ide \
   && chown -R ide:develop /home/ide
+
+USER ide
 
 # 切换工作目录
 WORKDIR /home/ide
@@ -69,11 +67,13 @@ RUN mkdir -p ${NPM_PATH} \
   && chown -R ide:develop ${NPM_PATH}
 ENV PATH=${NPM_PATH}/bin:$PATH
 
-USER ide
+# 安装 pi agent
+# hadolint ignore=DL3016
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 
 # 安装 lattice
 ARG PI_SKILLS=${HOME}/.pi/agent/skills/
-RUN mkdir -p ${PI_SKILLS} && chown -R ide:develop ${PI_SKILLS}
+RUN mkdir -p ${PI_SKILLS}
 # hadolint ignore=DL3003
 RUN git clone https://github.com/techygarg/lattice.git && \
   cd lattice && \

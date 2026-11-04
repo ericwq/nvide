@@ -19,7 +19,8 @@
       "$HOME/develop/MDE/"
     ],
     "read": [
-      "/opt/pyvenv/"
+      "/opt/pyvenv/",
+      "$HOME/.npm-global/"
     ],
     "allow_file": [
       "/opt/pyvenv/pyvenv.cfg"
