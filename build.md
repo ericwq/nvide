@@ -30,28 +30,28 @@ docker pull --platform linux/arm64 ocramz/pi-container
 
 ```sh
 # 构建命令
-docker build --platform linux/amd64 -t pi-agent:0.1 -f pi-agent.dockerfile .
+docker build --platform linux/amd64 -t pi-agent:0.4 -f pi-agent.dockerfile .
 
 # 后台启动
 docker run -d -ti --name pi-agent -h pi-agent --platform linux/amd64 \
     --env TZ=Asia/Shanghai \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
-    pi-agent:0.1
+    pi-agent:0.4
 ```
 
 ### build for arm64
 
 ```sh
 # 构建命令
-docker build --platform linux/arm64 -t pi-agent:0.3 -f pi-agent.dockerfile .
+docker build --platform linux/arm64 -t pi-agent:0.4 -f pi-agent.dockerfile .
 
 # 后台启动
 docker run -d -ti --name pi-agent -h pi-agent --platform linux/arm64 \
     --env TZ=Asia/Shanghai \
     --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
-    pi-agent:0.3
+    pi-agent:0.4
 ```
 
 ### 进入容器

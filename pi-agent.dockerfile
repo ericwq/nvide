@@ -19,6 +19,7 @@ RUN apt-get update \
   ca-certificates \
   tzdata \
   wget \
+  curl \
   bash \
   git \
   ripgrep \
@@ -29,6 +30,7 @@ RUN apt-get update \
   python3-pip \
   python3-lxml \
   python3-venv \
+  openjdk-17-jdk-headless \
   && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && ln -sf /usr/bin/fdfind /usr/local/bin/fd \
@@ -40,6 +42,11 @@ RUN python3 -m venv /opt/pyvenv
 ENV PATH="/opt/pyvenv/bin:$PATH"
 # hadolint ignore=DL3013
 RUN pip install --no-cache-dir python-docx
+
+# 设置 JAVA_HOME
+RUN ln -sfn "/usr/lib/jvm/java-17-openjdk-$(dpkg --print-architecture)" /usr/lib/jvm/java-17-openjdk
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 # 安装 nono
 # hadolint ignore=DL4001
@@ -78,6 +85,13 @@ RUN mkdir -p ${PI_SKILLS}
 RUN git clone https://github.com/techygarg/lattice.git && \
   cd lattice && \
   ./tools/install.sh ${PI_SKILLS}
+
+# install rust, ast-grep, rust-analyzer
+# hadolint ignore=DL4001
+# RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
+#   $HOME/.cargo/bin/cargo install ast-grep --locked && \
+#   $HOME/.cargo/bin/rustup component add rust-analyzer
+
 
 # 安装 nono, pi agent 配置文件
 WORKDIR /home/ide
