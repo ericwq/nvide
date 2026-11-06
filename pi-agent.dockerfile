@@ -67,14 +67,14 @@ RUN VERSION=$(curl -sIL https://github.com/nolabs-ai/nono/releases/latest | grep
   && rm nono-cli_${VERSION}_${ARCH}.deb
 
 # 安装最新版 Maven（固定版本以保证可复现）
-# ARG MAVEN_VERSION=3.10.0
-# RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -o /tmp/maven.tar.gz \
-#   && mkdir -p /opt \
-#   && tar -xzf /tmp/maven.tar.gz -C /opt \
-#   && ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven \
-#   && rm /tmp/maven.tar.gz
-# ENV MAVEN_HOME=/opt/maven
-# ENV PATH="${MAVEN_HOME}/bin:${PATH}"
+ARG MAVEN_VERSION=3.10.0
+RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -o /tmp/maven.tar.gz \
+  && mkdir -p /opt \
+  && tar -xzf /tmp/maven.tar.gz -C /opt \
+  && ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven \
+  && rm /tmp/maven.tar.gz
+ENV MAVEN_HOME=/opt/maven
+ENV PATH="${MAVEN_HOME}/bin:${PATH}"
 
 # 创建组 develop，创建用户 ide，创建工作目录
 RUN groupadd develop \
