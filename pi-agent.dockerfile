@@ -1,5 +1,5 @@
 # pi-agent.dockerfile
-FROM node:24-bookworm-slim
+FROM ubuntu:26.04
 
 LABEL maintainer="ericwq057@qq.com"
 
@@ -15,9 +15,9 @@ ENV TZ=Asia/Shanghai
 # hadolint ignore=DL3008
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-  curl \
   ca-certificates \
   tzdata \
+  unzip \
   wget \
   curl \
   bash \
@@ -30,7 +30,10 @@ RUN apt-get update \
   python3-pip \
   python3-lxml \
   python3-venv \
-  openjdk-17-jdk-headless \
+  openjdk-21-jdk-headless \
+  maven \
+  && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
+  && apt-get install -y --no-install-recommends nodejs \
   && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && ln -sf /usr/bin/fdfind /usr/local/bin/fd \
@@ -41,11 +44,19 @@ RUN apt-get update \
 RUN python3 -m venv /opt/pyvenv
 ENV PATH="/opt/pyvenv/bin:$PATH"
 # hadolint ignore=DL3013
-RUN pip install --no-cache-dir python-docx
+RUN python3 -m pip install --no-cache-dir python-docx
+
+ARG GRADLE_VERSION=9.8.2
+RUN curl -fsSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -o /tmp/gradle.zip \
+  && unzip -q /tmp/gradle.zip -d /opt \
+  && ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle \
+  && rm /tmp/gradle.zip
+ENV GRADLE_HOME=/opt/gradle
+ENV PATH="${GRADLE_HOME}/bin:${PATH}"
 
 # 设置 JAVA_HOME
-RUN ln -sfn "/usr/lib/jvm/java-17-openjdk-$(dpkg --print-architecture)" /usr/lib/jvm/java-17-openjdk
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+RUN ln -sfn "/usr/lib/jvm/java-21-openjdk-$(dpkg --print-architecture)" /usr/lib/jvm/java-21-openjdk
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 # 安装 nono
@@ -80,7 +91,7 @@ RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 
 # 安装 lattice
 ARG PI_SKILLS=${HOME}/.pi/agent/skills/
-RUN mkdir -p ${PI_SKILLS}
+RUN mkdir -p ${PI_SKILLS} ${HOME}/.m2 ${HOME}/.gradle
 # hadolint ignore=DL3003
 RUN git clone https://github.com/techygarg/lattice.git && \
   cd lattice && \
@@ -99,6 +110,10 @@ ARG NONO_PROFILE=/home/ide/.config/nono/profiles/
 RUN mkdir -p ${NONO_PROFILE} && chown -R ide:develop ${NONO_PROFILE}
 COPY --chown=ide:develop ./pi/pi-mono.json  ${NONO_PROFILE}/pi-mono.json
 COPY --chown=ide:develop ./pi/AGENTS.md     ${HOME}/.pi/agent/AGENTS.md
+
+# setup LANG
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 # 添加别名到 bashrc
 RUN cat >> /home/ide/.bashrc <<'EOF'

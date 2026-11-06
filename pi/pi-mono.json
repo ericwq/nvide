@@ -16,11 +16,18 @@
       "$HOME/.pi/agent/",
       "$HOME/develop/projects/",
       "/tmp/",
-      "$HOME/develop/MDE/"
+      "$HOME/develop/MDE/",
+      "$HOME/.m2/",
+      "$HOME/.m2_test",
+      "$HOME/.gradle/"
     ],
     "read": [
       "/opt/pyvenv/",
-      "$HOME/.npm-global/"
+      "$JAVA_HOME/conf/security/",
+      "/etc/java-21-openjdk/",
+      "$HOME/.npm-global/",
+      "/etc/maven/",
+      "/opt/gradle/"
     ],
     "allow_file": [
       "/opt/pyvenv/pyvenv.cfg"

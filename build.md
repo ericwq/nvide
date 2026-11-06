@@ -61,6 +61,8 @@ docker exec -it pi-agent /bin/bash
 
 在容器中可利用 host.docker.internal 访问宿主机的端口
 
+若要生成 java 代码，现在的环境还缺少什么？如果遇到权限问题，请告诉我需要什么权限。不要试图自己想办法，另外，未经过我的同意不要安装任何软件。
+
 ## Build `sshd-lazy` image
 
 ```sh
