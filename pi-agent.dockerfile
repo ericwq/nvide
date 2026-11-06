@@ -31,7 +31,6 @@ RUN apt-get update \
   python3-lxml \
   python3-venv \
   openjdk-21-jdk-headless \
-  maven \
   && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
   && apt-get install -y --no-install-recommends nodejs \
   && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
@@ -66,6 +65,16 @@ RUN VERSION=$(curl -sIL https://github.com/nolabs-ai/nono/releases/latest | grep
   && wget -q https://github.com/nolabs-ai/nono/releases/download/v${VERSION}/nono-cli_${VERSION}_${ARCH}.deb \
   && dpkg -i nono-cli_${VERSION}_${ARCH}.deb \
   && rm nono-cli_${VERSION}_${ARCH}.deb
+
+# 安装最新版 Maven（固定版本以保证可复现）
+# ARG MAVEN_VERSION=3.10.0
+# RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -o /tmp/maven.tar.gz \
+#   && mkdir -p /opt \
+#   && tar -xzf /tmp/maven.tar.gz -C /opt \
+#   && ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven \
+#   && rm /tmp/maven.tar.gz
+# ENV MAVEN_HOME=/opt/maven
+# ENV PATH="${MAVEN_HOME}/bin:${PATH}"
 
 # 创建组 develop，创建用户 ide，创建工作目录
 RUN groupadd develop \
