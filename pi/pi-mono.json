@@ -25,8 +25,10 @@
       "/opt/pyvenv/",
       "$JAVA_HOME/conf/security/",
       "/etc/java-21-openjdk/",
+      "/etc/java-17-openjdk/",
       "$HOME/.npm-global/",
       "/etc/maven/",
+      "/opt/maven/",
       "/opt/gradle/"
     ],
     "allow_file": [
