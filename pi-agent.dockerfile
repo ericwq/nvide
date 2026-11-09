@@ -115,11 +115,9 @@ RUN git clone https://github.com/techygarg/lattice.git && \
   ./tools/install.sh ${PI_SKILLS}
 
 # install rust, ast-grep, rust-analyzer
-# hadolint ignore=DL4001
 RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
   $HOME/.cargo/bin/cargo install ast-grep --locked && \
   $HOME/.cargo/bin/rustup component add rust-analyzer
-
 
 # 安装 nono, pi agent 配置文件
 WORKDIR /home/ide
