@@ -90,11 +90,15 @@ RUN groupadd develop \
   && mkdir -p /home/ide \
   && chown -R ide:develop /home/ide
 
-USER ide
-
 # 切换工作目录
+USER ide
 WORKDIR /home/ide
 ENV HOME=/home/ide
+
+# install rust, ast-grep, rust-analyzer
+RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
+  $HOME/.cargo/bin/cargo install ast-grep --locked && \
+  $HOME/.cargo/bin/rustup component add rust-analyzer
 ARG NPM_PATH=/home/ide/.npm-global
 
 RUN mkdir -p ${NPM_PATH} \
@@ -104,7 +108,8 @@ ENV PATH=${NPM_PATH}/bin:$PATH
 
 # 安装 pi agent
 # hadolint ignore=DL3016
-RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent \
+  && pi install npm:pi-models-discovery
 
 # 安装 lattice
 ARG PI_SKILLS=${HOME}/.pi/agent/skills/
@@ -113,11 +118,6 @@ RUN mkdir -p ${PI_SKILLS} ${HOME}/.m2 ${HOME}/.gradle
 RUN git clone https://github.com/techygarg/lattice.git && \
   cd lattice && \
   ./tools/install.sh ${PI_SKILLS}
-
-# install rust, ast-grep, rust-analyzer
-RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
-  $HOME/.cargo/bin/cargo install ast-grep --locked && \
-  $HOME/.cargo/bin/rustup component add rust-analyzer
 
 # 安装 nono, pi agent 配置文件
 WORKDIR /home/ide

@@ -20,10 +20,9 @@
       "$HOME/.m2/",
       "$HOME/.m2_test/",
       "$HOME/.gradle/",
-      "$HOME/.rustup/settings.toml"
       "$HOME/.cargo/",
-      "$HOME/.rustup",
-      "$HOME/.npm-global/",
+      "$HOME/.rustup/",
+      "$HOME/.npm-global/"
     ],
     "read": [
       "/opt/pyvenv/",
