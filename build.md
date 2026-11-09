@@ -56,8 +56,8 @@ docker run -d -ti --name pi-agent -h pi-agent --platform linux/arm64 \
 
 ### 进入容器
 ```sh
-docker exec -it pi-agent -u root /bin/bash
-docker exec -it pi-agent -u ide /bin/bash
+docker exec -u root -it pi-agent /bin/bash
+docker exec -u ide -it pi-agent /bin/bash
 ```
 
 #### 配置本地 LLM
