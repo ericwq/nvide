@@ -20,6 +20,7 @@ RUN apt-get update \
   unzip \
   wget \
   curl \
+  jq \
   bash \
   git \
   ripgrep \
@@ -31,6 +32,7 @@ RUN apt-get update \
   python3-lxml \
   python3-venv \
   openjdk-21-jdk-headless \
+  openjdk-17-jdk-headless \
   && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
   && apt-get install -y --no-install-recommends nodejs \
   && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
@@ -54,17 +56,21 @@ ENV GRADLE_HOME=/opt/gradle
 ENV PATH="${GRADLE_HOME}/bin:${PATH}"
 
 # 设置 JAVA_HOME
-RUN ln -sfn "/usr/lib/jvm/java-21-openjdk-$(dpkg --print-architecture)" /usr/lib/jvm/java-21-openjdk
-ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+ARG DEFAULT_JDK=17
+RUN ln -sfn "/usr/lib/jvm/java-${DEFAULT_JDK}-openjdk-$(dpkg --print-architecture)" /usr/lib/jvm/java-${DEFAULT_JDK}-openjdk
+ENV JAVA_HOME=/usr/lib/jvm/java-${DEFAULT_JDK}-openjdk
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
+RUN update-alternatives --set java  "/usr/lib/jvm/java-${DEFAULT_JDK}-openjdk-$(dpkg --print-architecture)/bin/java" \
+  && update-alternatives --set javac "/usr/lib/jvm/java-${DEFAULT_JDK}-openjdk-$(dpkg --print-architecture)/bin/javac"
 
 # 安装 nono
-# hadolint ignore=DL4001
-RUN VERSION=$(curl -sIL https://github.com/nolabs-ai/nono/releases/latest | grep -i location | grep -oP 'v\K[0-9a-zA-Z.-]+') \
+RUN VERSION=$(curl -fsSL https://api.github.com/repos/nolabs-ai/nono/releases/latest | jq -r '.tag_name' | sed 's/^v//') \
+  && test -n "$VERSION" \
   && ARCH=$(dpkg --print-architecture) \
-  && wget -q https://github.com/nolabs-ai/nono/releases/download/v${VERSION}/nono-cli_${VERSION}_${ARCH}.deb \
-  && dpkg -i nono-cli_${VERSION}_${ARCH}.deb \
-  && rm nono-cli_${VERSION}_${ARCH}.deb
+  && curl -fsSL -o "nono-cli_${VERSION}_${ARCH}.deb" \
+  "https://github.com/nolabs-ai/nono/releases/download/v${VERSION}/nono-cli_${VERSION}_${ARCH}.deb" \
+  && dpkg -i "nono-cli_${VERSION}_${ARCH}.deb" \
+  && rm "nono-cli_${VERSION}_${ARCH}.deb"
 
 # 安装最新版 Maven（固定版本以保证可复现）
 ARG MAVEN_VERSION=3.10.0
