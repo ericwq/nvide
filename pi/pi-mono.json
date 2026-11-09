@@ -21,18 +21,18 @@
       "$HOME/.m2_test/",
       "$HOME/.gradle/",
       "$HOME/.rustup/settings.toml"
+      "$HOME/.cargo/",
+      "$HOME/.rustup",
+      "$HOME/.npm-global/",
     ],
     "read": [
       "/opt/pyvenv/",
       "$JAVA_HOME/conf/security/",
       "/etc/java-21-openjdk/",
       "/etc/java-17-openjdk/",
-      "$HOME/.npm-global/",
       "/etc/maven/",
       "/opt/maven/",
       "/opt/gradle/",
-      "$HOME/.rustup",
-      "$HOME/.cargo/",
       "/usr/libexec/gcc/"
     ],
     "allow_file": [
