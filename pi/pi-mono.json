@@ -19,7 +19,8 @@
       "$HOME/develop/MDE/",
       "$HOME/.m2/",
       "$HOME/.m2_test/",
-      "$HOME/.gradle/"
+      "$HOME/.gradle/",
+      "$HOME/.rustup/settings.toml"
     ],
     "read": [
       "/opt/pyvenv/",
@@ -29,7 +30,10 @@
       "$HOME/.npm-global/",
       "/etc/maven/",
       "/opt/maven/",
-      "/opt/gradle/"
+      "/opt/gradle/",
+      "$HOME/.rustup",
+      "$HOME/.cargo/",
+      "/usr/libexec/gcc/"
     ],
     "allow_file": [
       "/opt/pyvenv/pyvenv.cfg"

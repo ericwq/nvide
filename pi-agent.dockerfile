@@ -33,6 +33,8 @@ RUN apt-get update \
   python3-venv \
   openjdk-21-jdk-headless \
   openjdk-17-jdk-headless \
+  build-essential \
+  libssl-dev \
   && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
   && apt-get install -y --no-install-recommends nodejs \
   && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
@@ -114,9 +116,9 @@ RUN git clone https://github.com/techygarg/lattice.git && \
 
 # install rust, ast-grep, rust-analyzer
 # hadolint ignore=DL4001
-# RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
-#   $HOME/.cargo/bin/cargo install ast-grep --locked && \
-#   $HOME/.cargo/bin/rustup component add rust-analyzer
+RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
+  $HOME/.cargo/bin/cargo install ast-grep --locked && \
+  $HOME/.cargo/bin/rustup component add rust-analyzer
 
 
 # 安装 nono, pi agent 配置文件
