@@ -29,8 +29,8 @@ Please change the ownership of mount directory.
 docker build --platform linux/amd64 -t pi-agent:0.4 -f pi-agent.dockerfile .
 
 # 后台启动
-docker run -d -ti --name pi-agent -h pi-agent --platform linux/amd64 \
-    --env TZ=Asia/Shanghai \
+docker run -d -ti --name pi-agent -h pi-agent  \
+    --env TZ=Asia/Shanghai --platform linux/amd64 \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
     pi-agent:0.4
 ```
@@ -42,8 +42,8 @@ docker run -d -ti --name pi-agent -h pi-agent --platform linux/amd64 \
 docker build --platform linux/arm64 -t pi-agent:0.4 -f pi-agent.dockerfile .
 
 # 后台启动
-docker run -d -ti --name pi-agent -h pi-agent --platform linux/arm64 \
-    --env TZ=Asia/Shanghai \
+docker run -d -ti --name pi-agent -h pi-agent \
+    --env TZ=Asia/Shanghai --platform linux/arm64 \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
     pi-agent:0.4
 ```
