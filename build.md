@@ -18,13 +18,9 @@ Please change the ownership of mount directory.
 
 ## Build pi-agent image
 
-### build from stock image
-
-```sh
-# 仅 pi-agent 缺少其他工具
-docker pull --platform linux/amd64 michaelwadman/pi-agent
-docker pull --platform linux/arm64 ocramz/pi-container
-```
+下面的命令假定你的 $HOME 目录下有一个 `dev` 子目录，可以建立 `dev` 子目录。
+也可以更改下面的命令参数，调整为自己的子目录。
+最后的效果就是：你宿主机的指定目录（`dev` 子目录）在容器中被挂载到了 `/home/ide/develop` 目录下。
 
 ### build for amd64
 
@@ -35,7 +31,6 @@ docker build --platform linux/amd64 -t pi-agent:0.4 -f pi-agent.dockerfile .
 # 后台启动
 docker run -d -ti --name pi-agent -h pi-agent --platform linux/amd64 \
     --env TZ=Asia/Shanghai \
-    --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
     pi-agent:0.4
 ```
@@ -49,7 +44,6 @@ docker build --platform linux/arm64 -t pi-agent:0.4 -f pi-agent.dockerfile .
 # 后台启动
 docker run -d -ti --name pi-agent -h pi-agent --platform linux/arm64 \
     --env TZ=Asia/Shanghai \
-    --mount source=proj-vol,target=/home/ide/proj \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
     pi-agent:0.4
 ```
@@ -74,6 +68,14 @@ docker exec -u ide -it pi-agent /bin/bash
 显式控制：如果你希望明确保证某个版本是默认的，而不是依赖优先级数值的隐式规则，可以在 USER ide 之前，用 root 身份执行 `update-alternatives --set java /usr/lib/jvm/java-21-openjdk-$(dpkg --print-architecture)/bin/java`（对 javac 同理），将其固定为手动模式。
 
 保持一致性：如果未来需要切换默认 JDK 版本，记得同时更新 update-alternatives 和 JAVA_HOME 环境变量，确保两者始终指向同一版本。
+
+### build from stock image
+
+```sh
+# 仅 pi-agent 缺少其他工具
+docker pull --platform linux/amd64 michaelwadman/pi-agent
+docker pull --platform linux/arm64 ocramz/pi-container
+```
 
 ## Build `sshd-lazy` image
 
