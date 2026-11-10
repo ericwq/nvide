@@ -1,0 +1,9 @@
+{
+  "providers": {
+    "Ucloud-modelverse": {
+      "baseUrl": "https://api.modelverse.cn/v1",
+      "api": "openai-completions",
+      "discoverModels": true
+    }
+  }
+}

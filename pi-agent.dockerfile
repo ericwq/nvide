@@ -17,6 +17,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
   ca-certificates \
   tzdata \
+  zip \
   unzip \
   wget \
   curl \
@@ -34,6 +35,7 @@ RUN apt-get update \
   openjdk-21-jdk-headless \
   openjdk-17-jdk-headless \
   build-essential \
+  pkg-config \
   libssl-dev \
   && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
   && apt-get install -y --no-install-recommends nodejs \
@@ -49,14 +51,6 @@ ENV PATH="/opt/pyvenv/bin:$PATH"
 # hadolint ignore=DL3013
 RUN python3 -m pip install --no-cache-dir python-docx
 
-ARG GRADLE_VERSION=9.8.2
-RUN curl -fsSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -o /tmp/gradle.zip \
-  && unzip -q /tmp/gradle.zip -d /opt \
-  && ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle \
-  && rm /tmp/gradle.zip
-ENV GRADLE_HOME=/opt/gradle
-ENV PATH="${GRADLE_HOME}/bin:${PATH}"
-
 # 设置 JAVA_HOME
 ARG DEFAULT_JDK=17
 RUN ln -sfn "/usr/lib/jvm/java-${DEFAULT_JDK}-openjdk-$(dpkg --print-architecture)" /usr/lib/jvm/java-${DEFAULT_JDK}-openjdk
@@ -65,14 +59,14 @@ ENV PATH="${JAVA_HOME}/bin:${PATH}"
 RUN update-alternatives --set java  "/usr/lib/jvm/java-${DEFAULT_JDK}-openjdk-$(dpkg --print-architecture)/bin/java" \
   && update-alternatives --set javac "/usr/lib/jvm/java-${DEFAULT_JDK}-openjdk-$(dpkg --print-architecture)/bin/javac"
 
-# 安装 nono
-RUN VERSION=$(curl -fsSL https://api.github.com/repos/nolabs-ai/nono/releases/latest | jq -r '.tag_name' | sed 's/^v//') \
-  && test -n "$VERSION" \
-  && ARCH=$(dpkg --print-architecture) \
-  && curl -fsSL -o "nono-cli_${VERSION}_${ARCH}.deb" \
-  "https://github.com/nolabs-ai/nono/releases/download/v${VERSION}/nono-cli_${VERSION}_${ARCH}.deb" \
-  && dpkg -i "nono-cli_${VERSION}_${ARCH}.deb" \
-  && rm "nono-cli_${VERSION}_${ARCH}.deb"
+# install Gradle
+ARG GRADLE_VERSION=9.8.2
+RUN curl -fsSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -o /tmp/gradle.zip \
+  && unzip -q /tmp/gradle.zip -d /opt \
+  && ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle \
+  && rm /tmp/gradle.zip
+ENV GRADLE_HOME=/opt/gradle
+ENV PATH="${GRADLE_HOME}/bin:${PATH}"
 
 # 安装最新版 Maven（固定版本以保证可复现）
 ARG MAVEN_VERSION=3.10.0
@@ -83,6 +77,15 @@ RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/bi
   && rm /tmp/maven.tar.gz
 ENV MAVEN_HOME=/opt/maven
 ENV PATH="${MAVEN_HOME}/bin:${PATH}"
+
+# 安装 nono
+RUN VERSION=$(curl -fsSL https://api.github.com/repos/nolabs-ai/nono/releases/latest | jq -r '.tag_name' | sed 's/^v//') \
+  && test -n "$VERSION" \
+  && ARCH=$(dpkg --print-architecture) \
+  && curl -fsSL -o "nono-cli_${VERSION}_${ARCH}.deb" \
+  "https://github.com/nolabs-ai/nono/releases/download/v${VERSION}/nono-cli_${VERSION}_${ARCH}.deb" \
+  && dpkg -i "nono-cli_${VERSION}_${ARCH}.deb" \
+  && rm "nono-cli_${VERSION}_${ARCH}.deb"
 
 # 创建组 develop，创建用户 ide，创建工作目录
 RUN groupadd develop \
@@ -125,6 +128,7 @@ ARG NONO_PROFILE=/home/ide/.config/nono/profiles/
 RUN mkdir -p ${NONO_PROFILE} && chown -R ide:develop ${NONO_PROFILE}
 COPY --chown=ide:develop ./pi/pi-mono.json  ${NONO_PROFILE}/pi-mono.json
 COPY --chown=ide:develop ./pi/AGENTS.md     ${HOME}/.pi/agent/AGENTS.md
+COPY --chown=ide:develop ./pi/models.json   ${HOME}/.pi/agent/models.json
 
 # setup LANG
 ENV LANG=C.UTF-8
