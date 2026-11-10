@@ -54,21 +54,6 @@ docker exec -u root -it pi-agent /bin/bash
 docker exec -u ide -it pi-agent /bin/bash
 ```
 
-#### 配置本地 LLM
-
-> 通过 host.docker.internal 可访问本级 lm studio 服务，请帮我配置本地 LLM，请使用一个最小规模的 LLM 进行连接性测试。
-
-#### 检查 Java 环境
-> 若要生成 java 代码，现在的环境还缺少什么？如果遇到权限问题，请告诉我需要什么权限。不要试图自己想办法，另外，未经过我的同意不要安装任何软件。
-
-#### 检查 Rust 环境
-> 若要生成 rust 代码，现在的环境还缺少什么？如果遇到权限问题，请告诉我需要什么权限。不要试图自己想办法，另外，未经过我的同意不要安装任何软件。
-
-#### JDK 切换
-显式控制：如果你希望明确保证某个版本是默认的，而不是依赖优先级数值的隐式规则，可以在 USER ide 之前，用 root 身份执行 `update-alternatives --set java /usr/lib/jvm/java-21-openjdk-$(dpkg --print-architecture)/bin/java`（对 javac 同理），将其固定为手动模式。
-
-保持一致性：如果未来需要切换默认 JDK 版本，记得同时更新 update-alternatives 和 JAVA_HOME 环境变量，确保两者始终指向同一版本。
-
 ### build from stock image
 
 ```sh
