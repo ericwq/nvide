@@ -138,6 +138,7 @@ ENV LC_ALL=C.UTF-8
 # 添加别名到 bashrc
 RUN cat >> /home/ide/.bashrc <<'EOF'
 alias np='nono run --profile pi-mono -- pi'
+umask 022
 EOF
 
 # 默认进入交互式SHELL
