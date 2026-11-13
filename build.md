@@ -1,21 +1,3 @@
-## Build base image
-
-```sh
-docker build -t nvide:0.9.3 -f lazy.dockerfile .
-docker build -t ulazy:0.1.0 -f ubuntu-lazy-amd64.dockerfile .
-docker build -t ulazy:0.1.0 -f ubuntu-lazy-arm64.dockerfile .
-docker build --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
-docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
-```
-
-## Create docker volume
-
-```sh
-docker volume create proj-vol
-```
-
-Please change the ownership of mount directory.
-
 ## Build pi-agent image
 
 下面的命令假定你的 $HOME 目录下有一个 `dev` 子目录，可以建立 `dev` 子目录。
@@ -26,26 +8,26 @@ Please change the ownership of mount directory.
 
 ```sh
 # 构建命令
-docker build --platform linux/amd64 -t pi-agent:0.4 -f pi-agent.dockerfile .
+docker build --platform linux/amd64 -t pi-agent:0.5 -f pi-agent.dockerfile .
 
 # 后台启动
 docker run -d -ti --name pi-agent -h pi-agent  \
     --env TZ=Asia/Shanghai --platform linux/amd64 \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
-    pi-agent:0.4
+    pi-agent:0.5
 ```
 
 ### build for arm64
 
 ```sh
 # 构建命令
-docker build --platform linux/arm64 -t pi-agent:0.4 -f pi-agent.dockerfile .
+docker build --platform linux/arm64 -t pi-agent:0.5 -f pi-agent.dockerfile .
 
 # 后台启动
 docker run -d -ti --name pi-agent -h pi-agent \
     --env TZ=Asia/Shanghai --platform linux/arm64 \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
-    pi-agent:0.4
+    pi-agent:0.5
 ```
 
 ### 进入容器
@@ -62,6 +44,79 @@ docker pull --platform linux/amd64 michaelwadman/pi-agent
 docker pull --platform linux/arm64 ocramz/pi-container
 ```
 
+## Build base image
+
+```sh
+docker build -t nvide:0.9.3 -f lazy.dockerfile .
+docker build --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
+docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
+```
+
+### 构建 ulazy（ubuntu-lazy）
+
+`ubuntu-lazy.dockerfile` 单文件同时支持 amd64 / arm64，不再需要按架构分文件。
+需要 BuildKit（apt 层用了 `--mount=type=cache`，Docker 23+ 默认开启；`DOCKER_BUILDKIT=0` 会报 `Unknown flag: mount`）。
+
+```sh
+# 多架构：一次构建两个平台并推送 manifest（推荐）
+docker buildx build --platform linux/amd64,linux/arm64 \
+    -t ericwq057/ulazy:0.2.0 -f ubuntu-lazy.dockerfile . --push
+
+# 只构建本机架构（最快，构建期会自检 java/clangd/go/mvn/gradle/nvim 等）
+docker build -t ulazy:0.2.0 -f ubuntu-lazy.dockerfile .
+
+# 单独验证另一架构（需已注册 qemu）
+docker buildx build --platform linux/arm64 -t ulazy:0.2.0-arm64 \
+    -f ubuntu-lazy.dockerfile . --load
+```
+
+#### 可复现构建（钉版本）
+
+默认都是「跟随发行版 / 上游最新版」，需要可复现时显式钉住：
+
+```sh
+docker build -f ubuntu-lazy.dockerfile -t ulazy:0.2.0 . \
+    --build-arg UBUNTU_IMAGE=ubuntu:26.04@sha256:<digest> \
+    --build-arg LAZYVIM_REF=main \
+    --build-arg GRADLE_VERSION=9.9.1
+
+docker run -d -ti --name ulazy -h ulazy  \
+    --env TZ=Asia/Shanghai \
+    --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
+    ulazy:0.2.0
+
+docker exec -u root -it ulazy /bin/bash
+docker exec -u ide -it ulazy /bin/bash
+```
+
+`LAZYVIM_REF` 只能是分支（starter 仓库没有任何 release tag，且 `git clone --depth 1` 不支持裸 commit）。
+Go 工具链（gopls 等 5 个）仍为 `@latest`，要钉就改 `ubuntu-lazy.dockerfile` 里 `go install` 行的 `@版本号`。
+
+#### 构建后自检
+
+```sh
+docker run --rm -it ulazy:0.2.0 bash -lc '
+  nvim --version | head -1
+  go version; java -version 2>&1 | head -1
+  mvn -v | head -1; gradle --version | grep -E "^Gradle"
+  clangd --version | head -1
+  python3 -c "import pynvim; print(\"pynvim ok\")"
+  node --version; npm ls -g --depth=0 | grep neovim
+  rust-analyzer --version; lazygit --version; tree-sitter --version
+  pi --version; nono --version
+  nvim --headless "+checkhealth vim.provider" +qa 2>&1 | tail -20'
+```
+
+> 旧的 `ubuntu-lazy-amd64.dockerfile` / `ubuntu-lazy-arm64.dockerfile` / `ulazy-arm64.dockerfile`
+> 已由单文件取代，待新镜像验证通过后删除。
+
+## Create docker volume
+
+```sh
+docker volume create proj-vol
+```
+
+Please change the ownership of mount directory.
 ## Build `sshd-lazy` image
 
 ```sh
@@ -75,7 +130,7 @@ docker build --build-arg ROOT_PWD=password \
 
 ```sh
 docker run --rm -ti nvide:0.9.3
-docker run --rm -ti ulazy:0.1.0
+docker run --rm -ti ulazy:0.2.0
 docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.11.3
 ```
 
@@ -97,7 +152,7 @@ docker run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v proj-vol:/home/ide/proj \
     -v ${HOME}/dev:/home/ide/develop \
-    ulazy:0.1.0
+    ulazy:0.2.0
 
 # start container and destroy it after use
 docker run --rm -ti --privileged -h nvide --env TZ=Asia/Shanghai --name nvide \
