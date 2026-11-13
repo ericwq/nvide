@@ -22,7 +22,8 @@
       "$HOME/.gradle/",
       "$HOME/.cargo/",
       "$HOME/.rustup/",
-      "$HOME/.npm-global/"
+      "$HOME/.npm-global/",
+      "/go/"
     ],
     "read": [
       "/opt/pyvenv/",
