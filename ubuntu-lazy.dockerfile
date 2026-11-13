@@ -51,7 +51,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   lua5.4 luarocks ripgrep fd-find fzf sudo \
   python3 python3-pynvim python3-pip python3-venv python3-lxml python3-docx poppler-utils \
   python-is-python3 \
-  golang-go \
   lazygit fish \
   tzdata && \
   # Node 取 NodeSource 24.x（与 pi-agent 一致）：仓库自带的是 22.22.1，Node 24 需单独加源安装（npm 随 nodejs 包提供）
@@ -126,6 +125,16 @@ RUN ARCH="$(dpkg --print-architecture)"; \
   chmod +x /usr/local/bin/tree-sitter && \
   rm /tmp/tree-sitter.gz
 
+# 动态获取最新 Go 版本并安装
+RUN ARCH="$(dpkg --print-architecture)" && \
+  GO_VERSION="$(curl -fsSL 'https://go.dev/dl/?mode=json' | jq -r '.[0].version')" && \
+  test -n "$GO_VERSION" && test "$GO_VERSION" != "null" && \
+  curl -fsSL "https://go.dev/dl/${GO_VERSION}.linux-${ARCH}.tar.gz" | tar -C /usr/local -xz
+
+# 将 Go 加入 PATH
+ENV PATH="/usr/local/go/bin:${PATH}"
+
+
 # 验证安装
 RUN nvim --version && \
   git --version && \
@@ -184,6 +193,7 @@ RUN groupadd develop \
 
 # 切换工作目录 & 默认用户
 WORKDIR /home/ide
+# hadolint ignore=DL3066
 USER ide
 ENV HOME=/home/ide
 
@@ -193,7 +203,7 @@ ENV NPM_CONFIG_PREFIX=${HOME}/.npm-global
 # hadolint ignore=DL3016
 RUN npm install -g neovim && test -d "$(npm root -g)/neovim"
 
-# install Go
+# install Gopls
 # hadolint ignore=DL3062
 RUN go install golang.org/x/tools/gopls@latest && \
   go install golang.org/x/tools/cmd/goimports@latest && \
@@ -243,6 +253,7 @@ RUN printf 'alias vi=nvim\nalias np=\"nono run --profile pi-mono -- pi\"\numask 
 # 非交互 shell（bash -c、docker exec）必须显式加进 ENV 才能找到 rust-analyzer
 ENV PATH=${HOME}/.cargo/bin:${HOME}/.local/bin:${NPM_CONFIG_PREFIX}/bin:${PATH}
 
-RUN nvim --headless +"Lazy! sync" +"MasonInstall shfmt lua-language-server stylua " +qa
+# RUN nvim --headless +"Lazy! sync" +"MasonInstall shfmt lua-language-server stylua" +qa
+RUN timeout 900 nvim --headless "+Lazy! sync" +qa
 
 CMD ["/bin/bash"]

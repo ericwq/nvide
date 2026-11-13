@@ -47,12 +47,12 @@ docker pull --platform linux/arm64 ocramz/pi-container
 ## Build base image
 
 ```sh
-docker build -t nvide:0.9.3 -f lazy.dockerfile .
-docker build --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
-docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
+docker build -t nvide:0.9.4 -f lazy.dockerfile .
+docker build --progress plain -t nvide:0.9.4 -f lazy.dockerfile .
+docker build --no-cache --progress plain -t nvide:0.9.4 -f lazy.dockerfile .
 ```
 
-### 构建 ulazy（ubuntu-lazy）
+### 构建 nvide（ubuntu-lazy）
 
 `ubuntu-lazy.dockerfile` 单文件同时支持 amd64 / arm64，不再需要按架构分文件。
 需要 BuildKit（apt 层用了 `--mount=type=cache`，Docker 23+ 默认开启；`DOCKER_BUILDKIT=0` 会报 `Unknown flag: mount`）。
@@ -60,14 +60,14 @@ docker build --no-cache --progress plain -t nvide:0.9.3 -f lazy.dockerfile .
 ```sh
 # 多架构：一次构建两个平台并推送 manifest（推荐）
 docker buildx build --platform linux/amd64,linux/arm64 \
-    -t ericwq057/ulazy:0.2.0 -f ubuntu-lazy.dockerfile . --push
+    -t nvide:0.9.4 -f ubuntu-lazy.dockerfile . --push
 
 # 只构建本机架构（最快，构建期会自检 java/clangd/go/mvn/gradle/nvim 等）
-docker build -t ulazy:0.2.0 -f ubuntu-lazy.dockerfile .
+docker build -t nvide:0.9.4 -f ubuntu-lazy.dockerfile .
 
 # 单独验证另一架构（需已注册 qemu）
-docker buildx build --platform linux/arm64 -t ulazy:0.2.0-arm64 \
-    -f ubuntu-lazy.dockerfile . --load
+docker buildx build --platform linux/arm64 \
+    -t nvide:0.9.4 -f ubuntu-lazy.dockerfile . --load
 ```
 
 #### 可复现构建（钉版本）
@@ -75,18 +75,18 @@ docker buildx build --platform linux/arm64 -t ulazy:0.2.0-arm64 \
 默认都是「跟随发行版 / 上游最新版」，需要可复现时显式钉住：
 
 ```sh
-docker build -f ubuntu-lazy.dockerfile -t ulazy:0.2.0 . \
+docker build -f ubuntu-lazy.dockerfile -t nvide:0.2.0 . \
     --build-arg UBUNTU_IMAGE=ubuntu:26.04@sha256:<digest> \
     --build-arg LAZYVIM_REF=main \
     --build-arg GRADLE_VERSION=9.9.1
 
-docker run -d -ti --name ulazy -h ulazy  \
+docker run -d -ti --name nvide -h nvide  \
     --env TZ=Asia/Shanghai \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
-    ulazy:0.2.0
+    nvide:0.9.4
 
-docker exec -u root -it ulazy /bin/bash
-docker exec -u ide -it ulazy /bin/bash
+docker exec -u root -it nvide /bin/bash
+docker exec -u ide -it nvide /bin/bash
 ```
 
 `LAZYVIM_REF` 只能是分支（starter 仓库没有任何 release tag，且 `git clone --depth 1` 不支持裸 commit）。
@@ -95,7 +95,7 @@ Go 工具链（gopls 等 5 个）仍为 `@latest`，要钉就改 `ubuntu-lazy.do
 #### 构建后自检
 
 ```sh
-docker run --rm -it ulazy:0.2.0 bash -lc '
+docker run --rm -it nvide:0.9.4 bash -lc '
   nvim --version | head -1
   go version; java -version 2>&1 | head -1
   mvn -v | head -1; gradle --version | grep -E "^Gradle"
@@ -129,8 +129,7 @@ docker build --build-arg ROOT_PWD=password \
 ## Dry run base container
 
 ```sh
-docker run --rm -ti nvide:0.9.3
-docker run --rm -ti ulazy:0.2.0
+docker run --rm -ti nvide:0.9.4
 docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.11.3
 ```
 
