@@ -208,10 +208,6 @@ RUN curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs -sSf | sh -s -- -
   "$HOME/.cargo/bin/cargo" install ast-grep --locked && \
   "$HOME/.cargo/bin/rustup" component add rust-analyzer
 
-## use latest tree-sitter-cli
-# RUN "$HOME/.cargo/bin/cargo" install --locked tree-sitter-cli &&\
-#   tree-sitter --version
-
 # prepare for fd link，并预建 Maven / Gradle 缓存目录（方便挂 volume 持久化依赖）
 RUN mkdir -p "$HOME/.local/bin" "$HOME/.m2" "$HOME/.gradle" \
   && ln -sfn "$(command -v fdfind)" "$HOME/.local/bin/fd"
