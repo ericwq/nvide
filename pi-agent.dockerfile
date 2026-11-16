@@ -92,13 +92,13 @@ USER ide
 WORKDIR /home/ide
 ENV HOME=/home/ide
 
-# install rust, ast-grep, rust-analyzer
-RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
-  $HOME/.cargo/bin/cargo install ast-grep --locked && \
-  $HOME/.cargo/bin/rustup component add rust-analyzer
-# rustup 只把 cargo/rust-analyzer 的 PATH 写进 ~/.profile（仅登录 shell 生效），
-# 非交互 shell（bash -c、docker exec）必须显式加进 ENV 才能找到 rust-analyzer
-ENV PATH=${HOME}/.cargo/bin:$PATH
+# # install rust, ast-grep, rust-analyzer
+# RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y && \
+#   $HOME/.cargo/bin/cargo install ast-grep --locked && \
+#   $HOME/.cargo/bin/rustup component add rust-analyzer
+# # rustup 只把 cargo/rust-analyzer 的 PATH 写进 ~/.profile（仅登录 shell 生效），
+# # 非交互 shell（bash -c、docker exec）必须显式加进 ENV 才能找到 rust-analyzer
+# ENV PATH=${HOME}/.cargo/bin:$PATH
 
 ARG NPM_PATH=/home/ide/.npm-global
 RUN mkdir -p ${NPM_PATH} \
