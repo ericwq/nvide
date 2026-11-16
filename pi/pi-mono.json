@@ -28,6 +28,7 @@
     "read": [
       "/opt/pyvenv/",
       "$JAVA_HOME/conf/security/",
+      "/etc/java-25-openjdk/",
       "/etc/java-21-openjdk/",
       "/etc/java-17-openjdk/",
       "/etc/maven/",
