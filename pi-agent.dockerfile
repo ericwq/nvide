@@ -78,9 +78,23 @@ RUN VERSION=$(curl -fsSL https://api.github.com/repos/nolabs-ai/nono/releases/la
   && dpkg -i "nono-cli_${VERSION}_${ARCH}.deb" \
   && rm "nono-cli_${VERSION}_${ARCH}.deb"
 
+# 安装 hadolint（Dockerfile linter），官方静态二进制，无需额外依赖
+# 注意：资产名是 x86_64/arm64，不能直接用 dpkg --print-architecture 拼接
+ARG HADOLINT_VERSION=v2.15.1
+RUN ARCH=$(dpkg --print-architecture) \
+  && case "$ARCH" in \
+  amd64) HADOLINT_ARCH=x86_64 ;; \
+  arm64) HADOLINT_ARCH=arm64 ;; \
+  *) echo "unsupported arch for hadolint: $ARCH" >&2; exit 1 ;; \
+  esac \
+  && curl -fsSL -o /usr/local/bin/hadolint \
+  "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-linux-${HADOLINT_ARCH}" \
+  && chmod +x /usr/local/bin/hadolint \
+  && hadolint --version
+
 # 创建组 develop，创建用户 ide（默认 shell 为 bash），加入 sudo 组并免密，创建工作目录
-RUN groupadd develop \
-  && useradd -m -s /bin/bash -g develop ide \
+RUN groupadd -g 2000 develop \
+  && useradd -m -u 2000 -s /bin/bash -g develop ide \
   && usermod -aG sudo ide \
   && echo 'ide ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/ide \
   && chmod 0440 /etc/sudoers.d/ide \
@@ -99,7 +113,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # 切换工作目录
-USER ide
+USER 2000:2000
 WORKDIR /home/ide
 ENV HOME=/home/ide
 

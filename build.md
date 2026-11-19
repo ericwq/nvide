@@ -8,26 +8,26 @@
 
 ```sh
 # 构建命令
-docker build --platform linux/amd64 -t pi-agent:0.5 -f pi-agent.dockerfile .
+docker build --platform linux/amd64 -t pi-agent:0.5.1 -f pi-agent.dockerfile .
 
 # 后台启动
 docker run -d -ti --name pi-agent -h pi-agent  \
     --env TZ=Asia/Shanghai --platform linux/amd64 \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
-    pi-agent:0.5
+    pi-agent:0.5.1
 ```
 
 ### build for arm64
 
 ```sh
 # 构建命令
-docker build --platform linux/arm64 -t pi-agent:0.5 -f pi-agent.dockerfile .
+docker build --platform linux/arm64 -t pi-agent:0.5.1 -f pi-agent.dockerfile .
 
 # 后台启动
 docker run -d -ti --name pi-agent -h pi-agent \
     --env TZ=Asia/Shanghai --platform linux/arm64 \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
-    pi-agent:0.5
+    pi-agent:0.5.1
 ```
 
 ### 进入容器
@@ -36,20 +36,20 @@ docker exec -u root -it pi-agent /bin/bash
 docker exec -u ide -it pi-agent /bin/bash
 ```
 
-### build from stock image
-
-```sh
-# 仅 pi-agent 缺少其他工具
-docker pull --platform linux/amd64 michaelwadman/pi-agent
-docker pull --platform linux/arm64 ocramz/pi-container
-```
+<!-- ### build from stock image -->
+<!---->
+<!-- ```sh -->
+<!-- # 仅 pi-agent 缺少其他工具 -->
+<!-- docker pull --platform linux/amd64 michaelwadman/pi-agent -->
+<!-- docker pull --platform linux/arm64 ocramz/pi-container -->
+<!-- ``` -->
 
 ## Build base image
 
 ```sh
-docker build -t nvide:0.9.4 -f lazy.dockerfile .
-docker build --progress plain -t nvide:0.9.4 -f lazy.dockerfile .
-docker build --no-cache --progress plain -t nvide:0.9.4 -f lazy.dockerfile .
+docker build -t nvide:0.9.4 -f ubuntu-lazy.dockerfile .
+docker build --progress plain -t nvide:0.9.4 -f ubuntu-lazy.dockerfile .
+docker build --no-cache --progress plain -t nvide:0.9.4 -f ubuntu-lazy.dockerfile .
 ```
 
 ### 构建 nvide（ubuntu-lazy）
