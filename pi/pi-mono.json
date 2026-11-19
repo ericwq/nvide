@@ -23,7 +23,8 @@
       "$HOME/.cargo/",
       "$HOME/.rustup/",
       "$HOME/.npm-global/",
-      "/go/"
+      "/go/",
+      "/dev/shm"
     ],
     "read": [
       "/opt/pyvenv/",
@@ -34,7 +35,8 @@
       "/etc/maven/",
       "/opt/maven/",
       "/opt/gradle/",
-      "/usr/libexec/gcc/"
+      "/usr/libexec/gcc/",
+      "$HOME/.cache/puppeteer"
     ],
     "allow_file": [
       "/opt/pyvenv/pyvenv.cfg"

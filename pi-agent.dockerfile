@@ -87,6 +87,17 @@ RUN groupadd develop \
   && mkdir -p /home/ide \
   && chown -R ide:develop /home/ide
 
+# 安装中文字体，以及 chrome 所需的库
+# hadolint ignore=DL3008
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+  fonts-noto-cjk \
+  libasound2t64 libatk-bridge2.0-0t64 libatk1.0-0t64 libcairo2 libcups2t64 \
+  libdbus-1-3 libexpat1 libgbm1 libglib2.0-0t64 libnspr4 libnss3 libpango-1.0-0 \
+  libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 libxrandr2 \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
 # 切换工作目录
 USER ide
 WORKDIR /home/ide
@@ -109,6 +120,15 @@ ENV PATH=${NPM_PATH}/bin:$PATH
 # nvim 的 node provider 需要全局 npm 包 neovim（否则 :checkhealth 报 provider 不可用）
 # hadolint ignore=DL3016
 RUN npm install -g neovim
+
+# 安装 Mermaid CLI
+# hadolint ignore=DL3016
+RUN npm install -g @mermaid-js/mermaid-cli \
+  && npx puppeteer@23.11.1 browsers install chrome-headless-shell \
+  && echo 'graph TD; A-->B;' > /tmp/test.mmd \
+  && echo '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}' > /tmp/puppeteer.json \
+  && mmdc -i /tmp/test.mmd -o /tmp/test.svg --puppeteerConfigFile /tmp/puppeteer.json \
+  && rm /tmp/test.mmd /tmp/test.svg /tmp/puppeteer.json
 
 # 安装 pi agent
 # hadolint ignore=DL3016
