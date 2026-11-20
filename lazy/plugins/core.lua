@@ -20,26 +20,26 @@ return {
 			transparent = true,
 		},
 	},
-	{
-		"LazyVim/LazyVim",
-		opts = {
-			-- colorscheme = "catppuccin",
-			colorscheme = "tokyonight",
-		},
-	},
-	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = {
-			"nvim-lua/lsp-status.nvim",
-		},
-		opts = {
-			sections = {
-				lualine_z = {
-					function()
-						return require("lsp-status").status()
-					end,
-				},
-			},
-		},
-	},
+	-- {
+	-- 	"LazyVim/LazyVim",
+	-- 	opts = {
+	-- 		-- colorscheme = "catppuccin",
+	-- 		colorscheme = "tokyonight",
+	-- 	},
+	-- },
+	-- {
+	-- 	"nvim-lualine/lualine.nvim",
+	-- 	dependencies = {
+	-- 		"nvim-lua/lsp-status.nvim",
+	-- 	},
+	-- 	opts = {
+	-- 		sections = {
+	-- 			lualine_z = {
+	-- 				function()
+	-- 					return require("lsp-status").status()
+	-- 				end,
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
 }

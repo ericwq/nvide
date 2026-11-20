@@ -254,6 +254,8 @@ RUN printf 'alias vi=nvim\nalias np=\"nono run --profile pi-mono -- pi\"\numask 
 ENV PATH=${HOME}/.cargo/bin:${HOME}/.local/bin:${NPM_CONFIG_PREFIX}/bin:${PATH}
 
 # RUN nvim --headless +"Lazy! sync" +"MasonInstall shfmt lua-language-server stylua" +qa
+WORKDIR $HOME/.config/nvim
 RUN timeout 900 nvim --headless "+Lazy! sync" +qa
+WORKDIR $HOME
 
 CMD ["/bin/bash"]
