@@ -243,7 +243,7 @@ COPY --chown=ide:develop ./pi/models.json   ${HOME}/.pi/agent/models.json
 # LAZYVIM_REF 只能是分支（starter 仓库无 release tag；--depth 1 也不支持裸 commit SHA）
 RUN git clone --depth 1 --branch "$LAZYVIM_REF" https://github.com/LazyVim/starter "$HOME/.config/nvim"
 COPY --chown=ide:develop ./lazy/clang-format        $HOME/.clang-format
-COPY --chown=ide:develop ./lazy/plugins/*.lua       $HOME/.config/nvim/lua/plugins/
+COPY --chown=ide:develop ./lazy/plugins/core.lua    $HOME/.config/nvim/lua/plugins/core.lua
 COPY --chown=ide:develop ./lazy/config/options.lua  $HOME/.config/nvim/lua/config/options.lua
 
 # LANG / LC_ALL 已由上面的 ENV 全局生效，这里补别名（vi / np）与 umask

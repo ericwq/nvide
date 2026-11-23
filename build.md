@@ -31,6 +31,7 @@ docker run -d -ti --name pi-agent -h pi-agent \
 ```
 
 ### 进入容器
+
 ```sh
 docker exec -u root -it pi-agent /bin/bash
 docker exec -u ide -it pi-agent /bin/bash
@@ -47,9 +48,9 @@ docker exec -u ide -it pi-agent /bin/bash
 ## Build base image
 
 ```sh
-docker build -t nvide:0.9.4 -f ubuntu-lazy.dockerfile .
-docker build --progress plain -t nvide:0.9.4 -f ubuntu-lazy.dockerfile .
-docker build --no-cache --progress plain -t nvide:0.9.4 -f ubuntu-lazy.dockerfile .
+docker build -t nvide:0.9.5 -f ubuntu-lazy.dockerfile .
+docker build --progress plain -t nvide:0.9.5 -f ubuntu-lazy.dockerfile .
+docker build --no-cache --progress plain -t nvide:0.9.5 -f ubuntu-lazy.dockerfile .
 ```
 
 ### 构建 nvide（ubuntu-lazy）
@@ -60,14 +61,14 @@ docker build --no-cache --progress plain -t nvide:0.9.4 -f ubuntu-lazy.dockerfil
 ```sh
 # 多架构：一次构建两个平台并推送 manifest（推荐）
 docker buildx build --platform linux/amd64,linux/arm64 \
-    -t nvide:0.9.4 -f ubuntu-lazy.dockerfile . --push
+    -t nvide:0.9.5 -f ubuntu-lazy.dockerfile . --push
 
 # 只构建本机架构（最快，构建期会自检 java/clangd/go/mvn/gradle/nvim 等）
-docker build -t nvide:0.9.4 -f ubuntu-lazy.dockerfile .
+docker build -t nvide:0.9.5 -f ubuntu-lazy.dockerfile .
 
 # 单独验证另一架构（需已注册 qemu）
 docker buildx build --platform linux/arm64 \
-    -t nvide:0.9.4 -f ubuntu-lazy.dockerfile . --load
+    -t nvide:0.9.5 -f ubuntu-lazy.dockerfile . --load
 ```
 
 #### 可复现构建（钉版本）
@@ -83,7 +84,7 @@ docker build -f ubuntu-lazy.dockerfile -t nvide:0.2.0 . \
 docker run -d -ti --name nvide -h nvide  \
     --env TZ=Asia/Shanghai \
     --mount type=bind,source=${HOME}/dev,target=/home/ide/develop \
-    nvide:0.9.4
+    nvide:0.9.5
 
 docker exec -u root -it nvide /bin/bash
 docker exec -u ide -it nvide /bin/bash
@@ -95,7 +96,7 @@ Go 工具链（gopls 等 5 个）仍为 `@latest`，要钉就改 `ubuntu-lazy.do
 #### 构建后自检
 
 ```sh
-docker run --rm -it nvide:0.9.4 bash -lc '
+docker run --rm -it nvide:0.9.5 bash -lc '
   nvim --version | head -1
   go version; java -version 2>&1 | head -1
   mvn -v | head -1; gradle --version | grep -E "^Gradle"
@@ -117,19 +118,21 @@ docker volume create proj-vol
 ```
 
 Please change the ownership of mount directory.
+
 ## Build `sshd-lazy` image
 
 ```sh
 docker tag nvide:0.9.3 ericwq057/nvide:0.9.3
 docker build --build-arg ROOT_PWD=password \
-	--build-arg USER_PWD=password \
-	--build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-	--progress plain -t sshd-lazy:0.11.3 -f sshd-lazy.dockerfile .
+ --build-arg USER_PWD=password \
+ --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" \
+ --progress plain -t sshd-lazy:0.11.3 -f sshd-lazy.dockerfile .
 ```
+
 ## Dry run base container
 
 ```sh
-docker run --rm -ti nvide:0.9.4
+docker run --rm -ti nvide:0.9.5
 docker run --rm -ti -u ide -p 22:22 sshd-lazy:0.11.3
 ```
 
@@ -202,6 +205,7 @@ docker attach nvide
 ```
 
 ## Upgrade to new version
+
 ```shell
 sed -i 's/0\.9\.0/0\.9\.1/g' build.md sshd-lazy.dockerfile lazy.dockerfile README.md
 sed -i 's/0\.11\.0/0\.11\.1/g' build.md README.md lazy/motd
