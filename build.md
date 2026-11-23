@@ -1,8 +1,10 @@
-## Build pi-agent image
+# 构建容器
 
 下面的命令假定你的 $HOME 目录下有一个 `dev` 子目录，可以建立 `dev` 子目录。
 也可以更改下面的命令参数，调整为自己的子目录。
 最后的效果就是：你宿主机的指定目录（`dev` 子目录）在容器中被挂载到了 `/home/ide/develop` 目录下。
+
+## pi-agent 容器
 
 ### build for amd64
 
@@ -45,18 +47,20 @@ docker exec -u ide -it pi-agent /bin/bash
 <!-- docker pull --platform linux/arm64 ocramz/pi-container -->
 <!-- ``` -->
 
-## Build base image
+## nvide 容器
 
 ```sh
 docker build -t nvide:0.9.6 -f ubuntu-lazy.dockerfile .
 docker build --progress plain -t nvide:0.9.6 -f ubuntu-lazy.dockerfile .
-docker build --no-cache --progress plain -t nvide:0.9.6 -f ubuntu-lazy.dockerfile .
+docker build --no-cache --progress plain -t nvide:0.9.6 \
+  -f ubuntu-lazy.dockerfile .
 ```
 
 ### 构建 nvide（ubuntu-lazy）
 
 `ubuntu-lazy.dockerfile` 单文件同时支持 amd64 / arm64，不再需要按架构分文件。
-需要 BuildKit（apt 层用了 `--mount=type=cache`，Docker 23+ 默认开启；`DOCKER_BUILDKIT=0` 会报 `Unknown flag: mount`）。
+需要 BuildKit（apt 层用了 `--mount=type=cache`，Docker 23+ 默认开启；
+`DOCKER_BUILDKIT=0` 会报 `Unknown flag: mount`）。
 
 ```sh
 # 多架构：一次构建两个平台并推送 manifest（推荐）
@@ -71,7 +75,7 @@ docker buildx build --platform linux/arm64 \
     -t nvide:0.9.6 -f ubuntu-lazy.dockerfile . --load
 ```
 
-#### 可复现构建（钉版本）
+### 可复现构建（钉版本）
 
 默认都是「跟随发行版 / 上游最新版」，需要可复现时显式钉住：
 
@@ -91,9 +95,10 @@ docker exec -u ide -it nvide /bin/bash
 ```
 
 `LAZYVIM_REF` 只能是分支（starter 仓库没有任何 release tag，且 `git clone --depth 1` 不支持裸 commit）。
-Go 工具链（gopls 等 5 个，仅 `WITH_GO=true` 时安装）仍为 `@latest`，要钉就改 `ubuntu-lazy.dockerfile` 里 `go install` 行的 `@版本号`。
+Go 工具链（gopls 等 5 个，仅 `WITH_GO=true` 时安装）仍为 `@latest`，
+要钉就改 `ubuntu-lazy.dockerfile` 里 `go install` 行的 `@版本号`。
 
-#### 可选组件（默认关闭）
+### 可选组件（默认关闭）
 
 镜像默认不含 Go 工具链与 OpenJDK 17/21，需要时按需打开：
 
@@ -106,7 +111,7 @@ docker build -f ubuntu-lazy.dockerfile -t nvide:0.9.6 . \
 
 | 参数 | 默认 | 内容 |
 | --- | --- | --- |
-| `WITH_GO` | `false` | Go（官方最新版，装到 `/usr/local/go`）+ gopls / goimports / gotags / protoc-gen-go / gofumpt |
+| `WITH_GO` | `false` | Go（最新版，装到 `/usr/local/go`）+ gopls / goimports / gofumpt, etc. |
 | `WITH_JDK17` | `false` | 额外安装 `openjdk-17-jdk-headless`（`JAVA_HOME` 与 `java`/`javac` 仍指向 25） |
 | `WITH_JDK21` | `false` | 额外安装 `openjdk-21-jdk-headless`（同上） |
 
@@ -166,10 +171,12 @@ docker run -it -d -h nvide --env TZ=Asia/Shanghai --name nvide \
     nvide:0.9.3
 
 # start container and mount local directory
-docker run -it --rm --mount type=bind,source=${HOME}/dev,target=/develop ubuntu:24.04 /bin/bash
+docker run -it --rm --mount type=bind,source=${HOME}/dev,target=/develop \
+    ubuntu:24.04 /bin/bash
 
 # start container and run in background
-# check https://oneuptime.com/blog/post/2026-03-16-use-bind-mounts-podman/view for rootful and rootless mode
+# check https://oneuptime.com/blog/post/2026-03-16-use-bind-mounts-podman/view
+# for rootful and rootless mode
 docker run -it -d -h ulazy --env TZ=Asia/Shanghai --name ulazy --tty \
     --volume /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v proj-vol:/home/ide/proj \
