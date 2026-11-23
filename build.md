@@ -109,11 +109,17 @@ docker build -f ubuntu-lazy.dockerfile -t nvide:0.9.6 . \
     --build-arg WITH_JDK21=true
 ```
 
-| 参数 | 默认 | 内容 |
-| --- | --- | --- |
-| `WITH_GO` | `false` | Go（最新版，装到 `/usr/local/go`）+ gopls / goimports / gofumpt, etc. |
-| `WITH_JDK17` | `false` | 额外安装 `openjdk-17-jdk-headless`（`JAVA_HOME` 与 `java`/`javac` 仍指向 25） |
-| `WITH_JDK21` | `false` | 额外安装 `openjdk-21-jdk-headless`（同上） |
+* `WITH_GO`
+  * default: `false`
+  * Go（最新版，装到 `/usr/local/go`）+ gopls / goimports / gofumpt, etc.
+
+* `WITH_JDK17`
+  * default: `false`
+  * 额外安装 `openjdk-17-jdk-headless`（`JAVA_HOME` 与 `java`/`javac` 仍指向 25）
+
+* `WITH_JDK21`
+  * default: `false`
+  * 额外安装 `openjdk-21-jdk-headless`（同上）
 
 > 这几个 ARG 参与层缓存哈希：取值一变，其后的所有层都会重建。
 
@@ -227,7 +233,7 @@ docker exec -u ide -it ulazy bash
 
 ## Attach to the container
 
-```
+```sh
 docker attach nvide
 ```
 
