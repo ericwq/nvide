@@ -2,16 +2,23 @@
 # 单文件同时支持 linux/amd64 与 linux/arm64。
 #
 # 构建（BuildKit，推荐，一次出双架构）：
-#   docker buildx build --platform linux/amd64,linux/arm64 -t ulazy:0.2.0 -f ubuntu-lazy.dockerfile .
+#   docker buildx build --platform linux/amd64,linux/arm64 -t ulazy:0.2.0 -f ubuntu-lazy.dockerfile . --push
 # 构建（仅本机架构）：
 #   docker build -t ulazy:0.2.0 -f ubuntu-lazy.dockerfile .
+#
+# 可选组件（默认全关，按需打开；改取值会使其后的所有层缓存失效并重建）：
+#   --build-arg WITH_GO=true      # Go + gopls/goimports/gotags/protoc-gen-go/gofumpt（约 +400MB）
+#   --build-arg WITH_JDK17=true   # 额外装 OpenJDK 17（约 +200MB）
+#   --build-arg WITH_JDK21=true   # 额外装 OpenJDK 21（约 +200MB）
+#   docker build -t ulazy:0.2.0 -f ubuntu-lazy.dockerfile . \
+#     --build-arg WITH_GO=true --build-arg WITH_JDK17=true
 #
 # 注意：apt 层用了 --mount=type=cache，需要 BuildKit（Docker 23+ 默认开启）；
 #       DOCKER_BUILDKIT=0 的经典构建会报 Unknown flag: mount
 #
-# 架构说明：neovim / lazygit / tree-sitter-cli 全用 26.04 自带包（不再从 GitHub 下载架构相关二进制），
-# ARCH 取 dpkg --print-architecture（即 amd64 / arm64），只在两处使用：
-# apt 层拼 OpenJDK 目录名、nono 层拼 .deb 包名（nono 仍从 GitHub 下载，是唯一的架构相关外部二进制）
+# 架构说明：lazygit 用 26.04 自带包；neovim / tree-sitter-cli / Go / nono 需下载架构相关二进制。
+# ARCH 取 BuildKit 注入的 TARGETARCH（经典构建下回退 dpkg --print-architecture），
+# 用于拼接 OpenJDK 目录名、上游包文件名与 nono .deb 包名；Go 受 WITH_GO 控制，关闭时其下载层整体跳过。
 #
 # 基础镜像：Ubuntu 26.04 LTS。需要按 digest 固定时可覆盖参数（不用改本文件）：
 #   --build-arg UBUNTU_IMAGE=ubuntu:26.04@sha256:xxxxxxxx
@@ -19,18 +26,27 @@ ARG UBUNTU_IMAGE=ubuntu:26.04
 FROM ${UBUNTU_IMAGE}
 
 LABEL org.opencontainers.image.maintainer="ericwq057@qq.com" \
-  org.opencontainers.image.title="ulazy"
+  org.opencontainers.image.title="nvide"
 
-# 管道中任一命令失败即中止构建（配合下面的 curl | gunzip、curl | sh）
+# 管道中任一命令失败即中止构建（curl | tar、curl | sh、命令替换里的 curl | jq 都依赖 pipefail）
 SHELL ["/bin/bash", "-o", "pipefail", "-e", "-c"]
+
+# BuildKit 自动注入的平台架构（amd64 / arm64）；经典构建下为空，各处用 ${TARGETARCH:-$(dpkg --print-architecture)} 回退
+ARG TARGETARCH
+
+# 可选组件开关：默认 false = 不装
+ARG WITH_GO=false
+ARG WITH_JDK17=false
+ARG WITH_JDK21=false
 
 # 非交互安装 + 中国时区 + UTF-8 locale
 # DEBIAN_FRONTEND 不写进 ENV（否则会烘进镜像，容器内交互式 apt 会异常），只在 apt 那一层内 export
+# LANG / LC_ALL 必须显式设置：官方 ubuntu 镜像不设 LANG，glibc 会按 C/POSIX 处理，中文与 emoji 会异常
 ENV TZ=Asia/Shanghai \
   LANG=C.UTF-8 \
   LC_ALL=C.UTF-8
 
-# 上游版本：需要可复现构建时可钉版本（GRADLE_VERSION 是一处，LAZYVIM_REF 是另一处）
+# 上游版本：需要可复现构建时可钉版本
 #   docker build -f ubuntu-lazy.dockerfile -t ulazy:0.2.0 . --build-arg LAZYVIM_REF=main
 # 注意：LazyVim/starter 仓库没有任何 release tag，LAZYVIM_REF 实际上只能钉分支（--depth 1 不支持裸 commit）
 # Go 工具链（gopls/goimports/gotags/protoc-gen-go/gofumpt）仍是 @latest：五个模块版本号各异，
@@ -38,15 +54,21 @@ ENV TZ=Asia/Shanghai \
 ARG LAZYVIM_REF=main
 
 # 安装必要工具 + 配置时区
-# apt 缓存挂载：重建时不用重新下载 .deb 与索引（不进镜像层），所以不再需要 apt-get clean / rm lists
-# hadolint ignore=DL3008
+# apt 缓存挂载：重建时不用重新下载 .deb 与索引（不进镜像层），所以不需要 apt-get clean / rm lists
+# hadolint ignore=DL3008,SC3054
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
-  ARCH="$(dpkg --print-architecture)"; \
+  ARCH="${TARGETARCH:-$(dpkg --print-architecture)}"; \
   export DEBIAN_FRONTEND=noninteractive; \
+  # JDK：25 必装（jdtls 1.63 要求），17 / 21 由开关独立追加；set -e 下不能用 [ ] && 拼接（条件为假会返回 1 中断构建）
+  # 包名放数组里，用 "${JDK_PKGS[@]}" 展开：加引号的字符串变量会因空格被 apt 当成单个包名
+  # RUN 由上面的 SHELL 指定为 bash，数组合法；linter 报的 SC3054 是按 POSIX sh 解析的误报（已在上方 ignore）
+  JDK_PKGS=(openjdk-25-jdk-headless); \
+  if [ "$WITH_JDK17" = "true" ]; then JDK_PKGS+=(openjdk-17-jdk-headless); fi; \
+  if [ "$WITH_JDK21" = "true" ]; then JDK_PKGS+=(openjdk-21-jdk-headless); fi; \
   apt-get update && apt-get install -y --no-install-recommends \
   git curl wget tar gzip zip ca-certificates unzip jq \
-  openjdk-21-jdk-headless openjdk-17-jdk-headless openjdk-25-jdk-headless maven \
+  "${JDK_PKGS[@]}" maven \
   clang clangd build-essential pkg-config libssl-dev \
   lua5.4 luarocks ripgrep fd-find fzf sudo \
   python3 python3-pynvim python3-pip python3-venv python3-lxml python3-docx poppler-utils \
@@ -54,8 +76,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   lazygit fish \
   tzdata && \
   # Node 取 NodeSource 24.x（与 pi-agent 一致）：仓库自带的是 22.22.1，Node 24 需单独加源安装（npm 随 nodejs 包提供）
+  # 注意：setup 脚本内部自带一次 apt-get update，因此本层有第二次索引刷新，属预期（索引在 cache mount 内，增量刷新）
   curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
   apt-get install -y --no-install-recommends nodejs && \
+  # 旧版 JDK 的连通性自检：装了就断言目录真实存在
+  if [ "$WITH_JDK17" = "true" ]; then test -d "/usr/lib/jvm/java-17-openjdk-${ARCH}"; fi && \
+  if [ "$WITH_JDK21" = "true" ]; then test -d "/usr/lib/jvm/java-21-openjdk-${ARCH}"; fi && \
   # 配置时区（/etc/localtime 是 libc 真正读取的；/etc/timezone 仅发行版约定，ENV TZ 已生效，删）
   ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
   # JAVA_HOME 固定为一个与架构无关的路径（amd64/arm64 目录名前缀相同）；默认用 25（jdtls 1.63 要求的版本）
@@ -71,19 +97,18 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   clangd_bin="$(find -L /usr/bin /usr/lib -maxdepth 3 \( -name clangd -o -name 'clangd-*' \) -type f 2>/dev/null | sort -V | tail -n1)" && \
   test -n "$clangd_bin" && \
   ln -sfn "$clangd_bin" /usr/local/bin/clangd && \
-  # 清掉不再需要的自动依赖，再删 apt 索引；索引不进镜像（重建时靠 cache 挂载重建，代价是一次 apt update）
-  apt-get autoremove -y && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
+  # 清掉不再需要的自动依赖；apt 索引与 deb 缓存都在 cache mount 里，不进镜像层，无需 clean / rm
+  apt-get autoremove -y
 
 # JAVA_HOME 供 neovim / 构建工具（mvn/gradle 等）读取，默认指向 25（jdtls 1.63 要求的版本）；
-# 17 / 21 仍保留，供需要旧版本的项目用（update-alternatives --list / --set 或改 JAVA_HOME 切换）
+# 17 / 21 仅在 WITH_JDK17 / WITH_JDK21 打开时才存在（update-alternatives --list / --set 或改 JAVA_HOME 切换）
 # update-alternatives 已在 apt 层显式 --set 到 25，所以 /usr/bin/java（javac）也是 25
 # java、javac 本身由 update-alternatives 提供在 /usr/bin，所以不再把 ${JAVA_HOME}/bin 重复加进 PATH
-# Go 用 26.04 自带的 golang-go（/usr/bin/go，GOROOT 自动推导），只有 go install 产物在 GOPATH/bin
+# Go 由 WITH_GO 控制（默认 false = 不装）；开启时下载官方发行包到 /usr/local/go（GOROOT 自动推导），
+# go install 产物落在 GOPATH/bin。以下两条 Go 路径在关闭状态下指向不存在的目录，无副作用
 ENV JAVA_HOME=/usr/lib/jvm/java-25-openjdk \
   GOPATH=/go \
-  PATH=/go/bin:${PATH}
+  PATH=/go/bin:/usr/local/go/bin:${PATH}
 
 # Gradle：apt 的 gradle 停在 4.4.1（2017 年，-22ubuntu1），现代项目用不了，所以取官方发行包；
 # 下载后用上游发布的 .sha256 校验（pi-agent.dockerfile 里没有这一步）。
@@ -99,62 +124,46 @@ RUN curl -fsSLo /tmp/gradle.zip "https://services.gradle.org/distributions/gradl
 ENV GRADLE_HOME=/opt/gradle \
   PATH=/opt/gradle/bin:${PATH}
 
-# Install Neovim
-RUN ARCH="$(dpkg --print-architecture)"; \
+# neovim + tree-sitter-cli：上游两家的架构命名不一致（x86_64 / x64），
+# 一次 case 同时得出两个名字，避免在同一层里重复解析架构
+RUN ARCH="${TARGETARCH:-$(dpkg --print-architecture)}"; \
   case "$ARCH" in \
-  amd64) NVIM_ARCH="x86_64" ;; \
-  arm64) NVIM_ARCH="arm64" ;; \
+  amd64) NVIM_ARCH="x86_64"; TS_ARCH="x64" ;; \
+  arm64) NVIM_ARCH="arm64"; TS_ARCH="arm64" ;; \
   *) echo "Unsupported arch: $ARCH"; exit 1 ;; \
   esac; \
-  curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${NVIM_ARCH}.tar.gz" && \
-  rm -rf "/opt/nvim-linux-${NVIM_ARCH}" && \
-  tar -C /opt -xzf "nvim-linux-${NVIM_ARCH}.tar.gz" && \
-  rm nvim*.tar.gz && \
-  ln -s "/opt/nvim-linux-${NVIM_ARCH}/bin/nvim" /usr/local/bin/nvim
+  curl -fsSLo /tmp/nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${NVIM_ARCH}.tar.gz"; \
+  rm -rf "/opt/nvim-linux-${NVIM_ARCH}"; \
+  tar -C /opt -xzf /tmp/nvim.tar.gz; \
+  rm -f /tmp/nvim.tar.gz; \
+  ln -sfn "/opt/nvim-linux-${NVIM_ARCH}/bin/nvim" /usr/local/bin/nvim; \
+  curl -fsSLo /tmp/tree-sitter.gz "https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-${TS_ARCH}.gz"; \
+  gunzip -c /tmp/tree-sitter.gz > /usr/local/bin/tree-sitter; \
+  chmod +x /usr/local/bin/tree-sitter; \
+  rm -f /tmp/tree-sitter.gz; \
+  nvim --version > /dev/null; \
+  tree-sitter --version
 
-# Install tree-sitter-cli
-RUN ARCH="$(dpkg --print-architecture)"; \
-  case "$ARCH" in \
-  amd64) TS_ARCH="x64" ;; \
-  arm64) TS_ARCH="arm64" ;; \
-  *) echo "Unsupported arch: $ARCH"; exit 1 ;; \
-  esac; \
-  curl -fsSL -o /tmp/tree-sitter.gz \
-  "https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-${TS_ARCH}.gz" && \
-  gunzip -c /tmp/tree-sitter.gz > /usr/local/bin/tree-sitter && \
-  chmod +x /usr/local/bin/tree-sitter && \
-  rm /tmp/tree-sitter.gz
+# 动态获取最新 Go 版本并安装（仅 WITH_GO=true；GOROOT 由安装路径自动推导）
+# 上面的 ENV 已把 /usr/local/go/bin 放进 PATH，解包后直接 go version 顺带验证 PATH 生效
+RUN if [ "$WITH_GO" = "true" ]; then \
+  ARCH="${TARGETARCH:-$(dpkg --print-architecture)}"; \
+  GO_VERSION="$(curl -fsSL 'https://go.dev/dl/?mode=json' | jq -r '.[0].version')"; \
+  test -n "$GO_VERSION" && test "$GO_VERSION" != "null"; \
+  curl -fsSL "https://go.dev/dl/${GO_VERSION}.linux-${ARCH}.tar.gz" | tar -C /usr/local -xz; \
+  go version; \
+  fi
 
-# 动态获取最新 Go 版本并安装
-RUN ARCH="$(dpkg --print-architecture)" && \
-  GO_VERSION="$(curl -fsSL 'https://go.dev/dl/?mode=json' | jq -r '.[0].version')" && \
-  test -n "$GO_VERSION" && test "$GO_VERSION" != "null" && \
-  curl -fsSL "https://go.dev/dl/${GO_VERSION}.linux-${ARCH}.tar.gz" | tar -C /usr/local -xz
-
-# 将 Go 加入 PATH
-ENV PATH="/usr/local/go/bin:${PATH}"
-
-
-# 验证安装
-RUN nvim --version && \
-  git --version && \
-  java -version && \
+# 验证安装：只保留能真正暴露"装错/装漏"的检查。
+# 不用 cmd | head 截断：pipefail 下 head 提前退出可能让 cmd 收到 SIGPIPE 被判失败；输出最长的 gradle 直接丢 /dev/null
+# command -v 多参数时缺失项被忽略（只要有一个命中就返回 0，全部缺失才非 0），所以必须逐项循环检查
+RUN java -version && \
   mvn -v && \
-  gradle --version && \
-  test -d "/usr/lib/jvm/java-17-openjdk-$(dpkg --print-architecture)" && \
+  gradle --version > /dev/null && \
   clangd --version && \
-  python3 --version && \
-  command -v pdftotext jq zip && \
-  node --version && npm --version && \
-  test "$(node -p "process.versions.node.split('.')[0]")" = 24 && \
   python3 -c 'import pynvim, docx, lxml' && \
-  go version && \
-  lazygit --version && \
-  curl --version && \
-  fzf --version && \
-  rg --version && \
-  tree-sitter --version && \
-  fdfind --version
+  node -e 'process.exit(+process.versions.node.split(".")[0] === 24 ? 0 : 1)' && \
+  for c in lazygit fzf rg fdfind pdftotext jq unzip zip; do command -v "$c" > /dev/null || exit 1; done
 
 # 预装 jdtls：不经过 mason，直接取 eclipse 里程碑包（milestones/ 比 snapshots/ 保留更久）。
 # 1.63 的 bundle 要求 Java 25（实测 1.55/1.62/1.63 都要 25），
@@ -171,23 +180,22 @@ RUN curl -fsSL -o /tmp/jdtls.tar.gz \
   ls /opt/jdtls/plugins/org.eclipse.equinox.launcher_*.jar
 
 # 安装 nono（dpkg -i 需 root，必须在 USER ide 之前；用 apt 里的 jq 解析最新版本；
-# 依赖只有 libc6，用 dpkg -i 即可，避免依赖 apt 索引——apt 层已删索引）
+# 依赖只有 libc6，用 dpkg -i 即可，避免依赖 apt 索引——apt 层缓存已挂载，索引不在镜像里）
 RUN VERSION=$(curl -fsSL https://api.github.com/repos/nolabs-ai/nono/releases/latest | jq -r '.tag_name' | sed 's/^v//') \
   && test -n "$VERSION" \
-  && ARCH="$(dpkg --print-architecture)" \
+  && ARCH="${TARGETARCH:-$(dpkg --print-architecture)}" \
   && curl -fsSL -o "/tmp/nono-cli_${VERSION}_${ARCH}.deb" \
   "https://github.com/nolabs-ai/nono/releases/download/v${VERSION}/nono-cli_${VERSION}_${ARCH}.deb" \
   && dpkg -i "/tmp/nono-cli_${VERSION}_${ARCH}.deb" \
   && rm "/tmp/nono-cli_${VERSION}_${ARCH}.deb"
 
 
-# 创建用户组 develop、创建用户 ide 并加入 sudo 组、准备 GOPATH、配置免密 sudo
+# 创建用户组 develop、创建用户 ide 并加入 sudo 组、准备 GOPATH（仅 WITH_GO=true）、配置免密 sudo
 # sudoers 写入 sudoers.d 而不是覆盖 /etc/sudoers，后者会丢掉文件末尾的 #includedir 指令
 RUN groupadd develop \
   && useradd -m -s /bin/bash -g develop ide \
   && usermod -aG sudo ide \
-  && mkdir -p "$GOPATH" \
-  && chown -R ide:develop "$GOPATH" \
+  && if [ "$WITH_GO" = "true" ]; then mkdir -p "$GOPATH" && chown -R ide:develop "$GOPATH"; fi \
   && echo 'ide ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/ide \
   && chmod 0440 /etc/sudoers.d/ide
 
@@ -199,19 +207,21 @@ ENV HOME=/home/ide
 
 # npm 全局前缀统一到 ~/.npm-global：ide 用户免 sudo 就能 npm i -g（同 pi-agent.dockerfile 的思路）。
 # 同时把 nvim 的 node provider 依赖包 neovim 装到这个前缀下，让 npm root -g 与实际安装位置一致。
+# 末尾断言校验前缀真的生效（否则 npm 会试图往 /usr/lib/node_modules 写，虽然会因权限失败，但断言更直接）
 ENV NPM_CONFIG_PREFIX=${HOME}/.npm-global
 # hadolint ignore=DL3016
-RUN npm install -g neovim && test -d "$(npm root -g)/neovim"
+RUN npm install -g neovim && test "$(npm root -g)" = "$NPM_CONFIG_PREFIX/lib/node_modules"
 
-# install Gopls
+# Go 工具链（仅 WITH_GO=true）：gopls / goimports / gotags / protoc-gen-go / gofumpt
 # hadolint ignore=DL3062
-RUN go install golang.org/x/tools/gopls@latest && \
-  go install golang.org/x/tools/cmd/goimports@latest && \
-  go install github.com/jstemmer/gotags@latest && \
-  go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
-  go install mvdan.cc/gofumpt@latest && \
-  go clean -cache -modcache -testcache && \
-  rm -rf "${GOPATH:?}/src/"*
+RUN if [ "$WITH_GO" = "true" ]; then \
+  go install golang.org/x/tools/gopls@latest; \
+  go install golang.org/x/tools/cmd/goimports@latest; \
+  go install github.com/jstemmer/gotags@latest; \
+  go install google.golang.org/protobuf/cmd/protoc-gen-go@latest; \
+  go install mvdan.cc/gofumpt@latest; \
+  go clean -cache -modcache -testcache; \
+  fi
 
 # install rust, ast-grep, rust-analyzer
 RUN curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs -sSf | sh -s -- -y && \
@@ -228,9 +238,8 @@ RUN curl -fsSL https://pi.dev/install.sh | sh \
   && pi install npm:pi-models-discovery
 
 # 安装 lattice（pi 的技能集，装完删掉克隆目录）
-ARG PI_SKILLS=${HOME}/.pi/agent/skills
 RUN git clone --depth 1 https://github.com/techygarg/lattice.git "$HOME/.cache/lattice" && \
-  "$HOME/.cache/lattice/tools/install.sh" "$PI_SKILLS" && \
+  "$HOME/.cache/lattice/tools/install.sh" "$HOME/.pi/agent/skills" && \
   rm -rf "$HOME/.cache/lattice"
 
 # pi 配置文件 + nono profile 目录
@@ -253,9 +262,12 @@ RUN printf 'alias vi=nvim\nalias np=\"nono run --profile pi-mono -- pi\"\numask 
 # 非交互 shell（bash -c、docker exec）必须显式加进 ENV 才能找到 rust-analyzer
 ENV PATH=${HOME}/.cargo/bin:${HOME}/.local/bin:${NPM_CONFIG_PREFIX}/bin:${PATH}
 
-# RUN nvim --headless +"Lazy! sync" +"MasonInstall shfmt lua-language-server stylua" +qa
-WORKDIR $HOME/.config/nvim
+# mason 工具（lua-language-server / stylua / shfmt）不预装进镜像，由 LazyVim 首次启动时按需下载
+WORKDIR "$HOME/.config/nvim"
 RUN timeout 900 nvim --headless "+Lazy! sync" +qa
-WORKDIR $HOME
+# 回到默认工作目录：docker run 进入容器时落在 $HOME，而不是 nvim 配置目录
+WORKDIR "$HOME"
 
+# ubuntu 官方镜像历来默认 CMD 即 /bin/bash；这里显式声明是为了不依赖基础镜像默认值（UBUNTU_IMAGE 可被覆盖），
+# 并与 pi-agent.dockerfile 保持一致
 CMD ["/bin/bash"]
