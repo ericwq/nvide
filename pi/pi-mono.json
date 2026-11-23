@@ -36,6 +36,7 @@
       "/opt/maven/",
       "/opt/gradle/",
       "/usr/libexec/gcc/",
+      "/usr/include/",
       "$HOME/.cache/puppeteer"
     ],
     "allow_file": [
