@@ -83,7 +83,9 @@ docker buildx build --platform linux/arm64 \
 docker build -f ubuntu-lazy.dockerfile -t nvide:0.9.6 . \
     --build-arg UBUNTU_IMAGE=ubuntu:26.04@sha256:<digest> \
     --build-arg LAZYVIM_REF=main \
-    --build-arg GRADLE_VERSION=9.9.1
+    --build-arg GRADLE_VERSION=9.9.1 \
+    --build-arg HADOLINT_VERSION=v2.15.1 \
+    --build-arg NONO_VERSION=0.82.0
 
 docker run -d -ti --name nvide -h nvide  \
     --env TZ=Asia/Shanghai \
@@ -95,8 +97,13 @@ docker exec -u ide -it nvide /bin/bash
 ```
 
 `LAZYVIM_REF` 只能是分支（starter 仓库没有任何 release tag，且 `git clone --depth 1` 不支持裸 commit）。
+`NONO_VERSION` 留空时用 `releases/latest` 的 301 重定向解析最新版本（不走 `api.github.com`：
+未认证 API 限流 60 次/小时/IP，CI 或共享出口 IP 上会直接 403）；写 `0.82.0` 或 `v0.82.0` 均可。
 Go 工具链（gopls 等 5 个，仅 `WITH_GO=true` 时安装）仍为 `@latest`，
 要钉就改 `ubuntu-lazy.dockerfile` 里 `go install` 行的 `@版本号`。
+`@mermaid-js/mermaid-cli` 同样是 `@latest`，要钉就改 `npm install -g @mermaid-js/mermaid-cli@<版本>`；
+它依赖的 puppeteer 由 npm 按 mermaid-cli 声明的 peer 范围自动解析，`chrome-headless-shell` 也跟着下载对应版本，
+无需（也不应该）手动钉 puppeteer 版本。
 
 ### 可选组件（默认关闭）
 
@@ -134,6 +141,7 @@ docker run --rm -it nvide:0.9.6 bash -lc '
   clangd --version | head -1
   python3 -c "import pynvim; print(\"pynvim ok\")"
   node --version; npm ls -g --depth=0 | grep neovim
+  hadolint --version; mmdc --version
   rust-analyzer --version; lazygit --version; tree-sitter --version
   pi --version; nono --version
   nvim --headless "+checkhealth vim.provider" +qa 2>&1 | tail -20'

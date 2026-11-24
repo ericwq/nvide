@@ -16,7 +16,11 @@
 # 注意：apt 层用了 --mount=type=cache，需要 BuildKit（Docker 23+ 默认开启）；
 #       DOCKER_BUILDKIT=0 的经典构建会报 Unknown flag: mount
 #
-# 架构说明：lazygit 用 26.04 自带包；neovim / tree-sitter-cli / Go / nono 需下载架构相关二进制。
+# 内置工具提示（默认安装，非开关）：hadolint（Dockerfile linter）、
+#   Mermaid CLI（mmdc，依赖 chrome-headless-shell；渲染时用
+#   mmdc ... -p "$HOME/.config/mermaid/puppeteer.json" 走 --no-sandbox 配置）。
+#
+# 架构说明：lazygit 用 26.04 自带包；neovim / tree-sitter-cli / Go / nono / hadolint 需下载架构相关二进制。
 # ARCH 取 BuildKit 注入的 TARGETARCH（经典构建下回退 dpkg --print-architecture），
 # 用于拼接 OpenJDK 目录名、上游包文件名与 nono .deb 包名；Go 受 WITH_GO 控制，关闭时其下载层整体跳过。
 #
@@ -100,6 +104,21 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   # 清掉不再需要的自动依赖；apt 索引与 deb 缓存都在 cache mount 里，不进镜像层，无需 clean / rm
   apt-get autoremove -y
 
+# chrome-headless-shell 运行所需系统库（Mermaid CLI 渲染依赖，缺一个就启动失败）；
+# fonts-noto-cjk 让图表里的中文不显示成豆腐块，fonts-dejavu-core（约 2MB）作为非 CJK 字体的兜底
+# （mermaid-cli 只自带 open-sans/recursive 的 web 字体，图里指定其它字体家族时靠 fontconfig 回退）
+# 单独成层而没并进上面的主 apt 层：这组包只为 Mermaid CLI 服务，单独一层便于按需裁掉
+# hadolint ignore=DL3008
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  export DEBIAN_FRONTEND=noninteractive; \
+  apt-get update && apt-get install -y --no-install-recommends \
+  libasound2t64 libatk-bridge2.0-0t64 libatk1.0-0t64 libcairo2 libcups2t64 \
+  libdbus-1-3 libexpat1 libgbm1 libglib2.0-0t64 libnspr4 libnss3 libpango-1.0-0 \
+  libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 libxrandr2 \
+  fonts-noto-cjk fonts-dejavu-core && \
+  apt-get autoremove -y
+
 # JAVA_HOME 供 neovim / 构建工具（mvn/gradle 等）读取，默认指向 25（jdtls 1.63 要求的版本）；
 # 17 / 21 仅在 WITH_JDK17 / WITH_JDK21 打开时才存在（update-alternatives --list / --set 或改 JAVA_HOME 切换）
 # update-alternatives 已在 apt 层显式 --set 到 25，所以 /usr/bin/java（javac）也是 25
@@ -154,6 +173,20 @@ RUN if [ "$WITH_GO" = "true" ]; then \
   go version; \
   fi
 
+# 安装 hadolint（Dockerfile linter）：官方静态二进制，无外部依赖，直接放 /usr/local/bin
+# 注意：资产名是 x86_64/arm64，与 dpkg 的 amd64/arm64 不一致，需显式映射
+ARG HADOLINT_VERSION=v2.15.1
+RUN ARCH="${TARGETARCH:-$(dpkg --print-architecture)}"; \
+  case "$ARCH" in \
+  amd64) HADOLINT_ARCH="x86_64" ;; \
+  arm64) HADOLINT_ARCH="arm64" ;; \
+  *) echo "Unsupported arch for hadolint: $ARCH" >&2; exit 1 ;; \
+  esac; \
+  curl -fsSLo /usr/local/bin/hadolint \
+  "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-linux-${HADOLINT_ARCH}"; \
+  chmod +x /usr/local/bin/hadolint; \
+  hadolint --version
+
 # 验证安装：只保留能真正暴露"装错/装漏"的检查。
 # 不用 cmd | head 截断：pipefail 下 head 提前退出可能让 cmd 收到 SIGPIPE 被判失败；输出最长的 gradle 直接丢 /dev/null
 # command -v 多参数时缺失项被忽略（只要有一个命中就返回 0，全部缺失才非 0），所以必须逐项循环检查
@@ -163,7 +196,7 @@ RUN java -version && \
   clangd --version && \
   python3 -c 'import pynvim, docx, lxml' && \
   node -e 'process.exit(+process.versions.node.split(".")[0] === 24 ? 0 : 1)' && \
-  for c in lazygit fzf rg fdfind pdftotext jq unzip zip; do command -v "$c" > /dev/null || exit 1; done
+  for c in lazygit fzf rg fdfind pdftotext jq unzip zip hadolint; do command -v "$c" > /dev/null || exit 1; done
 
 # 预装 jdtls：不经过 mason，直接取 eclipse 里程碑包（milestones/ 比 snapshots/ 保留更久）。
 # 1.63 的 bundle 要求 Java 25（实测 1.55/1.62/1.63 都要 25），
@@ -179,15 +212,24 @@ RUN curl -fsSL -o /tmp/jdtls.tar.gz \
   # 唯一命门检查：launcher 靠它在 plugins/ 里找 OSGi 启动器，缺失时 jdtls 直接起不来
   ls /opt/jdtls/plugins/org.eclipse.equinox.launcher_*.jar
 
-# 安装 nono（dpkg -i 需 root，必须在 USER ide 之前；用 apt 里的 jq 解析最新版本；
-# 依赖只有 libc6，用 dpkg -i 即可，避免依赖 apt 索引——apt 层缓存已挂载，索引不在镜像里）
-RUN VERSION=$(curl -fsSL https://api.github.com/repos/nolabs-ai/nono/releases/latest | jq -r '.tag_name' | sed 's/^v//') \
-  && test -n "$VERSION" \
-  && ARCH="${TARGETARCH:-$(dpkg --print-architecture)}" \
-  && curl -fsSL -o "/tmp/nono-cli_${VERSION}_${ARCH}.deb" \
-  "https://github.com/nolabs-ai/nono/releases/download/v${VERSION}/nono-cli_${VERSION}_${ARCH}.deb" \
-  && dpkg -i "/tmp/nono-cli_${VERSION}_${ARCH}.deb" \
-  && rm "/tmp/nono-cli_${VERSION}_${ARCH}.deb"
+# 安装 nono（dpkg -i 需 root，必须在 USER ide 之前；依赖只有 libc6，用 dpkg -i 即可，
+# 避免依赖 apt 索引——apt 层缓存已挂载，索引不在镜像里）
+# 版本号用 releases/latest 的 301 重定向解析，不走 api.github.com：未认证 API 限流 60 次/小时/IP，
+# CI 或共享出口 IP 上会直接拿 403（API rate limit exceeded）。要可复现时用 --build-arg NONO_VERSION=x.y.z 钉住
+ARG NONO_VERSION=
+RUN VERSION="${NONO_VERSION}"; \
+  if [ -z "$VERSION" ]; then \
+  TAG_URL="$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/nolabs-ai/nono/releases/latest)"; \
+  VERSION="${TAG_URL##*/}"; \
+  fi; \
+  # 允许写成 v0.82.0 或 0.82.0，统一去掉前缀 v 再拼资产名
+  VERSION="${VERSION#v}"; \
+  test -n "$VERSION"; \
+  ARCH="${TARGETARCH:-$(dpkg --print-architecture)}"; \
+  curl -fsSL -o "/tmp/nono-cli_${VERSION}_${ARCH}.deb" \
+  "https://github.com/nolabs-ai/nono/releases/download/v${VERSION}/nono-cli_${VERSION}_${ARCH}.deb"; \
+  dpkg -i "/tmp/nono-cli_${VERSION}_${ARCH}.deb"; \
+  rm "/tmp/nono-cli_${VERSION}_${ARCH}.deb"
 
 
 # 创建用户组 develop、创建用户 ide 并加入 sudo 组、准备 GOPATH（仅 WITH_GO=true）、配置免密 sudo
@@ -209,8 +251,35 @@ ENV HOME=/home/ide
 # 同时把 nvim 的 node provider 依赖包 neovim 装到这个前缀下，让 npm root -g 与实际安装位置一致。
 # 末尾断言校验前缀真的生效（否则 npm 会试图往 /usr/lib/node_modules 写，虽然会因权限失败，但断言更直接）
 ENV NPM_CONFIG_PREFIX=${HOME}/.npm-global
+# 前缀的 bin 必须马上进 PATH：npm 的全局命令（下面的 mmdc、以及后面可能再装的 npm 包）
+# 都落在 ${NPM_CONFIG_PREFIX}/bin，不在这里加就要等到文件末尾那条 ENV 才生效，
+# 中途的 RUN（比如 mmdc 冒烟测试）会报 command not found
+ENV PATH=${NPM_CONFIG_PREFIX}/bin:${PATH}
 # hadolint ignore=DL3016
 RUN npm install -g neovim && test "$(npm root -g)" = "$NPM_CONFIG_PREFIX/lib/node_modules"
+
+# 安装 Mermaid CLI（mmdc）：全局 npm 包；puppeteer 是 mermaid-cli 的 peerDependency，由 npm 自动装上。
+# 容器内没有 GUI、/dev/shm 通常也偏小，chrome 必须带 --no-sandbox，配置固化到 ~/.config/mermaid/puppeteer.json；
+# 用法：mmdc -i a.mmd -o a.svg -p "$HOME/.config/mermaid/puppeteer.json"
+# 浏览器必须用 mermaid-cli 自己那份 puppeteer 的 CLI 下载：puppeteer 按自身钉死的 build id
+# 查找 chrome-headless-shell，写死版本号（如 23.11.1）会随 mermaid-cli 升级而错位，mmdc 会报 Could not find Chrome。
+# 浏览器落在 ~/.cache/puppeteer，mmdc 会自动找到，无需 PUPPETEER_EXECUTABLE_PATH。
+# 这里不能用 --mount=type=cache 挂 ~/.npm：cache 目录由 BuildKit 以 root 创建，
+# 本层已切到 USER ide，npm 写 _cacache 会直接 EACCES（Your cache folder contains root-owned files）。
+# 所以照旧让它写镜像层里的 ~/.npm，末尾用 npm cache clean 清掉（否则 192 个包的 tarball 会进镜像，+100~200MB）
+# hadolint ignore=DL3016
+RUN npm install -g @mermaid-js/mermaid-cli \
+  && MMDC_ROOT="$(npm root -g)/@mermaid-js/mermaid-cli" \
+  && PUPPETEER_PKG="$(node -p "require.resolve('puppeteer/package.json', {paths: ['$MMDC_ROOT']})")" \
+  && PUPPETEER_BIN="$(dirname "$(dirname "$PUPPETEER_PKG")")/.bin/puppeteer" \
+  && test -x "$PUPPETEER_BIN" \
+  && "$PUPPETEER_BIN" browsers install chrome-headless-shell \
+  && mkdir -p "$HOME/.config/mermaid" \
+  && printf '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}\n' > "$HOME/.config/mermaid/puppeteer.json" \
+  && echo 'graph TD; A-->B;' > /tmp/test.mmd \
+  && mmdc -i /tmp/test.mmd -o /tmp/test.svg -p "$HOME/.config/mermaid/puppeteer.json" \
+  && rm -f /tmp/test.mmd /tmp/test.svg \
+  && npm cache clean --force
 
 # Go 工具链（仅 WITH_GO=true）：gopls / goimports / gotags / protoc-gen-go / gofumpt
 # hadolint ignore=DL3062
@@ -260,7 +329,7 @@ RUN printf 'alias vi=nvim\nalias np=\"nono run --profile pi-mono -- pi\"\numask 
 
 # rustup 只把 cargo/rust-analyzer 的 PATH 写进 ~/.profile（仅登录 shell 生效），
 # 非交互 shell（bash -c、docker exec）必须显式加进 ENV 才能找到 rust-analyzer
-ENV PATH=${HOME}/.cargo/bin:${HOME}/.local/bin:${NPM_CONFIG_PREFIX}/bin:${PATH}
+ENV PATH=${HOME}/.cargo/bin:${HOME}/.local/bin:${PATH}
 
 # mason 工具（lua-language-server / stylua / shfmt）不预装进镜像，由 LazyVim 首次启动时按需下载
 WORKDIR "$HOME/.config/nvim"
