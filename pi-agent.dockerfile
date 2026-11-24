@@ -136,13 +136,21 @@ ENV PATH=${NPM_PATH}/bin:$PATH
 RUN npm install -g neovim
 
 # 安装 Mermaid CLI
+# 浏览器必须用 mermaid-cli 自己那份 puppeteer 的 CLI 下载：puppeteer 按自身钉死的 build id 查找
+# chrome-headless-shell，写死版本号（如 23.11.1）会随 mermaid-cli 升级而错位（12.x 已要求 puppeteer ^25），
+# 版本错位时 mmdc 报 Could not find Chrome；另外新版 npm 会拦截 puppeteer 的 postinstall，不会自动下载
 # hadolint ignore=DL3016
 RUN npm install -g @mermaid-js/mermaid-cli \
-  && npx puppeteer@23.11.1 browsers install chrome-headless-shell \
+  && MMDC_ROOT="$(npm root -g)/@mermaid-js/mermaid-cli" \
+  && PUPPETEER_PKG="$(node -p "require.resolve('puppeteer/package.json', {paths: ['$MMDC_ROOT']})")" \
+  && PUPPETEER_BIN="$(dirname "$(dirname "$PUPPETEER_PKG")")/.bin/puppeteer" \
+  && test -x "$PUPPETEER_BIN" \
+  && "$PUPPETEER_BIN" browsers install chrome-headless-shell \
   && echo 'graph TD; A-->B;' > /tmp/test.mmd \
   && echo '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}' > /tmp/puppeteer.json \
   && mmdc -i /tmp/test.mmd -o /tmp/test.svg --puppeteerConfigFile /tmp/puppeteer.json \
-  && rm /tmp/test.mmd /tmp/test.svg /tmp/puppeteer.json
+  && rm /tmp/test.mmd /tmp/test.svg /tmp/puppeteer.json \
+  && npm cache clean --force
 
 # 安装 pi agent
 # hadolint ignore=DL3016
