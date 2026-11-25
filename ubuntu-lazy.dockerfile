@@ -117,6 +117,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   libdbus-1-3 libexpat1 libgbm1 libglib2.0-0t64 libnspr4 libnss3 libpango-1.0-0 \
   libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 libxrandr2 \
   fonts-noto-cjk fonts-dejavu-core && \
+  libicu-dev \
   apt-get autoremove -y
 
 # JAVA_HOME 供 neovim / 构建工具（mvn/gradle 等）读取，默认指向 25（jdtls 1.63 要求的版本）；
